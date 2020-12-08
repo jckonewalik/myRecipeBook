@@ -11,9 +11,8 @@ import {
 } from 'react-native';
 import AppButton from '../components/AppButton';
 import AppTextInput from '../components/AppTextInput';
-import { FontAwesome } from '@expo/vector-icons';
+import AppListItem from '../components/AppListItem';
 import { Context } from '../contexts/NewRecipe/NewRecipeContext';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const StepsScreen = ({ navigation }) => {
   const { state, addStep, removeStep } = useContext(Context);
@@ -58,15 +57,10 @@ const StepsScreen = ({ navigation }) => {
             style={styles.stepList}
             keyExtractor={(item) => item.name}
             renderItem={({ item }) => (
-              <View style={styles.stepItem}>
-                <Text style={styles.stepItemText}>{item.name}</Text>
-                <TouchableOpacity onPress={() => onRemoveStep(item.name)}>
-                  <FontAwesome name="trash" size={32} color="#C20D0D" />
-                </TouchableOpacity>
-              </View>
+              <AppListItem text={item.name} onRemove={onRemoveStep} />
             )}
           />
-          <AppButton text="Processos" onPress={() => goToIngredients()} />
+          <AppButton text="Ingredientes" onPress={() => goToIngredients()} />
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -79,17 +73,6 @@ const styles = StyleSheet.create({
   },
   stepList: {
     marginTop: 10,
-  },
-  stepItem: {
-    paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  stepItemText: {
-    fontFamily: 'Roboto_400Regular',
-    color: '#37426B',
-    fontSize: 20,
   },
 });
 
