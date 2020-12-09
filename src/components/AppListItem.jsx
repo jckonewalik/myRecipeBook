@@ -6,7 +6,7 @@ const AppListItem = ({ text, onRemove }) => {
   return (
     <View style={styles.item}>
       <Text style={styles.itemText}>{text}</Text>
-      <TouchableOpacity onPress={() => onRemove(item.name)}>
+      <TouchableOpacity onPress={() => onRemove(text)}>
         <FontAwesome name="trash" size={32} color="#C20D0D" />
       </TouchableOpacity>
     </View>

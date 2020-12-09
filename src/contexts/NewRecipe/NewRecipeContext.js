@@ -6,14 +6,10 @@ const INITIAL_STATE = {
   portions: '32',
   portionUnit: 'Unidades',
   calories: '150',
-  steps: [
-    {
-      name: 'Massa',
-    },
-    {
-      name: 'Recheio',
-    },
-  ],
+  steps: {
+    Massa: {},
+    Recheio: {},
+  },
 };
 
 const newRecipeReducer = (state, action) => {
@@ -30,12 +26,12 @@ const newRecipeReducer = (state, action) => {
     case ADD_STEP:
       return {
         ...state,
-        steps: [...state.steps, { name: payload.stepName }],
+        steps: { ...state.steps, [payload.stepName]: {} },
       };
     case REMOVE_STEP:
       return {
         ...state,
-        steps: state.steps.filter((step) => step.name !== payload.stepName),
+        steps: removeStepByName(state.steps, payload.stepName),
       };
     default:
       return state;
@@ -69,6 +65,16 @@ const removeStep = (dispatch) => {
       payload: { stepName },
     });
   };
+};
+
+const removeStepByName = (steps, stepName) => {
+  const newSteps = {};
+  Object.keys(steps).forEach((key) => {
+    if (key !== stepName) {
+      newSteps[key] = steps[key];
+    }
+  });
+  return newSteps;
 };
 
 export const { Context, Provider } = createDataContext(

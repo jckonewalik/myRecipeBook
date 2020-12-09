@@ -17,10 +17,9 @@ import { Context } from '../contexts/NewRecipe/NewRecipeContext';
 const StepsScreen = ({ navigation }) => {
   const { state, addStep, removeStep } = useContext(Context);
   const [name, setName] = useState('');
-
   const onAddStep = (stepName) => {
     if (stepName !== '') {
-      const step = state.steps.find((s) => s.name === stepName);
+      const step = state.steps[stepName];
       if (!step) {
         addStep({ stepName }, () => setName(''));
       }
@@ -53,11 +52,11 @@ const StepsScreen = ({ navigation }) => {
             onPress={() => onAddStep(name)}
           />
           <FlatList
-            data={state.steps}
+            data={Object.keys(state.steps)}
             style={styles.stepList}
-            keyExtractor={(item) => item.name}
+            keyExtractor={(item) => item}
             renderItem={({ item }) => (
-              <AppListItem text={item.name} onRemove={onRemoveStep} />
+              <AppListItem text={item} onRemove={() => onRemoveStep(item)} />
             )}
           />
           <AppButton text="Ingredientes" onPress={() => goToIngredients()} />

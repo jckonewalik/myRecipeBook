@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Modal,
@@ -13,11 +13,13 @@ const { height } = Dimensions.get('window');
 
 const IOSPicker = ({ label, outputValue, options, onSelect }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [pickerValue, setPickerValue] = useState('');
+  const [pickerValue, setPickerValue] = useState('Selecione');
 
   const onModalSelect = () => {
-    onSelect(pickerValue);
-    setModalVisible(false);
+    if (pickerValue !== 'Selecione') {
+      onSelect(pickerValue);
+      setModalVisible(false);
+    }
   };
 
   const onModalCancel = () => {
@@ -44,6 +46,7 @@ const IOSPicker = ({ label, outputValue, options, onSelect }) => {
             selectedValue={pickerValue}
             onValueChange={(itemValue) => setPickerValue(itemValue)}
           >
+            <Picker.Item label="Selecione" value="Selecione" />
             {options.map((option) => (
               <Picker.Item
                 key={option.value}

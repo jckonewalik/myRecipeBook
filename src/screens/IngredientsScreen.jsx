@@ -36,8 +36,8 @@ const IngredientsScreen = ({ navigation }) => {
           <IOSPicker
             label="Processo"
             outputValue={step}
-            options={state.steps.map((step) => {
-              return { label: step.name, value: step.name };
+            options={Object.keys(state.steps).map((step) => {
+              return { label: step, value: step };
             })}
             onSelect={setStep}
           />
