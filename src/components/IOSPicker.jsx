@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AppOutputText from '../components/AppOutputText';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 const { height } = Dimensions.get('window');
 
 const IOSPicker = ({ label, outputValue, options, onSelect }) => {
@@ -33,6 +34,9 @@ const IOSPicker = ({ label, outputValue, options, onSelect }) => {
         </View>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
+        <TouchableWithoutFeedback onPress={onModalCancel}>
+          <View style={styles.headerModalContainer} />
+        </TouchableWithoutFeedback>
         <View style={styles.modalContainer}>
           <View style={styles.modalOptions}>
             <TouchableOpacity onPress={onModalCancel}>
@@ -62,9 +66,10 @@ const IOSPicker = ({ label, outputValue, options, onSelect }) => {
 };
 
 const styles = StyleSheet.create({
+  headerModalContainer: {
+    height: height * 0.6,
+  },
   modalContainer: {
-    marginTop: height * 0.6,
-    height: height * 0.4,
     backgroundColor: '#ddd',
     elevation: 5,
   },

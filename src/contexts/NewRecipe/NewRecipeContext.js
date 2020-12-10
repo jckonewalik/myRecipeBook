@@ -1,5 +1,11 @@
 import createDataContext from '../createDataContext';
-import { SET_BASIC_INFO, ADD_STEP, REMOVE_STEP } from './ActionTypes';
+import {
+  SET_BASIC_INFO,
+  ADD_STEP,
+  REMOVE_STEP,
+  ADD_INGREDIENT,
+  REMOVE_INGREDIENT,
+} from './ActionTypes';
 
 const INITIAL_STATE = {
   title: 'Esfirra',
@@ -7,8 +13,19 @@ const INITIAL_STATE = {
   portionUnit: 'Unidades',
   calories: '150',
   steps: {
-    Massa: {},
-    Recheio: {},
+    Massa: [
+      {
+        ingredient: 'Farinha de Trigo',
+        amount: 1,
+        unit: 'Kg',
+      },
+      {
+        ingredient: 'Óleo de soja',
+        amount: 150,
+        unit: 'ml',
+      },
+    ],
+    Recheio: [],
   },
 };
 
@@ -33,6 +50,35 @@ const newRecipeReducer = (state, action) => {
         ...state,
         steps: removeStepByName(state.steps, payload.stepName),
       };
+    case ADD_INGREDIENT: {
+      return {
+        ...state,
+        steps: {
+          ...state.steps,
+          [payload.stepName]: [
+            ...state.steps[payload.stepName],
+            {
+              ingredient: payload.ingredient,
+              amount: payload.amount,
+              unit: payload.unit,
+            },
+          ],
+        },
+      };
+    }
+    case REMOVE_INGREDIENT: {
+      return {
+        ...state,
+        steps: {
+          ...state.steps,
+          [payload.stepName]:
+            state.steps[payload.stepName] &&
+            state.steps[payload.stepName].filter(
+              (s) => s.ingredient !== payload.ingredient
+            ),
+        },
+      };
+    }
     default:
       return state;
   }
@@ -67,6 +113,25 @@ const removeStep = (dispatch) => {
   };
 };
 
+const addIngredient = (dispatch) => {
+  return ({ stepName, ingredient, amount, unit }, callback) => {
+    dispatch({
+      type: ADD_INGREDIENT,
+      payload: { stepName, ingredient, amount, unit },
+    });
+    callback && callback();
+  };
+};
+
+const removeIngredient = (dispatch) => {
+  return ({ stepName, ingredient }) => {
+    dispatch({
+      type: REMOVE_INGREDIENT,
+      payload: { stepName, ingredient },
+    });
+  };
+};
+
 const removeStepByName = (steps, stepName) => {
   const newSteps = {};
   Object.keys(steps).forEach((key) => {
@@ -79,6 +144,6 @@ const removeStepByName = (steps, stepName) => {
 
 export const { Context, Provider } = createDataContext(
   newRecipeReducer,
-  { setBasicInfo, addStep, removeStep },
+  { setBasicInfo, addStep, removeStep, addIngredient, removeIngredient },
   INITIAL_STATE
 );

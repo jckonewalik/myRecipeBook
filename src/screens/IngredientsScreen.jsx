@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react';
 import {
+  ScrollView,
   View,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  FlatList,
   StyleSheet,
   Keyboard,
   Dimensions,
@@ -12,11 +14,12 @@ import { Context } from '../contexts/NewRecipe/NewRecipeContext';
 import IOSPicker from '../components/IOSPicker';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
+import StepIngredientsList from '../components/StepIngredientsList';
 
 const { width } = Dimensions.get('window');
 
 const IngredientsScreen = ({ navigation }) => {
-  const { state } = useContext(Context);
+  const { state, addIngredient, removeIngredient } = useContext(Context);
   const [name, setName] = useState('');
   const [step, setStep] = useState('');
   const [amount, setAmount] = useState('');
@@ -26,13 +29,29 @@ const IngredientsScreen = ({ navigation }) => {
     navigation.navigate('Ingredients');
   };
 
+  const clearForm = () => {
+    setName('');
+    setAmount('');
+    setAmountUnit('');
+  };
+
+  const onAddIngredient = ({ stepName, ingredient, amount, unit }) => {
+    const alreadyExists =
+      state.steps[stepName] &&
+      state.steps[stepName].find((s) => s.ingredient === ingredient);
+
+    if (!alreadyExists) {
+      addIngredient({ stepName, ingredient, amount, unit }, clearForm);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.keyboardContainer}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.rootContainer}>
+        <ScrollView style={styles.rootContainer}>
           <IOSPicker
             label="Processo"
             outputValue={step}
@@ -63,12 +82,35 @@ const IngredientsScreen = ({ navigation }) => {
               />
             </View>
           </View>
-          <AppButton text="Adicionar" secondary={true} onPress={() => {}} />
+          <AppButton
+            text="Adicionar"
+            secondary={true}
+            onPress={() =>
+              onAddIngredient({
+                stepName: step,
+                ingredient: name,
+                amount,
+                unit: amountUnit,
+              })
+            }
+          />
+          <View>
+            <FlatList
+              data={Object.keys(state.steps)}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <StepIngredientsList
+                  stepName={item}
+                  ingredients={state.steps[item]}
+                />
+              )}
+            />
+          </View>
           <AppButton
             text="Modo de Preparo"
             onPress={() => goToPreparationMode()}
           />
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -79,8 +121,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   rootContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
     padding: 20,
   },
   amountContainer: {
