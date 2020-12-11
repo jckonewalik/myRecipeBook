@@ -34,43 +34,62 @@ const StepsScreen = ({ navigation }) => {
     navigation.navigate('Ingredients');
   };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardContainer}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.rootContainer}>
+    <View style={styles.rootContainer}>
+      <View style={styles.mainView}>
+        <View style={styles.inputContainer}>
           <AppTextInput
             label="Nome"
             value={name}
             autoCorrect={false}
             onChangeText={setName}
           />
-          <AppButton
-            text="Adicionar"
-            secondary={true}
-            onPress={() => onAddStep(name)}
-          />
-          <FlatList
-            data={Object.keys(state.steps)}
-            style={styles.stepList}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <AppListItem text={item} onRemove={() => onRemoveStep(item)} />
-            )}
-          />
+          <View style={styles.addButton}>
+            <AppButton
+              text="Adicionar"
+              secondary={true}
+              onPress={() => onAddStep(name)}
+            />
+          </View>
+        </View>
+
+        <FlatList
+          style={styles.listContainer}
+          data={Object.keys(state.steps)}
+          keyExtractor={(item) => item}
+          renderItem={({ item }) => (
+            <AppListItem text={item} onRemove={() => onRemoveStep(item)} />
+          )}
+        />
+        <View style={styles.footerContainer}>
           <AppButton text="Ingredientes" onPress={() => goToIngredients()} />
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   rootContainer: {
-    padding: 20,
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    paddingTop: 10,
   },
-  stepList: {
+  keyboardContainer: {
+    flex: 1,
+  },
+  mainView: {
+    flex: 1,
+  },
+  inputContainer: {},
+  addButton: {
+    marginTop: 10,
+  },
+  listContainer: {
+    marginTop: 10,
+    flex: 1,
+  },
+  footerContainer: {
     marginTop: 10,
   },
 });

@@ -5,6 +5,7 @@ import {
   REMOVE_STEP,
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
+  ADD_INSTRUCTION,
 } from './ActionTypes';
 
 const INITIAL_STATE = {
@@ -13,19 +14,25 @@ const INITIAL_STATE = {
   portionUnit: 'Unidades',
   calories: '150',
   steps: {
-    Massa: [
-      {
-        ingredient: 'Farinha de Trigo',
-        amount: 1,
-        unit: 'Kg',
-      },
-      {
-        ingredient: 'Óleo de soja',
-        amount: 150,
-        unit: 'ml',
-      },
-    ],
-    Recheio: [],
+    Massa: {
+      ingredients: [
+        {
+          ingredient: 'Farinha de Trigo',
+          amount: 1,
+          unit: 'Kg',
+        },
+        {
+          ingredient: 'Óleo de soja',
+          amount: 150,
+          unit: 'ml',
+        },
+      ],
+      instructions: [],
+    },
+    Recheio: {
+      ingredients: [],
+      instructions: [],
+    },
   },
 };
 
@@ -43,7 +50,10 @@ const newRecipeReducer = (state, action) => {
     case ADD_STEP:
       return {
         ...state,
-        steps: { ...state.steps, [payload.stepName]: {} },
+        steps: {
+          ...state.steps,
+          [payload.stepName]: { ingredients: [], instructions: [] },
+        },
       };
     case REMOVE_STEP:
       return {
@@ -55,14 +65,17 @@ const newRecipeReducer = (state, action) => {
         ...state,
         steps: {
           ...state.steps,
-          [payload.stepName]: [
+          [payload.stepName]: {
             ...state.steps[payload.stepName],
-            {
-              ingredient: payload.ingredient,
-              amount: payload.amount,
-              unit: payload.unit,
-            },
-          ],
+            ingredients: [
+              ...state.steps[payload.stepName].ingredients,
+              {
+                ingredient: payload.ingredient,
+                amount: payload.amount,
+                unit: payload.unit,
+              },
+            ],
+          },
         },
       };
     }
@@ -71,11 +84,29 @@ const newRecipeReducer = (state, action) => {
         ...state,
         steps: {
           ...state.steps,
-          [payload.stepName]:
-            state.steps[payload.stepName] &&
-            state.steps[payload.stepName].filter(
+          [payload.stepName]: {
+            ...state.steps[payload.stepName],
+            ingredients: state.steps[payload.stepName].ingredients.filter(
               (s) => s.ingredient !== payload.ingredient
             ),
+          },
+        },
+      };
+    }
+    case ADD_INSTRUCTION: {
+      return {
+        ...state,
+        steps: {
+          ...state.steps,
+          [payload.stepName]: {
+            ...state.steps[payload.stepName],
+            instructions: [
+              ...state.steps[payload.stepName].instructions,
+              {
+                description: payload.description,
+              },
+            ],
+          },
         },
       };
     }
@@ -132,6 +163,16 @@ const removeIngredient = (dispatch) => {
   };
 };
 
+const addInstruction = (dispatch) => {
+  return ({ stepName, description }, callback) => {
+    dispatch({
+      type: ADD_INSTRUCTION,
+      payload: { stepName, description },
+    });
+    callback && callback();
+  };
+};
+
 const removeStepByName = (steps, stepName) => {
   const newSteps = {};
   Object.keys(steps).forEach((key) => {
@@ -144,6 +185,13 @@ const removeStepByName = (steps, stepName) => {
 
 export const { Context, Provider } = createDataContext(
   newRecipeReducer,
-  { setBasicInfo, addStep, removeStep, addIngredient, removeIngredient },
+  {
+    setBasicInfo,
+    addStep,
+    removeStep,
+    addIngredient,
+    removeIngredient,
+    addInstruction,
+  },
   INITIAL_STATE
 );

@@ -22,13 +22,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#37426B',
-    marginTop: 20,
   },
   containerPrimary: {
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#37426B',
-    marginTop: 20,
   },
   textPrimary: {
     color: '#fff',

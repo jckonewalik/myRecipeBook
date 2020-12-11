@@ -26,7 +26,7 @@ const IngredientsScreen = ({ navigation }) => {
   const [amountUnit, setAmountUnit] = useState('');
 
   const goToPreparationMode = () => {
-    navigation.navigate('Ingredients');
+    navigation.navigate('PreparationMode');
   };
 
   const clearForm = () => {
@@ -37,8 +37,10 @@ const IngredientsScreen = ({ navigation }) => {
 
   const onAddIngredient = ({ stepName, ingredient, amount, unit }) => {
     const alreadyExists =
-      state.steps[stepName] &&
-      state.steps[stepName].find((s) => s.ingredient === ingredient);
+      state.steps[stepName].ingredients &&
+      state.steps[stepName].ingredients.find(
+        (s) => s.ingredient === ingredient
+      );
 
     if (!alreadyExists) {
       addIngredient({ stepName, ingredient, amount, unit }, clearForm);
@@ -46,82 +48,73 @@ const IngredientsScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardContainer}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView style={styles.rootContainer}>
-          <IOSPicker
-            label="Processo"
-            outputValue={step}
-            options={Object.keys(state.steps).map((step) => {
-              return { label: step, value: step };
-            })}
-            onSelect={setStep}
-          />
+    <View style={styles.rootContainer}>
+      <IOSPicker
+        label="Processo"
+        outputValue={step}
+        options={Object.keys(state.steps).map((step) => {
+          return { label: step, value: step };
+        })}
+        onSelect={setStep}
+      />
+      <AppTextInput label="Ingrediente" value={name} onChangeText={setName} />
+      <View style={styles.amountContainer}>
+        <View style={styles.amountInput}>
           <AppTextInput
-            label="Ingrediente"
-            value={name}
-            onChangeText={setName}
+            label="Quantidade"
+            value={amount}
+            keyboardType="numeric"
+            onChangeText={setAmount}
           />
-          <View style={styles.amountContainer}>
-            <View style={styles.amountInput}>
-              <AppTextInput
-                label="Quantidade"
-                value={amount}
-                keyboardType="numeric"
-                onChangeText={setAmount}
-              />
-            </View>
-            <View style={styles.amountInput}>
-              <AppTextInput
-                label="Unidade"
-                value={amountUnit}
-                onChangeText={setAmountUnit}
-              />
-            </View>
-          </View>
-          <AppButton
-            text="Adicionar"
-            secondary={true}
-            onPress={() =>
-              onAddIngredient({
-                stepName: step,
-                ingredient: name,
-                amount,
-                unit: amountUnit,
-              })
-            }
+        </View>
+        <View style={styles.amountInput}>
+          <AppTextInput
+            label="Unidade"
+            value={amountUnit}
+            onChangeText={setAmountUnit}
           />
-          <View>
-            <FlatList
-              data={Object.keys(state.steps)}
-              keyExtractor={(item) => item}
-              renderItem={({ item }) => (
-                <StepIngredientsList
-                  stepName={item}
-                  ingredients={state.steps[item]}
-                />
-              )}
-            />
-          </View>
-          <AppButton
-            text="Modo de Preparo"
-            onPress={() => goToPreparationMode()}
+        </View>
+      </View>
+      <View style={styles.addButton}>
+        <AppButton
+          text="Adicionar"
+          secondary={true}
+          onPress={() =>
+            onAddIngredient({
+              stepName: step,
+              ingredient: name,
+              amount,
+              unit: amountUnit,
+            })
+          }
+        />
+      </View>
+      <FlatList
+        data={Object.keys(state.steps)}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <StepIngredientsList
+            stepName={item}
+            ingredients={state.steps[item] && state.steps[item].ingredients}
           />
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        )}
+      />
+      <View style={styles.footerContainer}>
+        <AppButton
+          text="Modo de Preparo"
+          onPress={() => goToPreparationMode()}
+        />
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  keyboardContainer: {
-    flex: 1,
-  },
   rootContainer: {
-    padding: 20,
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    paddingTop: 10,
   },
   amountContainer: {
     flexDirection: 'row',
@@ -129,6 +122,12 @@ const styles = StyleSheet.create({
   },
   amountInput: {
     width: width * 0.4,
+  },
+  addButton: {
+    marginTop: 10,
+  },
+  footerContainer: {
+    marginTop: 10,
   },
 });
 

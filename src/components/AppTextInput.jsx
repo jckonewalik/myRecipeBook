@@ -6,6 +6,9 @@ const AppTextInput = ({
   value,
   keyboardType = 'default',
   onChangeText,
+  multiline = false,
+  numberOfLines = 1,
+  maxLength,
 }) => {
   return (
     <View style={styles.container}>
@@ -16,6 +19,9 @@ const AppTextInput = ({
         value={value}
         autoCorrect={false}
         onChangeText={onChangeText}
+        multiline={multiline}
+        maxLength={maxLength}
+        numberOfLines={numberOfLines}
       />
     </View>
   );
