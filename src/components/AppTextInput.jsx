@@ -2,6 +2,7 @@ import React from 'react';
 import { TextInput, Text, View, StyleSheet } from 'react-native';
 
 const AppTextInput = ({
+  style,
   label,
   value,
   keyboardType = 'default',
@@ -14,7 +15,7 @@ const AppTextInput = ({
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={styles.input}
+        style={{ ...styles.input, ...style }}
         keyboardType={keyboardType}
         value={value}
         autoCorrect={false}

@@ -72,7 +72,9 @@ const NewRecipeScreen = ({ navigation }) => {
             keyboardType="numeric"
             onChangeText={setCalories}
           />
-          <AppButton text="Processos" onPress={() => goToSteps()} />
+          <View style={styles.footerContainer}>
+            <AppButton text="Processos" onPress={() => goToSteps()} />
+          </View>
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -94,6 +96,9 @@ const styles = StyleSheet.create({
   },
   protionsInput: {
     width: width * 0.4,
+  },
+  footerContainer: {
+    marginTop: 10,
   },
 });
 

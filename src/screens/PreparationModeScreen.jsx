@@ -45,10 +45,11 @@ const PreparationModeScreen = () => {
         onSelect={setStep}
       />
       <AppTextInput
+        style={styles.descriptionInput}
         label="Descrição"
         value={description}
         multiline={true}
-        numberOfLines={4}
+        numberOfLines={3}
         maxLength={100}
         onChangeText={setDescription}
       />
@@ -104,6 +105,9 @@ const styles = StyleSheet.create({
   },
   instructionsList: {
     marginTop: 10,
+  },
+  descriptionInput: {
+    fontSize: 15,
   },
 });
 

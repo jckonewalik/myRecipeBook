@@ -11,11 +11,13 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
-const AppListItem = ({ text, onRemove }) => {
+const AppListItem = ({ text, onRemove, style, textLimit = 25 }) => {
   return (
     <View style={styles.item}>
       <View style={styles.textContainer}>
-        <Text style={styles.itemText}>{limitText(text, 25)}</Text>
+        <Text style={{ ...styles.itemText, ...style }}>
+          {limitText(text, textLimit)}
+        </Text>
       </View>
       <TouchableOpacity onPress={() => onRemove(text)}>
         <FontAwesome name="trash" size={32} color="#C20D0D" />

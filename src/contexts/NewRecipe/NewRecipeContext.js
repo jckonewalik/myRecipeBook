@@ -6,6 +6,7 @@ import {
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
   ADD_INSTRUCTION,
+  REMOVE_INSTRUCTION,
 } from './ActionTypes';
 
 const INITIAL_STATE = {
@@ -27,11 +28,18 @@ const INITIAL_STATE = {
           unit: 'ml',
         },
       ],
-      instructions: [],
-    },
-    Recheio: {
-      ingredients: [],
-      instructions: [],
+      instructions: [
+        {
+          description: 'Misture a farinha com o sal e com o fermento',
+        },
+        {
+          description:
+            'Misture a manteiga com a farinha até obter uma mistura homogenea',
+        },
+        {
+          description: 'Adicione a água aos poucos, até obter o ponto da massa',
+        },
+      ],
     },
   },
 };
@@ -110,6 +118,20 @@ const newRecipeReducer = (state, action) => {
         },
       };
     }
+    case REMOVE_INSTRUCTION: {
+      return {
+        ...state,
+        steps: {
+          ...state.steps,
+          [payload.stepName]: {
+            ...state.steps[payload.stepName],
+            instructions: state.steps[payload.stepName].instructions.filter(
+              (s) => s.description !== payload.description
+            ),
+          },
+        },
+      };
+    }
     default:
       return state;
   }
@@ -173,6 +195,15 @@ const addInstruction = (dispatch) => {
   };
 };
 
+const removeInstruction = (dispatch) => {
+  return ({ stepName, description }) => {
+    dispatch({
+      type: REMOVE_INSTRUCTION,
+      payload: { stepName, description },
+    });
+  };
+};
+
 const removeStepByName = (steps, stepName) => {
   const newSteps = {};
   Object.keys(steps).forEach((key) => {
@@ -192,6 +223,7 @@ export const { Context, Provider } = createDataContext(
     addIngredient,
     removeIngredient,
     addInstruction,
+    removeInstruction,
   },
   INITIAL_STATE
 );
