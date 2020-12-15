@@ -16,7 +16,7 @@ import IOSPicker from '../components/IOSPicker';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
 import StepInstructionsList from '../components/StepInstructionsList';
-
+import db from '../database/Connection';
 const { width } = Dimensions.get('window');
 
 const PreparationModeScreen = () => {
@@ -24,7 +24,9 @@ const PreparationModeScreen = () => {
   const [description, setDescription] = useState('');
   const [step, setStep] = useState('');
 
-  const onSave = () => {};
+  const onSave = () => {
+    const { title, portions, portionUnit, calories, steps } = state;
+  };
 
   const clearForm = () => {
     setDescription('');

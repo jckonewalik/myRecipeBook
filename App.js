@@ -11,6 +11,8 @@ import {
 } from '@expo-google-fonts/roboto';
 
 export default function App() {
+  React.useEffect(() => {}, []);
+
   const [fontsLoaded] = useFonts({
     Roboto_300Light,
     Roboto_400Regular,

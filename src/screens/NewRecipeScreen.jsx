@@ -12,7 +12,7 @@ import AppButton from '../components/AppButton';
 import AppTextInput from '../components/AppTextInput';
 import { Context } from '../contexts/NewRecipe/NewRecipeContext';
 import IOSPicker from '../components/IOSPicker';
-
+import AppImagePicker from '../components/AppImagePicker';
 const { width } = Dimensions.get('window');
 const NewRecipeScreen = ({ navigation }) => {
   const { state, setBasicInfo } = useContext(Context);
@@ -26,6 +26,7 @@ const NewRecipeScreen = ({ navigation }) => {
   const [portions, setPortions] = useState('');
   const [portionUnit, setPortionUnit] = useState('');
   const [calories, setCalories] = useState('');
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     setTitle(state.title);
@@ -47,6 +48,7 @@ const NewRecipeScreen = ({ navigation }) => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.rootContainer}>
+          <AppImagePicker image={image} setImage={setImage} />
           <AppTextInput label="Title" value={title} onChangeText={setTitle} />
           <View style={styles.portionsContainer}>
             <View style={styles.protionsInput}>
