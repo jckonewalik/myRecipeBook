@@ -36,8 +36,9 @@ const NewRecipeScreen = ({ navigation }) => {
   }, []);
 
   const goToSteps = () => {
-    setBasicInfo({ title, portions, portionUnit, calories }, () =>
-      navigation.navigate('Steps')
+    setBasicInfo(
+      { imageUrl: image, title, portions, portionUnit, calories },
+      () => navigation.navigate('Steps')
     );
   };
 

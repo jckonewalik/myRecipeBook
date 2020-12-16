@@ -10,38 +10,12 @@ import {
 } from './ActionTypes';
 
 const INITIAL_STATE = {
-  title: 'Esfirra',
-  portions: '32',
-  portionUnit: 'Unidades',
-  calories: '150',
-  steps: {
-    Massa: {
-      ingredients: [
-        {
-          ingredient: 'Farinha de Trigo',
-          amount: 1,
-          unit: 'Kg',
-        },
-        {
-          ingredient: 'Óleo de soja',
-          amount: 150,
-          unit: 'ml',
-        },
-      ],
-      instructions: [
-        {
-          description: 'Misture a farinha com o sal e com o fermento',
-        },
-        {
-          description:
-            'Misture a manteiga com a farinha até obter uma mistura homogenea',
-        },
-        {
-          description: 'Adicione a água aos poucos, até obter o ponto da massa',
-        },
-      ],
-    },
-  },
+  imageUrl: null,
+  title: '',
+  portions: '',
+  portionUnit: '',
+  calories: '',
+  steps: {},
 };
 
 const newRecipeReducer = (state, action) => {
@@ -50,6 +24,7 @@ const newRecipeReducer = (state, action) => {
     case SET_BASIC_INFO:
       return {
         ...state,
+        imageUrl: payload.imageUrl,
         title: payload.title,
         portions: payload.portions,
         portionUnit: payload.portionUnit,
@@ -138,10 +113,10 @@ const newRecipeReducer = (state, action) => {
 };
 
 const setBasicInfo = (dispatch) => {
-  return ({ title, portions, portionUnit, calories }, callback) => {
+  return ({ imageUrl, title, portions, portionUnit, calories }, callback) => {
     dispatch({
       type: SET_BASIC_INFO,
-      payload: { title, portions, portionUnit, calories },
+      payload: { imageUrl, title, portions, portionUnit, calories },
     });
     callback();
   };

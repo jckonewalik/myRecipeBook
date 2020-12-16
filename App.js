@@ -9,9 +9,16 @@ import {
   Roboto_400Regular,
   Roboto_900Black,
 } from '@expo-google-fonts/roboto';
+import {
+  dropTable,
+  createTable,
+  listAll,
+} from './src/database/repository/RecipesRepository';
 
 export default function App() {
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    createTable();
+  }, []);
 
   const [fontsLoaded] = useFonts({
     Roboto_300Light,

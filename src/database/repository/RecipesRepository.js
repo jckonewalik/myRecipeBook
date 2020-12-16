@@ -7,12 +7,36 @@ export const createTable = () => {
     );
   });
 };
+export const dropTable = () => {
+  db.transaction((tx) => {
+    tx.executeSql('drop table recipes');
+  });
+};
 
-export const insert = ({ title, portions, portionUnit, calories, steps }) => {
+export const listAll = (setList) => {
   db.transaction((tx) => {
     tx.executeSql(
-      'insert into recipes (title, portions, portionUnit, calories, steps) values (?, ?, ?, ?, ?)',
-      [title, portions, portionUnit, calories, JSON.stringify(steps)]
+      'select id, imageUrl, title, portions, portionUnit, calories  from recipes',
+      [],
+      (_, { rows: { _array } }) => {
+        setList(_array);
+      }
+    );
+  });
+};
+
+export const insert = ({
+  imageUrl,
+  title,
+  portions,
+  portionUnit,
+  calories,
+  steps,
+}) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'insert into recipes (imageUrl, title, portions, portionUnit, calories, steps) values (?, ?, ?, ?, ?, ?)',
+      [imageUrl, title, portions, portionUnit, calories, JSON.stringify(steps)]
     );
   });
 };

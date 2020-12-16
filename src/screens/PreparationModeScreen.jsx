@@ -16,16 +16,16 @@ import IOSPicker from '../components/IOSPicker';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
 import StepInstructionsList from '../components/StepInstructionsList';
-import db from '../database/Connection';
+import { saveOrUpdate } from '../services/RecipesService';
 const { width } = Dimensions.get('window');
 
-const PreparationModeScreen = () => {
+const PreparationModeScreen = ({ navigation }) => {
   const { state, addInstruction } = useContext(Context);
   const [description, setDescription] = useState('');
   const [step, setStep] = useState('');
 
   const onSave = () => {
-    const { title, portions, portionUnit, calories, steps } = state;
+    saveOrUpdate(state, navigation.navigate('Home'));
   };
 
   const clearForm = () => {
