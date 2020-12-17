@@ -8,9 +8,12 @@ export const saveOrUpdate = async (
     const filePath = imageUrl.split('/');
     const fileName = filePath[filePath.length - 1];
     const newFileUri = `${FileSystem.documentDirectory}${fileName}`;
-    await FileSystem.copyAsync({ from: imageUrl, to: newFileUri });
+    await FileSystem.copyAsync({
+      from: imageUrl,
+      to: newFileUri,
+    });
 
-    await insert({
+    insert({
       imageUrl: newFileUri,
       title,
       portions,
