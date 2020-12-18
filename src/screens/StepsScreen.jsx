@@ -1,25 +1,16 @@
 import React, { useContext, useState } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
-  StyleSheet,
-} from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import AppButton from '../components/AppButton';
 import AppTextInput from '../components/AppTextInput';
 import AppListItem from '../components/AppListItem';
-import { Context } from '../contexts/NewRecipe/NewRecipeContext';
+import { Context } from '../contexts/Recipes/RecipesContext';
 
 const StepsScreen = ({ navigation }) => {
   const { state, addStep, removeStep } = useContext(Context);
   const [name, setName] = useState('');
   const onAddStep = (stepName) => {
     if (stepName !== '') {
-      const step = state.steps[stepName];
+      const step = state.selectedRecipe.steps[stepName];
       if (!step) {
         addStep({ stepName }, () => setName(''));
       }
@@ -54,7 +45,7 @@ const StepsScreen = ({ navigation }) => {
 
         <FlatList
           style={styles.listContainer}
-          data={Object.keys(state.steps)}
+          data={Object.keys(state.selectedRecipe.steps)}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <AppListItem text={item} onRemove={() => onRemoveStep(item)} />

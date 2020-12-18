@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 
-import {
-  View,
-  FlatList,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { listAll } from '../database/repository/RecipesRepository';
 import RecipeCard from '../components/RecipeCard';
+import { Context } from '../contexts/Recipes/RecipesContext';
 const HomeScreen = ({ navigation }) => {
-  const [recipes, setRecipes] = useState([]);
+  const { state, loadRecipes } = useContext(Context);
 
   useEffect(() => {
-    listAll(setRecipes);
+    listAll(loadRecipes);
   }, []);
 
   return (
     <View style={styles.rootContainer}>
       <View style={styles.body}>
         <FlatList
-          data={recipes}
+          data={state.recipes}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <RecipeCard recipe={item} />}
         />

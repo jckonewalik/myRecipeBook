@@ -13,16 +13,17 @@ export const dropTable = () => {
   });
 };
 
-export const listAll = (setList) => {
+export const listAll = (setList, callback) => {
   db.transaction((tx) => {
     tx.executeSql(
-      'select id, imageUrl, title, portions, portionUnit, calories  from recipes',
+      'select id, imageUrl, title, portions, portionUnit, calories from recipes order by title',
       [],
       (_, { rows: { _array } }) => {
         setList(_array);
       }
     );
   });
+  callback && callback();
 };
 
 export const insert = ({

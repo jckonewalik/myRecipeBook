@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { Context } from '../contexts/NewRecipe/NewRecipeContext';
+import { Context } from '../contexts/Recipes/RecipesContext';
 import AppListItem from './AppListItem';
 
 const StepIngredientsList = ({ stepName, ingredients }) => {

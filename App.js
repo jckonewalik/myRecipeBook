@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import Routes from './routes';
-import { Provider } from './src/contexts/NewRecipe/NewRecipeContext';
+import { Provider } from './src/contexts/Recipes/RecipesContext';
 import { AppLoading } from 'expo';
 import {
   useFonts,
@@ -9,11 +9,7 @@ import {
   Roboto_400Regular,
   Roboto_900Black,
 } from '@expo-google-fonts/roboto';
-import {
-  dropTable,
-  createTable,
-  listAll,
-} from './src/database/repository/RecipesRepository';
+import { createTable } from './src/database/repository/RecipesRepository';
 
 export default function App() {
   React.useEffect(() => {

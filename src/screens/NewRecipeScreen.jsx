@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import AppButton from '../components/AppButton';
 import AppTextInput from '../components/AppTextInput';
-import { Context } from '../contexts/NewRecipe/NewRecipeContext';
+import { Context } from '../contexts/Recipes/RecipesContext';
 import IOSPicker from '../components/IOSPicker';
 import AppImagePicker from '../components/AppImagePicker';
 const { width } = Dimensions.get('window');
@@ -29,10 +29,10 @@ const NewRecipeScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    setTitle(state.title);
-    setPortions(state.portions);
-    setPortionUnit(state.portionUnit);
-    setCalories(state.calories);
+    setTitle(state.selectedRecipe.title);
+    setPortions(state.selectedRecipe.portions);
+    setPortionUnit(state.selectedRecipe.portionUnit);
+    setCalories(state.selectedRecipe.calories);
   }, []);
 
   const goToSteps = () => {

@@ -1,31 +1,25 @@
 import React, { useContext, useState } from 'react';
-import {
-  ScrollView,
-  View,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  FlatList,
-  StyleSheet,
-  Keyboard,
-  Text,
-  Dimensions,
-  Platform,
-} from 'react-native';
-import { Context } from '../contexts/NewRecipe/NewRecipeContext';
+import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { Context } from '../contexts/Recipes/RecipesContext';
 import IOSPicker from '../components/IOSPicker';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
 import StepInstructionsList from '../components/StepInstructionsList';
 import { saveOrUpdate } from '../services/RecipesService';
+import { listAll } from '../database/repository/RecipesRepository';
 const { width } = Dimensions.get('window');
 
 const PreparationModeScreen = ({ navigation }) => {
-  const { state, addInstruction } = useContext(Context);
+  const { state, addInstruction, loadRecipes } = useContext(Context);
   const [description, setDescription] = useState('');
   const [step, setStep] = useState('');
 
   const onSave = () => {
-    saveOrUpdate(state, navigation.navigate('Home'));
+    saveOrUpdate(state.selectedRecipe, () => {
+      listAll(loadRecipes, () => {
+        navigation.navigate('Home');
+      });
+    });
   };
 
   const clearForm = () => {
@@ -41,7 +35,7 @@ const PreparationModeScreen = ({ navigation }) => {
       <IOSPicker
         label="Processo"
         outputValue={step}
-        options={Object.keys(state.steps).map((step) => {
+        options={Object.keys(state.selectedRecipe.steps).map((step) => {
           return { label: step, value: step };
         })}
         onSelect={setStep}
@@ -69,12 +63,15 @@ const PreparationModeScreen = ({ navigation }) => {
       </View>
       <FlatList
         style={styles.instructionsList}
-        data={Object.keys(state.steps)}
+        data={Object.keys(state.selectedRecipe.steps)}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <StepInstructionsList
             stepName={item}
-            instructions={state.steps[item] && state.steps[item].instructions}
+            instructions={
+              state.selectedRecipe.steps[item] &&
+              state.selectedRecipe.steps[item].instructions
+            }
           />
         )}
       />
