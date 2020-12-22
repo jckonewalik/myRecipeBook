@@ -8,6 +8,7 @@ import {
   REMOVE_INGREDIENT,
   ADD_INSTRUCTION,
   REMOVE_INSTRUCTION,
+  NEW_RECIPE,
 } from './ActionTypes';
 
 const INITIAL_STATE = {
@@ -30,6 +31,11 @@ const recipeReducer = (state, action) => {
       return {
         ...state,
         recipes: payload,
+      };
+    case NEW_RECIPE:
+      return {
+        ...state,
+        selectedRecipe: INITIAL_STATE.selectedRecipe,
       };
     case SET_BASIC_INFO:
       return {
@@ -145,13 +151,21 @@ const recipeReducer = (state, action) => {
   }
 };
 
+const newRecipe = (dispatch) => {
+  return (callback) => {
+    dispatch({
+      type: NEW_RECIPE,
+    });
+    callback && callback();
+  };
+};
 const setBasicInfo = (dispatch) => {
   return ({ imageUrl, title, portions, portionUnit, calories }, callback) => {
     dispatch({
       type: SET_BASIC_INFO,
       payload: { imageUrl, title, portions, portionUnit, calories },
     });
-    callback();
+    callback && callback();
   };
 };
 
@@ -161,7 +175,7 @@ const addStep = (dispatch) => {
       type: ADD_STEP,
       payload: { stepName },
     });
-    callback();
+    callback && callback();
   };
 };
 
@@ -242,6 +256,7 @@ export const { Context, Provider } = createDataContext(
     removeIngredient,
     addInstruction,
     removeInstruction,
+    newRecipe,
   },
   INITIAL_STATE
 );

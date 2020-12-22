@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import AppButton from '../components/AppButton';
+import PrimaryButton from '../components/PrimaryButton';
+import SecondaryButton from '../components/SecondaryButton';
 import AppTextInput from '../components/AppTextInput';
 import AppListItem from '../components/AppListItem';
 import { Context } from '../contexts/Recipes/RecipesContext';
@@ -24,6 +25,15 @@ const StepsScreen = ({ navigation }) => {
   const goToIngredients = () => {
     navigation.navigate('Ingredients');
   };
+
+  const isValidStep = () => {
+    return name.trim() !== '';
+  };
+  const isValidForm = () => {
+    return (
+      state.selectedRecipe && Object.keys(state.selectedRecipe.steps).length
+    );
+  };
   return (
     <View style={styles.rootContainer}>
       <View style={styles.mainView}>
@@ -35,9 +45,9 @@ const StepsScreen = ({ navigation }) => {
             onChangeText={setName}
           />
           <View style={styles.addButton}>
-            <AppButton
+            <SecondaryButton
+              disabled={!isValidStep()}
               text="Adicionar"
-              secondary={true}
               onPress={() => onAddStep(name)}
             />
           </View>
@@ -52,7 +62,11 @@ const StepsScreen = ({ navigation }) => {
           )}
         />
         <View style={styles.footerContainer}>
-          <AppButton text="Ingredientes" onPress={() => goToIngredients()} />
+          <PrimaryButton
+            disabled={!isValidForm()}
+            text="Ingredientes"
+            onPress={() => goToIngredients()}
+          />
         </View>
       </View>
     </View>

@@ -8,7 +8,7 @@ import {
   Keyboard,
   Platform,
 } from 'react-native';
-import AppButton from '../components/AppButton';
+import PrimaryButton from '../components/PrimaryButton';
 import AppTextInput from '../components/AppTextInput';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import IOSPicker from '../components/IOSPicker';
@@ -40,6 +40,10 @@ const NewRecipeScreen = ({ navigation }) => {
       { imageUrl: image, title, portions, portionUnit, calories },
       () => navigation.navigate('Steps')
     );
+  };
+
+  const isValidInput = () => {
+    return title && portions && portionUnit;
   };
 
   return (
@@ -76,7 +80,11 @@ const NewRecipeScreen = ({ navigation }) => {
             onChangeText={setCalories}
           />
           <View style={styles.footerContainer}>
-            <AppButton text="Processos" onPress={() => goToSteps()} />
+            <PrimaryButton
+              disabled={!isValidInput()}
+              text="Processos"
+              onPress={() => goToSteps()}
+            />
           </View>
         </View>
       </TouchableWithoutFeedback>

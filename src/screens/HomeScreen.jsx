@@ -6,11 +6,15 @@ import { listAll } from '../database/repository/RecipesRepository';
 import RecipeCard from '../components/RecipeCard';
 import { Context } from '../contexts/Recipes/RecipesContext';
 const HomeScreen = ({ navigation }) => {
-  const { state, loadRecipes } = useContext(Context);
+  const { state, newRecipe, loadRecipes } = useContext(Context);
 
   useEffect(() => {
     listAll(loadRecipes);
   }, []);
+
+  const createNewRecipe = () => {
+    newRecipe(() => navigation.navigate('NewRecipe'));
+  };
 
   return (
     <View style={styles.rootContainer}>
@@ -22,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
         />
       </View>
       <View style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate('NewRecipe')}>
+        <TouchableOpacity onPress={createNewRecipe}>
           <View style={styles.addButton}>
             <FontAwesome name="plus" size={24} color="#37426B" />
           </View>

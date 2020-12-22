@@ -3,7 +3,8 @@ import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import IOSPicker from '../components/IOSPicker';
 import AppTextInput from '../components/AppTextInput';
-import AppButton from '../components/AppButton';
+import PrimaryButton from '../components/PrimaryButton';
+import SecondaryButton from '../components/SecondaryButton';
 import StepInstructionsList from '../components/StepInstructionsList';
 import { saveOrUpdate } from '../services/RecipesService';
 import { listAll } from '../database/repository/RecipesRepository';
@@ -30,6 +31,10 @@ const PreparationModeScreen = ({ navigation }) => {
     addInstruction({ stepName, description }, clearForm);
   };
 
+  const isValidPreparationMode = () => {
+    return step && description.trim() !== '';
+  };
+
   return (
     <View style={styles.rootContainer}>
       <IOSPicker
@@ -50,9 +55,9 @@ const PreparationModeScreen = ({ navigation }) => {
         onChangeText={setDescription}
       />
       <View style={styles.addButton}>
-        <AppButton
+        <SecondaryButton
+          disabled={!isValidPreparationMode()}
           text="Adicionar"
-          secondary={true}
           onPress={() =>
             onAddPreparationMode({
               stepName: step,
@@ -76,7 +81,7 @@ const PreparationModeScreen = ({ navigation }) => {
         )}
       />
       <View style={styles.footerContainer}>
-        <AppButton text="Salvar" onPress={() => onSave()} />
+        <PrimaryButton text="Salvar" onPress={() => onSave()} />
       </View>
     </View>
   );

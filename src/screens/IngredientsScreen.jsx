@@ -3,7 +3,8 @@ import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import IOSPicker from '../components/IOSPicker';
 import AppTextInput from '../components/AppTextInput';
-import AppButton from '../components/AppButton';
+import PrimaryButton from '../components/PrimaryButton';
+import SecondaryButton from '../components/SecondaryButton';
 import StepIngredientsList from '../components/StepIngredientsList';
 
 const { width } = Dimensions.get('window');
@@ -37,6 +38,10 @@ const IngredientsScreen = ({ navigation }) => {
     }
   };
 
+  const isValidIngredient = () => {
+    return step && name && amount && amountUnit;
+  };
+
   return (
     <View style={styles.rootContainer}>
       <IOSPicker
@@ -66,9 +71,9 @@ const IngredientsScreen = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.addButton}>
-        <AppButton
+        <SecondaryButton
           text="Adicionar"
-          secondary={true}
+          disabled={!isValidIngredient()}
           onPress={() =>
             onAddIngredient({
               stepName: step,
@@ -93,7 +98,7 @@ const IngredientsScreen = ({ navigation }) => {
         )}
       />
       <View style={styles.footerContainer}>
-        <AppButton
+        <PrimaryButton
           text="Modo de Preparo"
           onPress={() => goToPreparationMode()}
         />
