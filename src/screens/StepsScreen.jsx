@@ -5,6 +5,7 @@ import SecondaryButton from '../components/SecondaryButton';
 import AppTextInput from '../components/AppTextInput';
 import AppListItem from '../components/AppListItem';
 import { Context } from '../contexts/Recipes/RecipesContext';
+import i18n from 'i18n-js';
 
 const StepsScreen = ({ navigation }) => {
   const { state, addStep, removeStep } = useContext(Context);
@@ -39,7 +40,7 @@ const StepsScreen = ({ navigation }) => {
       <View style={styles.mainView}>
         <View style={styles.inputContainer}>
           <AppTextInput
-            label="Nome"
+            label={i18n.t('name')}
             value={name}
             autoCorrect={false}
             onChangeText={setName}
@@ -47,7 +48,7 @@ const StepsScreen = ({ navigation }) => {
           <View style={styles.addButton}>
             <SecondaryButton
               disabled={!isValidStep()}
-              text="Adicionar"
+              text={i18n.t('add')}
               onPress={() => onAddStep(name)}
             />
           </View>
@@ -64,7 +65,7 @@ const StepsScreen = ({ navigation }) => {
         <View style={styles.footerContainer}>
           <PrimaryButton
             disabled={!isValidForm()}
-            text="Ingredientes"
+            text={i18n.t('recipe_ingredients')}
             onPress={() => goToIngredients()}
           />
         </View>

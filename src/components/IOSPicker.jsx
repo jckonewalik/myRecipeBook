@@ -10,14 +10,16 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import AppOutputText from '../components/AppOutputText';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import i18n from 'i18n-js';
+
 const { height } = Dimensions.get('window');
 
 const IOSPicker = ({ label, outputValue, options, onSelect }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [pickerValue, setPickerValue] = useState('Selecione');
+  const [pickerValue, setPickerValue] = useState(`${i18n.t('select')}`);
 
   const onModalSelect = () => {
-    if (pickerValue !== 'Selecione') {
+    if (pickerValue !== `${i18n.t('select')}`) {
       onSelect(pickerValue);
       setModalVisible(false);
     }
@@ -40,17 +42,17 @@ const IOSPicker = ({ label, outputValue, options, onSelect }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalOptions}>
             <TouchableOpacity onPress={onModalCancel}>
-              <Text style={styles.pickerOptions}>Cancelar</Text>
+              <Text style={styles.pickerOptions}>{i18n.t('cancel')}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={onModalSelect}>
-              <Text style={styles.pickerOptions}>Selecionar</Text>
+              <Text style={styles.pickerOptions}>{i18n.t('select')}</Text>
             </TouchableOpacity>
           </View>
           <Picker
             selectedValue={pickerValue}
             onValueChange={(itemValue) => setPickerValue(itemValue)}
           >
-            <Picker.Item label="Selecione" value="Selecione" />
+            <Picker.Item label={i18n.t('select')} value={i18n.t('select')} />
             {options.map((option) => (
               <Picker.Item
                 key={option.value}

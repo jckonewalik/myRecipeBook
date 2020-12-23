@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import i18n from 'i18n-js';
 const { height } = Dimensions.get('window');
 const AppImagePicker = ({ image, setImage }) => {
   const pickImage = async () => {
@@ -29,7 +30,7 @@ const AppImagePicker = ({ image, setImage }) => {
         ) : (
           <View style={styles.externalContainer}>
             <View style={styles.internalContainer}>
-              <Text style={styles.text}>Carregar Imagem</Text>
+              <Text style={styles.text}>{i18n.t('select_image')}</Text>
             </View>
           </View>
         )}

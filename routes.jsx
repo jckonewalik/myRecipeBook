@@ -7,8 +7,8 @@ import StepsScreen from './src/screens/StepsScreen';
 import IngredientsScreen from './src/screens/IngredientsScreen';
 import PreparationModeScreen from './src/screens/PreparationModeScreen';
 import { MaterialIcons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { HeaderBackButton } from '@react-navigation/stack';
+import i18n from 'i18n-js';
+
 const Stack = createStackNavigator();
 
 const Routes = () => {
@@ -34,30 +34,36 @@ const Routes = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerTitle: 'Minhas Receitas' }}
+          options={{ headerTitle: `${i18n.t('my_recipes')}` }}
         />
         <Stack.Screen
           name="NewRecipe"
           component={NewRecipeScreen}
           options={{
-            headerTitle: 'Nova Receita',
+            headerTitle: `${i18n.t('new_recipe')}`,
             ...backButton,
           }}
         />
         <Stack.Screen
           name="Steps"
           component={StepsScreen}
-          options={{ headerTitle: 'Processos', ...backButton }}
+          options={{ headerTitle: `${i18n.t('recipe_steps')}`, ...backButton }}
         />
         <Stack.Screen
           name="Ingredients"
           component={IngredientsScreen}
-          options={{ headerTitle: 'Ingredientes', ...backButton }}
+          options={{
+            headerTitle: `${i18n.t('recipe_ingredients')}`,
+            ...backButton,
+          }}
         />
         <Stack.Screen
           name="PreparationMode"
           component={PreparationModeScreen}
-          options={{ headerTitle: 'Modo de Preparo', ...backButton }}
+          options={{
+            headerTitle: `${i18n.t('recipe_preparation_mode')}`,
+            ...backButton,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

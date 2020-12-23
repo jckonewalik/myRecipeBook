@@ -7,7 +7,7 @@ import AppTextInput from '../components/AppTextInput';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import StepIngredientsList from '../components/StepIngredientsList';
-
+import i18n from 'i18n-js';
 const { width } = Dimensions.get('window');
 
 const IngredientsScreen = ({ navigation }) => {
@@ -47,7 +47,7 @@ const IngredientsScreen = ({ navigation }) => {
     <View style={styles.rootContainer}>
       {Platform.OS === 'ios' ? (
         <IOSPicker
-          label="Processo"
+          label={i18n.t('recipe_step')}
           outputValue={step}
           options={Object.keys(state.selectedRecipe.steps).map((step) => {
             return { label: step, value: step };
@@ -56,7 +56,7 @@ const IngredientsScreen = ({ navigation }) => {
         />
       ) : (
         <AndroidPicker
-          label="Processo"
+          label={i18n.t('recipe_step')}
           value={step}
           options={Object.keys(state.selectedRecipe.steps).map((step) => {
             return { label: step, value: step };
@@ -65,11 +65,15 @@ const IngredientsScreen = ({ navigation }) => {
         />
       )}
 
-      <AppTextInput label="Ingrediente" value={name} onChangeText={setName} />
+      <AppTextInput
+        label={i18n.t('recipe_ingredient')}
+        value={name}
+        onChangeText={setName}
+      />
       <View style={styles.amountContainer}>
         <View style={styles.amountInput}>
           <AppTextInput
-            label="Quantidade"
+            label={i18n.t('quantity')}
             value={amount}
             keyboardType="numeric"
             onChangeText={setAmount}
@@ -77,7 +81,7 @@ const IngredientsScreen = ({ navigation }) => {
         </View>
         <View style={styles.amountInput}>
           <AppTextInput
-            label="Unidade"
+            label={i18n.t('unit')}
             value={amountUnit}
             onChangeText={setAmountUnit}
           />
@@ -85,7 +89,7 @@ const IngredientsScreen = ({ navigation }) => {
       </View>
       <View style={styles.addButton}>
         <SecondaryButton
-          text="Adicionar"
+          text={i18n.t('add')}
           disabled={!isValidIngredient()}
           onPress={() =>
             onAddIngredient({
@@ -112,7 +116,7 @@ const IngredientsScreen = ({ navigation }) => {
       />
       <View style={styles.footerContainer}>
         <PrimaryButton
-          text="Modo de Preparo"
+          text={i18n.t('recipe_preparation_mode')}
           onPress={() => goToPreparationMode()}
         />
       </View>

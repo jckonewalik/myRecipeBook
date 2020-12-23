@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-
+import i18n from 'i18n-js';
 const IOSPicker = ({ label, value, options, onSelect }) => {
   return (
     <>
@@ -12,7 +12,7 @@ const IOSPicker = ({ label, value, options, onSelect }) => {
           style={{ height: 50 }}
           onValueChange={(itemValue) => onSelect(itemValue)}
         >
-          <Picker.Item label="Selecione" value="Selecione" />
+          <Picker.Item label={i18n.t('select')} value={i18n.t('select')} />
           {options.map((option) => (
             <Picker.Item
               key={option.value}

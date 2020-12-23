@@ -12,13 +12,15 @@ import { Context } from '../contexts/Recipes/RecipesContext';
 import AndroidPicker from '../components/AndroidPicker';
 import IOSPicker from '../components/IOSPicker';
 import AppImagePicker from '../components/AppImagePicker';
+import i18n from 'i18n-js';
+
 const { width } = Dimensions.get('window');
 const NewRecipeScreen = ({ navigation }) => {
   const { state, setBasicInfo } = useContext(Context);
   const portionUnitOptions = [
-    { label: 'Fatias', value: 'Fatias' },
-    { label: 'Pedaços', value: 'Pedaços' },
-    { label: 'Unidades', value: 'Unidades' },
+    { label: `${i18n.t('units')}`, value: `${i18n.t('units')}` },
+    { label: `${i18n.t('piece')}`, value: `${i18n.t('piece')}` },
+    { label: `${i18n.t('slice')}`, value: `${i18n.t('slice')}` },
   ];
 
   const [title, setTitle] = useState('');
@@ -42,17 +44,23 @@ const NewRecipeScreen = ({ navigation }) => {
   };
 
   const isValidInput = () => {
-    return title && portions && portionUnit && portionUnit !== 'Selecione';
+    return (
+      title && portions && portionUnit && portionUnit !== `${i18n.t('select')}`
+    );
   };
 
   return (
     <ScrollView style={styles.rootContainer}>
       <AppImagePicker image={image} setImage={setImage} />
-      <AppTextInput label="Title" value={title} onChangeText={setTitle} />
+      <AppTextInput
+        label={i18n.t('recipe_title')}
+        value={title}
+        onChangeText={setTitle}
+      />
       <View style={styles.portionsContainer}>
         <View style={styles.protionsInput}>
           <AppTextInput
-            label="Portions"
+            label={i18n.t('recipe_portions')}
             value={portions}
             keyboardType="numeric"
             onChangeText={setPortions}
@@ -61,14 +69,14 @@ const NewRecipeScreen = ({ navigation }) => {
         <View style={styles.protionsInput}>
           {Platform.OS === 'ios' ? (
             <IOSPicker
-              label="Unit"
+              label={i18n.t('unit')}
               outputValue={portionUnit}
               options={portionUnitOptions}
               onSelect={setPortionUnit}
             />
           ) : (
             <AndroidPicker
-              label="Unit"
+              label={i18n.t('unit')}
               value={portionUnit}
               options={portionUnitOptions}
               onSelect={setPortionUnit}
@@ -77,7 +85,7 @@ const NewRecipeScreen = ({ navigation }) => {
         </View>
       </View>
       <AppTextInput
-        label="Calories"
+        label={i18n.t('recipe_calories')}
         value={calories}
         keyboardType="numeric"
         onChangeText={setCalories}
@@ -85,7 +93,7 @@ const NewRecipeScreen = ({ navigation }) => {
       <View style={styles.footerContainer}>
         <PrimaryButton
           disabled={!isValidInput()}
-          text="Processos"
+          text={i18n.t('recipe_steps')}
           onPress={() => goToSteps()}
         />
       </View>

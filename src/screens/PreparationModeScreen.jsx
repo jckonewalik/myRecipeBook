@@ -9,6 +9,7 @@ import SecondaryButton from '../components/SecondaryButton';
 import StepInstructionsList from '../components/StepInstructionsList';
 import { saveOrUpdate } from '../services/RecipesService';
 import { listAll } from '../database/repository/RecipesRepository';
+import i18n from 'i18n-js';
 const { width } = Dimensions.get('window');
 
 const PreparationModeScreen = ({ navigation }) => {
@@ -40,7 +41,7 @@ const PreparationModeScreen = ({ navigation }) => {
     <View style={styles.rootContainer}>
       {Platform.OS === 'ios' ? (
         <IOSPicker
-          label="Processo"
+          label={i18n.t('recipe_step')}
           outputValue={step}
           options={Object.keys(state.selectedRecipe.steps).map((step) => {
             return { label: step, value: step };
@@ -49,7 +50,7 @@ const PreparationModeScreen = ({ navigation }) => {
         />
       ) : (
         <AndroidPicker
-          label="Processo"
+          label={i18n.t('recipe_step')}
           value={step}
           options={Object.keys(state.selectedRecipe.steps).map((step) => {
             return { label: step, value: step };
@@ -59,7 +60,7 @@ const PreparationModeScreen = ({ navigation }) => {
       )}
       <AppTextInput
         style={styles.descriptionInput}
-        label="Descrição"
+        label={i18n.t('step_description')}
         value={description}
         multiline={true}
         numberOfLines={3}
@@ -69,7 +70,7 @@ const PreparationModeScreen = ({ navigation }) => {
       <View style={styles.addButton}>
         <SecondaryButton
           disabled={!isValidPreparationMode()}
-          text="Adicionar"
+          text={i18n.t('add')}
           onPress={() =>
             onAddPreparationMode({
               stepName: step,
@@ -93,7 +94,7 @@ const PreparationModeScreen = ({ navigation }) => {
         )}
       />
       <View style={styles.footerContainer}>
-        <PrimaryButton text="Salvar" onPress={() => onSave()} />
+        <PrimaryButton text={i18n.t('save')} onPress={() => onSave()} />
       </View>
     </View>
   );

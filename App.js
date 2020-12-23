@@ -10,6 +10,18 @@ import {
   Roboto_900Black,
 } from '@expo-google-fonts/roboto';
 import { createTable } from './src/database/repository/RecipesRepository';
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
+import * as en from './src/translations/en.json';
+import * as pt from './src/translations/pt.json';
+
+i18n.translations = {
+  en,
+  pt,
+};
+
+i18n.locale = Localization.locale;
+i18n.fallbacks = true;
 
 export default function App() {
   React.useEffect(() => {
