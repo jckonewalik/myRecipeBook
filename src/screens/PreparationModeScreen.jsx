@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { View, FlatList, StyleSheet, Dimensions, Platform } from 'react-native';
 import { Context } from '../contexts/Recipes/RecipesContext';
+import AndroidPicker from '../components/AndroidPicker';
 import IOSPicker from '../components/IOSPicker';
 import AppTextInput from '../components/AppTextInput';
 import PrimaryButton from '../components/PrimaryButton';
@@ -37,14 +38,25 @@ const PreparationModeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.rootContainer}>
-      <IOSPicker
-        label="Processo"
-        outputValue={step}
-        options={Object.keys(state.selectedRecipe.steps).map((step) => {
-          return { label: step, value: step };
-        })}
-        onSelect={setStep}
-      />
+      {Platform.OS === 'ios' ? (
+        <IOSPicker
+          label="Processo"
+          outputValue={step}
+          options={Object.keys(state.selectedRecipe.steps).map((step) => {
+            return { label: step, value: step };
+          })}
+          onSelect={setStep}
+        />
+      ) : (
+        <AndroidPicker
+          label="Processo"
+          value={step}
+          options={Object.keys(state.selectedRecipe.steps).map((step) => {
+            return { label: step, value: step };
+          })}
+          onSelect={setStep}
+        />
+      )}
       <AppTextInput
         style={styles.descriptionInput}
         label="Descrição"

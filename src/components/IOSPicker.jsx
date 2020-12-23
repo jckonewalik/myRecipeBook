@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   modalOptions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     padding: 18,
   },
   pickerOptions: {

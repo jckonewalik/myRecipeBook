@@ -1,16 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
+  ScrollView,
   View,
   Dimensions,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   StyleSheet,
-  Keyboard,
   Platform,
 } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
 import AppTextInput from '../components/AppTextInput';
 import { Context } from '../contexts/Recipes/RecipesContext';
+import AndroidPicker from '../components/AndroidPicker';
 import IOSPicker from '../components/IOSPicker';
 import AppImagePicker from '../components/AppImagePicker';
 const { width } = Dimensions.get('window');
@@ -43,52 +42,54 @@ const NewRecipeScreen = ({ navigation }) => {
   };
 
   const isValidInput = () => {
-    return title && portions && portionUnit;
+    return title && portions && portionUnit && portionUnit !== 'Selecione';
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardContainer}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.rootContainer}>
-          <AppImagePicker image={image} setImage={setImage} />
-          <AppTextInput label="Title" value={title} onChangeText={setTitle} />
-          <View style={styles.portionsContainer}>
-            <View style={styles.protionsInput}>
-              <AppTextInput
-                label="Portions"
-                value={portions}
-                keyboardType="numeric"
-                onChangeText={setPortions}
-              />
-            </View>
-            <View style={styles.protionsInput}>
-              <IOSPicker
-                label="Unit"
-                outputValue={portionUnit}
-                options={portionUnitOptions}
-                onSelect={setPortionUnit}
-              />
-            </View>
-          </View>
+    <ScrollView style={styles.rootContainer}>
+      <AppImagePicker image={image} setImage={setImage} />
+      <AppTextInput label="Title" value={title} onChangeText={setTitle} />
+      <View style={styles.portionsContainer}>
+        <View style={styles.protionsInput}>
           <AppTextInput
-            label="Calories"
-            value={calories}
+            label="Portions"
+            value={portions}
             keyboardType="numeric"
-            onChangeText={setCalories}
+            onChangeText={setPortions}
           />
-          <View style={styles.footerContainer}>
-            <PrimaryButton
-              disabled={!isValidInput()}
-              text="Processos"
-              onPress={() => goToSteps()}
-            />
-          </View>
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        <View style={styles.protionsInput}>
+          {Platform.OS === 'ios' ? (
+            <IOSPicker
+              label="Unit"
+              outputValue={portionUnit}
+              options={portionUnitOptions}
+              onSelect={setPortionUnit}
+            />
+          ) : (
+            <AndroidPicker
+              label="Unit"
+              value={portionUnit}
+              options={portionUnitOptions}
+              onSelect={setPortionUnit}
+            />
+          )}
+        </View>
+      </View>
+      <AppTextInput
+        label="Calories"
+        value={calories}
+        keyboardType="numeric"
+        onChangeText={setCalories}
+      />
+      <View style={styles.footerContainer}>
+        <PrimaryButton
+          disabled={!isValidInput()}
+          text="Processos"
+          onPress={() => goToSteps()}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
@@ -98,7 +99,6 @@ const styles = StyleSheet.create({
   },
   rootContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
     padding: 20,
   },
   portionsContainer: {

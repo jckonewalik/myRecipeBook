@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+const { height } = Dimensions.get('window');
 const AppImagePicker = ({ image, setImage }) => {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -45,7 +45,7 @@ const border = {
 };
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+    height: height * 0.4,
   },
   externalContainer: {
     backgroundColor: '#DEDEDE',
