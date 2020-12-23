@@ -39,6 +39,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   body: {
     flex: 1,

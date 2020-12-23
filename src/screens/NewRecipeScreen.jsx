@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#fff',
   },
   portionsContainer: {
     flexDirection: 'row',

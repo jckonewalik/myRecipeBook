@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     paddingTop: 10,
+    backgroundColor: '#fff',
   },
   amountContainer: {
     flexDirection: 'row',
