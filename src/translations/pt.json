@@ -23,5 +23,7 @@
     "quantity": "Quantidade",
     "unit": "Unidade",
     "name": "Nome",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "delete_recipe": "Deletar Receita",
+    "delete_confirmation": "Você tem certeza que deseja deletar essa receita?"
 }

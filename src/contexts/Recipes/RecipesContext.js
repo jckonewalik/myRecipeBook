@@ -9,6 +9,7 @@ import {
   ADD_INSTRUCTION,
   REMOVE_INSTRUCTION,
   NEW_RECIPE,
+  LOAD_RECIPE,
 } from './ActionTypes';
 
 const INITIAL_STATE = {
@@ -32,6 +33,12 @@ const recipeReducer = (state, action) => {
         ...state,
         recipes: payload,
       };
+    case LOAD_RECIPE: {
+      return {
+        ...state,
+        selectedRecipe: payload,
+      };
+    }
     case NEW_RECIPE:
       return {
         ...state,
@@ -217,6 +224,16 @@ const addInstruction = (dispatch) => {
   };
 };
 
+const loadRecipe = (dispatch) => {
+  return ({ recipe }, callback) => {
+    dispatch({
+      type: LOAD_RECIPE,
+      payload: recipe,
+    });
+    callback && callback();
+  };
+};
+
 const removeInstruction = (dispatch) => {
   return ({ stepName, description }) => {
     dispatch({
@@ -257,6 +274,7 @@ export const { Context, Provider } = createDataContext(
     addInstruction,
     removeInstruction,
     newRecipe,
+    loadRecipe,
   },
   INITIAL_STATE
 );

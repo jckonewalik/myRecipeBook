@@ -26,6 +26,20 @@ export const listAll = (setList, callback) => {
   callback && callback();
 };
 
+export const findById = (id, loadRecipe, callback) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'select * from recipes where id = ?',
+      [id],
+      (_, { rows: { _array } }) => {
+        const recipe = _array[0];
+        recipe.steps = JSON.parse(recipe.steps);
+        loadRecipe({ recipe }, callback);
+      }
+    );
+  });
+};
+
 export const insert = ({
   imageUrl,
   title,
@@ -39,5 +53,36 @@ export const insert = ({
       'insert into recipes (imageUrl, title, portions, portionUnit, calories, steps) values (?, ?, ?, ?, ?, ?)',
       [imageUrl, title, portions, portionUnit, calories, JSON.stringify(steps)]
     );
+  });
+};
+
+export const update = ({
+  id,
+  imageUrl,
+  title,
+  portions,
+  portionUnit,
+  calories,
+  steps,
+}) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'update recipes set imageUrl=?, title=?, portions=?, portionUnit=?, calories=?, steps=? where id=?',
+      [
+        imageUrl,
+        title,
+        portions,
+        portionUnit,
+        calories,
+        JSON.stringify(steps),
+        id,
+      ]
+    );
+  });
+};
+
+export const remove = ({ id }) => {
+  db.transaction((tx) => {
+    tx.executeSql('delete from recipes where id = ?', [id]);
   });
 };

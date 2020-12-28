@@ -1,12 +1,20 @@
 import React, { useEffect, useContext } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import i18n from 'i18n-js';
 
-import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { listAll } from '../database/repository/RecipesRepository';
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import { deleteRecipe } from '../services/RecipesService';
+import { listAll, findById } from '../database/repository/RecipesRepository';
 import RecipeCard from '../components/RecipeCard';
 import { Context } from '../contexts/Recipes/RecipesContext';
 const HomeScreen = ({ navigation }) => {
-  const { state, newRecipe, loadRecipes } = useContext(Context);
+  const { state, newRecipe, loadRecipes, loadRecipe } = useContext(Context);
 
   useEffect(() => {
     listAll(loadRecipes);
@@ -16,13 +24,37 @@ const HomeScreen = ({ navigation }) => {
     newRecipe(() => navigation.navigate('NewRecipe'));
   };
 
+  const onEdit = (id) => {
+    findById(id, loadRecipe, () => navigation.navigate('NewRecipe'));
+  };
+  const onDelete = (id, imageUrl) =>
+    Alert.alert(
+      `${i18n.t('delete_recipe')}`,
+      `${i18n.t('delete_confirmation')}`,
+      [
+        {
+          text: `${i18n.t('cancel')}`,
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () =>
+            deleteRecipe({ id, imageUrl }, () => listAll(loadRecipes)),
+        },
+      ],
+      { cancelable: false }
+    );
+
   return (
     <View style={styles.rootContainer}>
       <View style={styles.body}>
         <FlatList
           data={state.recipes}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <RecipeCard recipe={item} />}
+          renderItem={({ item }) => (
+            <RecipeCard onEdit={onEdit} onDelete={onDelete} recipe={item} />
+          )}
         />
       </View>
       <View style={styles.footer}>

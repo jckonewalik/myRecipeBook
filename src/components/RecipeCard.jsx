@@ -3,7 +3,7 @@ import { View, Image, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, onEdit, onDelete }) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.imageContainer}>
@@ -16,12 +16,12 @@ const RecipeCard = ({ recipe }) => {
         >{`${recipe.portions} ${recipe.portionUnit}`}</Text>
       </View>
       <View style={styles.optionsContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => onEdit(recipe.id)}>
           <View style={styles.editContainer}>
             <FontAwesome name="pencil" size={24} color="white" />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => onDelete(recipe.id, recipe.imageUrl)}>
           <View style={styles.deleteContainer}>
             <FontAwesome name="trash" size={24} color="white" />
           </View>

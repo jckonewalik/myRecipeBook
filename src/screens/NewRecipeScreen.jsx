@@ -18,9 +18,9 @@ const { width } = Dimensions.get('window');
 const NewRecipeScreen = ({ navigation }) => {
   const { state, setBasicInfo } = useContext(Context);
   const portionUnitOptions = [
-    { label: `${i18n.t('units')}`, value: `${i18n.t('units')}` },
-    { label: `${i18n.t('piece')}`, value: `${i18n.t('piece')}` },
-    { label: `${i18n.t('slice')}`, value: `${i18n.t('slice')}` },
+    { label: `${i18n.t('units')}`, value: 'units' },
+    { label: `${i18n.t('piece')}`, value: 'piece' },
+    { label: `${i18n.t('slice')}`, value: 'slice' },
   ];
 
   const [title, setTitle] = useState('');
@@ -30,10 +30,13 @@ const NewRecipeScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
+    if (state.selectedRecipe.imageUrl) {
+      setImage(state.selectedRecipe.imageUrl);
+    }
     setTitle(state.selectedRecipe.title);
-    setPortions(state.selectedRecipe.portions);
+    setPortions('' + state.selectedRecipe.portions);
     setPortionUnit(state.selectedRecipe.portionUnit);
-    setCalories(state.selectedRecipe.calories);
+    setCalories('' + state.selectedRecipe.calories);
   }, []);
 
   const goToSteps = () => {
