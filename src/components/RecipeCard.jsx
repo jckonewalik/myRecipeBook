@@ -1,32 +1,84 @@
-import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import React, { useState, useRef } from 'react';
+import {
+  Animated,
+  PanResponder,
+  View,
+  Image,
+  Text,
+  StyleSheet,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 
 const RecipeCard = ({ recipe, onEdit, onDelete }) => {
+  const position = useRef(new Animated.ValueXY()).current;
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        position.setOffset({
+          x: position.x._value,
+          y: position.y._value,
+        });
+      },
+      onPanResponderMove: (event, gestureHandler) => {
+        position.setValue({
+          x: gestureHandler.dx,
+          y: 0,
+        });
+      },
+      onPanResponderRelease: () => {
+        const open = position.x._value < -100.0;
+        position.flattenOffset();
+        Animated.spring(position, {
+          toValue: { x: open ? -250 : 0, y: 0 },
+          useNativeDriver: false,
+        }).start();
+      },
+    })
+  ).current;
+  const getCardStyle = () => {
+    const translateX = position.x.interpolate({
+      inputRange: [-500, 0, 500],
+      outputRange: [-200, 0, 5],
+      extrapolate: 'clamp',
+    });
+    return {
+      flex: 1,
+      transform: [{ translateX }],
+      flexDirection: 'row',
+      width: '100%',
+    };
+  };
   return (
     <View style={styles.cardContainer}>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
-      </View>
-      <View style={styles.descriptionContainer}>
-        <Text style={styles.title}>{recipe.title}</Text>
-        <Text
-          style={styles.subTitle}
-        >{`${recipe.portions} ${recipe.portionUnit}`}</Text>
-      </View>
-      <View style={styles.optionsContainer}>
-        <TouchableOpacity onPress={() => onEdit(recipe.id)}>
-          <View style={styles.editContainer}>
-            <FontAwesome name="pencil" size={24} color="white" />
+      <Animated.View style={getCardStyle()} {...panResponder.panHandlers}>
+        <View style={{ flexDirection: 'row', width: '100%' }}>
+          <View style={styles.imageContainer}>
+            <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => onDelete(recipe.id, recipe.imageUrl)}>
-          <View style={styles.deleteContainer}>
-            <FontAwesome name="trash" size={24} color="white" />
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.title}>{recipe.title}</Text>
+            <Text
+              style={styles.subTitle}
+            >{`${recipe.portions} ${recipe.portionUnit}`}</Text>
           </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+        <View style={styles.optionsContainer}>
+          <TouchableOpacity onPress={() => onEdit(recipe.id)}>
+            <View style={styles.editContainer}>
+              <FontAwesome name="pencil" size={24} color="white" />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => onDelete(recipe.id, recipe.imageUrl)}
+          >
+            <View style={styles.deleteContainer}>
+              <FontAwesome name="trash" size={24} color="white" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
     </View>
   );
 };
@@ -41,8 +93,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   descriptionContainer: {
-    flex: 1,
     marginVertical: 10,
+    flex: 1,
   },
   title: {
     fontSize: 20,
