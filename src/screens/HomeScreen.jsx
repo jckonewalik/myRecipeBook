@@ -27,6 +27,9 @@ const HomeScreen = ({ navigation }) => {
   const onEdit = (id) => {
     findById(id, loadRecipe, () => navigation.navigate('NewRecipe'));
   };
+  const onSelectRecipe = (id) => {
+    findById(id, loadRecipe, () => navigation.navigate('RecipeDetails'));
+  };
   const onDelete = (id, imageUrl) =>
     Alert.alert(
       `${i18n.t('delete_recipe')}`,
@@ -53,7 +56,12 @@ const HomeScreen = ({ navigation }) => {
           data={state.recipes}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <RecipeCard onEdit={onEdit} onDelete={onDelete} recipe={item} />
+            <RecipeCard
+              onSelect={onSelectRecipe}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              recipe={item}
+            />
           )}
         />
       </View>

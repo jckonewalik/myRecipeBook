@@ -1,20 +1,23 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import {
   Animated,
   PanResponder,
   View,
   Image,
   Text,
+  TouchableWithoutFeedback,
   StyleSheet,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const RecipeCard = ({ recipe, onEdit, onDelete }) => {
+const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
   const position = useRef(new Animated.ValueXY()).current;
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (event, gestureHandler) => {
+        return true;
+      },
       onPanResponderGrant: () => {
         position.setOffset({
           x: position.x._value,
@@ -53,17 +56,19 @@ const RecipeCard = ({ recipe, onEdit, onDelete }) => {
   return (
     <View style={styles.cardContainer}>
       <Animated.View style={getCardStyle()} {...panResponder.panHandlers}>
-        <View style={{ flexDirection: 'row', width: '100%' }}>
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
+        <TouchableWithoutFeedback onPress={() => onSelect(recipe.id)}>
+          <View style={{ flexDirection: 'row', width: '100%' }}>
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
+            </View>
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.title}>{recipe.title}</Text>
+              <Text
+                style={styles.subTitle}
+              >{`${recipe.portions} ${recipe.portionUnit}`}</Text>
+            </View>
           </View>
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.title}>{recipe.title}</Text>
-            <Text
-              style={styles.subTitle}
-            >{`${recipe.portions} ${recipe.portionUnit}`}</Text>
-          </View>
-        </View>
+        </TouchableWithoutFeedback>
         <View style={styles.optionsContainer}>
           <TouchableOpacity onPress={() => onEdit(recipe.id)}>
             <View style={styles.editContainer}>

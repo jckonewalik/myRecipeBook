@@ -6,6 +6,7 @@ import NewRecipeScreen from './src/screens/NewRecipeScreen';
 import StepsScreen from './src/screens/StepsScreen';
 import IngredientsScreen from './src/screens/IngredientsScreen';
 import PreparationModeScreen from './src/screens/PreparationModeScreen';
+import RecipeDetailsScreen from './src/screens/RecipeDetailsScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 
@@ -64,6 +65,11 @@ const Routes = () => {
             headerTitle: `${i18n.t('recipe_preparation_mode')}`,
             ...backButton,
           }}
+        />
+        <Stack.Screen
+          name="RecipeDetails"
+          component={RecipeDetailsScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
