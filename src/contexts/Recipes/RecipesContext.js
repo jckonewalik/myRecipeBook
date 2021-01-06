@@ -11,6 +11,18 @@ import {
   NEW_RECIPE,
   LOAD_RECIPE,
 } from './ActionTypes';
+import {
+  loadRecipes,
+  setBasicInfo,
+  addStep,
+  removeStep,
+  addIngredient,
+  removeIngredient,
+  addInstruction,
+  removeInstruction,
+  newRecipe,
+  loadRecipe,
+} from './Actions';
 
 const INITIAL_STATE = {
   recipes: [],
@@ -25,7 +37,7 @@ const INITIAL_STATE = {
   },
 };
 
-const recipeReducer = (state, action) => {
+export const recipeReducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
   switch (type) {
     case LOAD_RECIPES:
@@ -156,110 +168,6 @@ const recipeReducer = (state, action) => {
     default:
       return state;
   }
-};
-
-const newRecipe = (dispatch) => {
-  return (callback) => {
-    dispatch({
-      type: NEW_RECIPE,
-    });
-    callback && callback();
-  };
-};
-const setBasicInfo = (dispatch) => {
-  return ({ imageUrl, title, portions, portionUnit, calories }, callback) => {
-    dispatch({
-      type: SET_BASIC_INFO,
-      payload: { imageUrl, title, portions, portionUnit, calories },
-    });
-    callback && callback();
-  };
-};
-
-const addStep = (dispatch) => {
-  return ({ stepName }, callback) => {
-    dispatch({
-      type: ADD_STEP,
-      payload: { stepName },
-    });
-    callback && callback();
-  };
-};
-
-const removeStep = (dispatch) => {
-  return ({ stepName }) => {
-    dispatch({
-      type: REMOVE_STEP,
-      payload: { stepName },
-    });
-  };
-};
-
-const addIngredient = (dispatch) => {
-  return ({ stepName, ingredient, amount, unit }, callback) => {
-    dispatch({
-      type: ADD_INGREDIENT,
-      payload: { stepName, ingredient, amount, unit },
-    });
-    callback && callback();
-  };
-};
-
-const removeIngredient = (dispatch) => {
-  return ({ stepName, ingredient }) => {
-    dispatch({
-      type: REMOVE_INGREDIENT,
-      payload: { stepName, ingredient },
-    });
-  };
-};
-
-const addInstruction = (dispatch) => {
-  return ({ stepName, description }, callback) => {
-    dispatch({
-      type: ADD_INSTRUCTION,
-      payload: { stepName, description },
-    });
-    callback && callback();
-  };
-};
-
-const loadRecipe = (dispatch) => {
-  return ({ recipe }, callback) => {
-    dispatch({
-      type: LOAD_RECIPE,
-      payload: recipe,
-    });
-    callback && callback();
-  };
-};
-
-const removeInstruction = (dispatch) => {
-  return ({ stepName, description }) => {
-    dispatch({
-      type: REMOVE_INSTRUCTION,
-      payload: { stepName, description },
-    });
-  };
-};
-
-const loadRecipes = (dispatch) => {
-  return (recipes) => {
-    dispatch({
-      type: LOAD_RECIPES,
-      payload: recipes,
-    });
-  };
-};
-
-const removeStepByName = (steps, stepName) => {
-  const newSteps = {};
-  Object.keys(steps).forEach((key) => {
-    if (key !== stepName) {
-      newSteps[key] = steps[key];
-    }
-  });
-  return newSteps;
 };
 
 export const { Context, Provider } = createDataContext(

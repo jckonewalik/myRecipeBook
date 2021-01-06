@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { Context } from '../contexts/Recipes/RecipesContext';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import {
   SafeAreaView,
   View,
@@ -8,13 +8,14 @@ import {
   Dimensions,
   Image,
   Platform,
+  TouchableOpacity,
   Text,
   StyleSheet,
-  PanResponder
+  PanResponder,
 } from 'react-native';
 const { height, width } = Dimensions.get('window');
 
-const RecipeDetailsScreen = () => {
+const RecipeDetailsScreen = ({ navigation }) => {
   const position = useRef(new Animated.ValueXY()).current;
   const panResponder = useRef(
     PanResponder.create({
@@ -40,7 +41,7 @@ const RecipeDetailsScreen = () => {
           toValue: { y: open ? -height * 0.4 : 0, x: 0 },
           useNativeDriver: false,
         }).start();
-      }
+      },
     })
   ).current;
   const getCardStyle = () => {
@@ -50,13 +51,24 @@ const RecipeDetailsScreen = () => {
       extrapolate: 'clamp',
     });
     return {
-      transform: [{translateY}],
+      transform: [{ translateY }],
       ...styles.detailsContainer,
     };
   };
   const { state } = useContext(Context);
   return (
     <SafeAreaView style={styles.droidSafeArea}>
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          zIndex: 1,
+          marginLeft: 20,
+          marginTop: 30,
+        }}
+        onPress={() => navigation.goBack()}
+      >
+        <MaterialIcons name="keyboard-backspace" size={30} color="#37426B" />
+      </TouchableOpacity>
       <Image
         style={styles.thumb}
         source={{ uri: state.selectedRecipe.imageUrl }}
@@ -69,41 +81,44 @@ const RecipeDetailsScreen = () => {
           >{`${state.selectedRecipe.portions} ${state.selectedRecipe.portionUnit}`}</Text>
         </View>
         <View style={styles.resizeContainer}>
-          <FontAwesome name="minus" size={24} color="#37426B" />
+          <TouchableOpacity>
+            <FontAwesome name="minus" size={24} color="#37426B" />
+          </TouchableOpacity>
           <View style={styles.resizePortionsContainer}>
             <Text style={styles.resizePortionsAmount}>1</Text>
             <Text style={styles.resizePortionsDescription}>receita</Text>
           </View>
-          <FontAwesome name="plus" size={24} color="#37426B" />
+          <TouchableOpacity>
+            <FontAwesome name="plus" size={24} color="#37426B" />
+          </TouchableOpacity>
         </View>
         <View>
-          {
-            Object.keys(state.selectedRecipe.steps).map(
-                key =>  <Step 
-                key={key} 
-                stepName={key} 
-                ingredients={state.selectedRecipe.steps[key].ingredients}
-              />
-            )
-          }
+          {Object.keys(state.selectedRecipe.steps).map((key) => (
+            <Step
+              key={key}
+              stepName={key}
+              ingredients={state.selectedRecipe.steps[key].ingredients}
+            />
+          ))}
         </View>
       </Animated.View>
     </SafeAreaView>
   );
 };
 
-const Step = ({stepName, ingredients = []}) => {
+const Step = ({ stepName, ingredients = [] }) => {
   return (
-    <View style={{marginTop: 10}}>
+    <View style={{ marginTop: 10 }}>
       <Text style={styles.steps}>{stepName}</Text>
-      {
-        ingredients.map(ingredient => 
-          <Text style={styles.ingredients} key={ingredient.ingredient}>{ingredient.amount}{ingredient.unit} - {ingredient.ingredient}</Text>
-        )
-      }
+      {ingredients.map((ingredient) => (
+        <Text style={styles.ingredients} key={ingredient.ingredient}>
+          {ingredient.amount}
+          {ingredient.unit} - {ingredient.ingredient}
+        </Text>
+      ))}
     </View>
-  )
-}
+  );
+};
 
 const fontBold = {
   color: '#37426B',
@@ -113,6 +128,7 @@ const fontBold = {
 
 const styles = StyleSheet.create({
   droidSafeArea: {
+    position: 'relative',
     flex: 1,
     paddingTop: Platform.OS === 'android' ? 35 : 0,
   },
@@ -129,7 +145,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   detailsHeader: {
-    marginTop: 30
+    marginTop: 30,
   },
   recipeTitle: {
     ...fontBold,
@@ -143,7 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 10
+    marginVertical: 10,
   },
   resizePortionsContainer: {
     marginHorizontal: 20,
@@ -160,14 +176,14 @@ const styles = StyleSheet.create({
   steps: {
     ...fontBold,
     fontFamily: 'Roboto_400Regular',
-    fontSize: 18
+    fontSize: 18,
   },
   ingredients: {
     marginTop: 10,
     fontFamily: 'Roboto_400Regular',
     color: '#7895A1',
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
 });
 
 export default RecipeDetailsScreen;
