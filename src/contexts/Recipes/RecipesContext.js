@@ -22,6 +22,7 @@ import {
   removeInstruction,
   newRecipe,
   loadRecipe,
+  removeStepByName,
 } from './Actions';
 
 const INITIAL_STATE = {
