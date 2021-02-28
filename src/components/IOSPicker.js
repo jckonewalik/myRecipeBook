@@ -30,8 +30,11 @@ const IOSPicker = ({ label, outputValue, options, onSelect }) => {
   };
   return (
     <>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <View>
+      <TouchableOpacity
+        style={{ flex: 1 }}
+        onPress={() => setModalVisible(true)}
+      >
+        <View style={{ flex: 1 }}>
           <AppOutputText label={label} value={outputValue} />
         </View>
       </TouchableOpacity>

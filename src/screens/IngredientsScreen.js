@@ -45,26 +45,27 @@ const IngredientsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.rootContainer}>
-      {Platform.OS === 'ios' ? (
-        <IOSPicker
-          label={i18n.t('recipe_step')}
-          outputValue={step}
-          options={Object.keys(state.selectedRecipe.steps).map((step) => {
-            return { label: step, value: step };
-          })}
-          onSelect={setStep}
-        />
-      ) : (
-        <AndroidPicker
-          label={i18n.t('recipe_step')}
-          value={step}
-          options={Object.keys(state.selectedRecipe.steps).map((step) => {
-            return { label: step, value: step };
-          })}
-          onSelect={setStep}
-        />
-      )}
-
+      <View style={{ maxHeight: 30 }}>
+        {Platform.OS === 'ios' ? (
+          <IOSPicker
+            label={i18n.t('recipe_step')}
+            outputValue={step}
+            options={Object.keys(state.selectedRecipe.steps).map((step) => {
+              return { label: step, value: step };
+            })}
+            onSelect={setStep}
+          />
+        ) : (
+          <AndroidPicker
+            label={i18n.t('recipe_step')}
+            value={step}
+            options={Object.keys(state.selectedRecipe.steps).map((step) => {
+              return { label: step, value: step };
+            })}
+            onSelect={setStep}
+          />
+        )}
+      </View>
       <AppTextInput
         label={i18n.t('recipe_ingredient')}
         value={name}

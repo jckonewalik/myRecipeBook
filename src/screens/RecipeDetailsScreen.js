@@ -1,6 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { integerText, fractionText } from '../utils/TextUtil';
 import {
   SafeAreaView,
   View,
@@ -13,6 +14,8 @@ import {
   StyleSheet,
   PanResponder,
 } from 'react-native';
+import i18n from 'i18n-js';
+
 const { height, width } = Dimensions.get('window');
 
 const RecipeDetailsScreen = ({ navigation }) => {
@@ -55,7 +58,9 @@ const RecipeDetailsScreen = ({ navigation }) => {
       ...styles.detailsContainer,
     };
   };
-  const { state } = useContext(Context);
+  const { state, increaseFractionation, decreaseFractionation } = useContext(
+    Context
+  );
   return (
     <SafeAreaView style={styles.droidSafeArea}>
       <TouchableOpacity
@@ -81,22 +86,36 @@ const RecipeDetailsScreen = ({ navigation }) => {
           >{`${state.selectedRecipe.portions} ${state.selectedRecipe.portionUnit}`}</Text>
         </View>
         <View style={styles.resizeContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={decreaseFractionation}>
             <FontAwesome name="minus" size={24} color="#37426B" />
           </TouchableOpacity>
           <View style={styles.resizePortionsContainer}>
-            <Text style={styles.resizePortionsAmount}>1</Text>
-            <Text style={styles.resizePortionsDescription}>receita</Text>
+            <View style={styles.resizePortionsNumberContainer}>
+              <Text style={styles.resizePortionsIntegerAmount}>
+                {integerText(state.totalRecipes)}
+              </Text>
+              <Text style={styles.resizePortionsFractionAmount}>
+                {fractionText(state.totalRecipes)}
+              </Text>
+            </View>
+            <Text style={styles.resizePortionsDescription}>
+              {i18n.t('recipe')}
+            </Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={increaseFractionation}>
             <FontAwesome name="plus" size={24} color="#37426B" />
           </TouchableOpacity>
         </View>
-        <View>
+        <View
+          style={{
+            paddingHorizontal: 30,
+          }}
+        >
           {Object.keys(state.selectedRecipe.steps).map((key) => (
             <Step
               key={key}
               stepName={key}
+              totalRecipes={state.totalRecipes}
               ingredients={state.selectedRecipe.steps[key].ingredients}
             />
           ))}
@@ -106,15 +125,22 @@ const RecipeDetailsScreen = ({ navigation }) => {
   );
 };
 
-const Step = ({ stepName, ingredients = [] }) => {
+const Step = ({ stepName, ingredients = [], totalRecipes }) => {
   return (
     <View style={{ marginTop: 10 }}>
       <Text style={styles.steps}>{stepName}</Text>
       {ingredients.map((ingredient) => (
-        <Text style={styles.ingredients} key={ingredient.ingredient}>
-          {ingredient.amount}
-          {ingredient.unit} - {ingredient.ingredient}
-        </Text>
+        <View key={ingredient.ingredient} style={styles.ingredientsContainer}>
+          <Text style={styles.ingredients}>
+            {integerText(ingredient.amount * totalRecipes)}
+          </Text>
+          <Text style={{ ...styles.ingredients, fontSize: 10 }}>
+            {fractionText(ingredient.amount * totalRecipes)}
+          </Text>
+          <Text style={styles.ingredients}>
+            {` ${ingredient.unit} - ${ingredient.ingredient}`}
+          </Text>
+        </View>
       ))}
     </View>
   );
@@ -142,10 +168,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     backgroundColor: '#fff',
-    paddingHorizontal: 30,
   },
   detailsHeader: {
     marginTop: 30,
+    paddingHorizontal: 30,
   },
   recipeTitle: {
     ...fontBold,
@@ -154,20 +180,33 @@ const styles = StyleSheet.create({
     color: '#7895A1',
     fontFamily: 'Roboto_900Black',
     fontSize: 15,
+    marginTop: 10,
   },
   resizeContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#E3EAEE',
+    paddingVertical: 10,
+  },
+  resizePortionsNumberContainer: {
+    flexDirection: 'row',
   },
   resizePortionsContainer: {
     marginHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  resizePortionsAmount: {
+  resizePortionsIntegerAmount: {
     ...fontBold,
+    fontSize: 30,
+  },
+  resizePortionsFractionAmount: {
+    ...fontBold,
+    fontSize: 15,
   },
   resizePortionsDescription: {
     ...fontBold,
@@ -177,6 +216,9 @@ const styles = StyleSheet.create({
     ...fontBold,
     fontFamily: 'Roboto_400Regular',
     fontSize: 18,
+  },
+  ingredientsContainer: {
+    flexDirection: 'row',
   },
   ingredients: {
     marginTop: 10,

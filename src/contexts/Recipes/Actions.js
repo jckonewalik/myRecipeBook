@@ -9,6 +9,8 @@ import {
   REMOVE_INSTRUCTION,
   NEW_RECIPE,
   LOAD_RECIPE,
+  INCREASE_FRACTIONATION,
+  DECREASE_FRACTIONATION,
 } from './ActionTypes';
 
 export const newRecipe = (dispatch) => {
@@ -101,6 +103,22 @@ export const loadRecipes = (dispatch) => {
     dispatch({
       type: LOAD_RECIPES,
       payload: recipes,
+    });
+  };
+};
+
+export const increaseFractionation = (dispatch) => {
+  return () => {
+    dispatch({
+      type: INCREASE_FRACTIONATION,
+    });
+  };
+};
+
+export const decreaseFractionation = (dispatch) => {
+  return () => {
+    dispatch({
+      type: DECREASE_FRACTIONATION,
     });
   };
 };

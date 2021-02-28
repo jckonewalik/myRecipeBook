@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     color: '#37426B',
   },
   container: {
+    flex: 1,
     marginTop: 10,
     fontFamily: 'Roboto_400Regular',
     fontSize: 20,

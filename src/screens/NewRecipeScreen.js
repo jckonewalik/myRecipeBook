@@ -1,7 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
   ScrollView,
   View,
+  Keyboard,
   Dimensions,
   StyleSheet,
   Platform,
@@ -14,13 +17,13 @@ import IOSPicker from '../components/IOSPicker';
 import AppImagePicker from '../components/AppImagePicker';
 import i18n from 'i18n-js';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const NewRecipeScreen = ({ navigation }) => {
   const { state, setBasicInfo } = useContext(Context);
   const portionUnitOptions = [
     { label: `${i18n.t('units')}`, value: 'units' },
     { label: `${i18n.t('piece')}`, value: 'piece' },
-    { label: `${i18n.t('slice')}`, value: 'slice' },
+    { label: `${i18n.t('portions')}`, value: 'portions' },
   ];
 
   const [title, setTitle] = useState('');
@@ -53,54 +56,58 @@ const NewRecipeScreen = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.rootContainer}>
-      <AppImagePicker image={image} setImage={setImage} />
-      <AppTextInput
-        label={i18n.t('recipe_title')}
-        value={title}
-        onChangeText={setTitle}
-      />
-      <View style={styles.portionsContainer}>
-        <View style={styles.protionsInput}>
+    <KeyboardAvoidingView behavior="position" style={styles.rootContainer}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView style={styles.inner}>
+          <AppImagePicker image={image} setImage={setImage} />
           <AppTextInput
-            label={i18n.t('recipe_portions')}
-            value={portions}
-            keyboardType="numeric"
-            onChangeText={setPortions}
+            label={i18n.t('recipe_title')}
+            value={title}
+            onChangeText={setTitle}
           />
-        </View>
-        <View style={styles.protionsInput}>
-          {Platform.OS === 'ios' ? (
-            <IOSPicker
-              label={i18n.t('unit')}
-              outputValue={portionUnit}
-              options={portionUnitOptions}
-              onSelect={setPortionUnit}
+          <View style={styles.portionsContainer}>
+            <View style={styles.protionsInput}>
+              <AppTextInput
+                label={i18n.t('recipe_portions')}
+                value={portions}
+                keyboardType="numeric"
+                onChangeText={setPortions}
+              />
+            </View>
+            <View style={styles.protionsInput}>
+              {Platform.OS === 'ios' ? (
+                <IOSPicker
+                  label={i18n.t('unit')}
+                  outputValue={portionUnit}
+                  options={portionUnitOptions}
+                  onSelect={setPortionUnit}
+                />
+              ) : (
+                <AndroidPicker
+                  label={i18n.t('unit')}
+                  value={portionUnit}
+                  options={portionUnitOptions}
+                  onSelect={setPortionUnit}
+                />
+              )}
+            </View>
+          </View>
+          <AppTextInput
+            label={i18n.t('recipe_calories')}
+            value={calories}
+            keyboardType="numeric"
+            onChangeText={setCalories}
+          />
+          <View style={styles.footerContainer}>
+            <PrimaryButton
+              disabled={!isValidInput()}
+              text={i18n.t('recipe_steps')}
+              onPress={() => goToSteps()}
             />
-          ) : (
-            <AndroidPicker
-              label={i18n.t('unit')}
-              value={portionUnit}
-              options={portionUnitOptions}
-              onSelect={setPortionUnit}
-            />
-          )}
-        </View>
-      </View>
-      <AppTextInput
-        label={i18n.t('recipe_calories')}
-        value={calories}
-        keyboardType="numeric"
-        onChangeText={setCalories}
-      />
-      <View style={styles.footerContainer}>
-        <PrimaryButton
-          disabled={!isValidInput()}
-          text={i18n.t('recipe_steps')}
-          onPress={() => goToSteps()}
-        />
-      </View>
-    </ScrollView>
+          </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -108,10 +115,12 @@ const styles = StyleSheet.create({
   keyboardContainer: {
     flex: 1,
   },
-  rootContainer: {
-    flex: 1,
+  inner: {
     padding: 20,
     backgroundColor: '#fff',
+  },
+  rootContainer: {
+    flex: 1,
   },
   portionsContainer: {
     flexDirection: 'row',

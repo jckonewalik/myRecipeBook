@@ -15,6 +15,7 @@ const AppTextInput = ({
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
+        autoCapitalize="none"
         style={{ ...styles.input, ...style }}
         keyboardType={keyboardType}
         value={value}

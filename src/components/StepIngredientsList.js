@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import AppListItem from './AppListItem';
+import { fractionText, integerText } from '../utils/TextUtil';
 
 const StepIngredientsList = ({ stepName, ingredients }) => {
   const { removeIngredient } = useContext(Context);
@@ -18,7 +19,7 @@ const StepIngredientsList = ({ stepName, ingredients }) => {
         keyExtractor={(item) => item.ingredient}
         renderItem={({ item }) => (
           <AppListItem
-            text={`${item.amount}${item.unit} ${item.ingredient}`}
+            text={`${item.amount} ${item.unit} ${item.ingredient}`}
             onRemove={() =>
               onRemoveIngredient({ stepName, ingredient: item.ingredient })
             }

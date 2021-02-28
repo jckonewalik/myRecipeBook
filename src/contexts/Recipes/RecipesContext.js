@@ -10,6 +10,8 @@ import {
   REMOVE_INSTRUCTION,
   NEW_RECIPE,
   LOAD_RECIPE,
+  INCREASE_FRACTIONATION,
+  DECREASE_FRACTIONATION,
 } from './ActionTypes';
 import {
   loadRecipes,
@@ -22,10 +24,14 @@ import {
   removeInstruction,
   newRecipe,
   loadRecipe,
+  increaseFractionation,
+  decreaseFractionation,
   removeStepByName,
 } from './Actions';
 
 const INITIAL_STATE = {
+  fractionation: 0.5,
+  totalRecipes: 1,
   recipes: [],
   selectedRecipe: {
     id: null,
@@ -166,9 +172,35 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
         },
       };
     }
+    case INCREASE_FRACTIONATION: {
+      return {
+        ...state,
+        totalRecipes: calculateTotalRecipes(
+          state.totalRecipes,
+          state.fractionation
+        ),
+      };
+    }
+    case DECREASE_FRACTIONATION: {
+      return {
+        ...state,
+        totalRecipes: calculateTotalRecipes(
+          state.totalRecipes,
+          state.fractionation * -1
+        ),
+      };
+    }
     default:
       return state;
   }
+};
+
+const calculateTotalRecipes = (currentValue, incrementValue) => {
+  const newTotal = currentValue + incrementValue;
+  if (newTotal > 0) {
+    return newTotal;
+  }
+  return currentValue;
 };
 
 export const { Context, Provider } = createDataContext(
@@ -184,6 +216,8 @@ export const { Context, Provider } = createDataContext(
     removeInstruction,
     newRecipe,
     loadRecipe,
+    increaseFractionation,
+    decreaseFractionation,
   },
   INITIAL_STATE
 );
