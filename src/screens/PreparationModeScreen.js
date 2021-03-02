@@ -15,7 +15,7 @@ const { width } = Dimensions.get('window');
 const PreparationModeScreen = ({ navigation }) => {
   const { state, addInstruction, loadRecipes } = useContext(Context);
   const [description, setDescription] = useState('');
-  const [step, setStep] = useState('');
+  const [step, setStep] = useState('select');
 
   const onSave = () => {
     saveOrUpdate(state.selectedRecipe, () => {
@@ -34,7 +34,7 @@ const PreparationModeScreen = ({ navigation }) => {
   };
 
   const isValidPreparationMode = () => {
-    return step && description.trim() !== '';
+    return step && step !== 'select' && description.trim() !== '';
   };
 
   return (

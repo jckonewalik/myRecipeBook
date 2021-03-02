@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Modal,
@@ -30,11 +30,8 @@ const IOSPicker = ({ label, outputValue, options, onSelect }) => {
   };
   return (
     <>
-      <TouchableOpacity
-        style={{ flex: 1 }}
-        onPress={() => setModalVisible(true)}
-      >
-        <View style={{ flex: 1 }}>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <View>
           <AppOutputText label={label} value={outputValue} />
         </View>
       </TouchableOpacity>

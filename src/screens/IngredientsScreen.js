@@ -13,7 +13,7 @@ const { width } = Dimensions.get('window');
 const IngredientsScreen = ({ navigation }) => {
   const { state, addIngredient } = useContext(Context);
   const [name, setName] = useState('');
-  const [step, setStep] = useState('');
+  const [step, setStep] = useState('select');
   const [amount, setAmount] = useState('');
   const [amountUnit, setAmountUnit] = useState('');
 
@@ -40,32 +40,30 @@ const IngredientsScreen = ({ navigation }) => {
   };
 
   const isValidIngredient = () => {
-    return step && name && amount && amountUnit;
+    return step && step !== 'select' && name && amount && amountUnit;
   };
 
   return (
     <View style={styles.rootContainer}>
-      <View style={{ maxHeight: 30 }}>
-        {Platform.OS === 'ios' ? (
-          <IOSPicker
-            label={i18n.t('recipe_step')}
-            outputValue={step}
-            options={Object.keys(state.selectedRecipe.steps).map((step) => {
-              return { label: step, value: step };
-            })}
-            onSelect={setStep}
-          />
-        ) : (
-          <AndroidPicker
-            label={i18n.t('recipe_step')}
-            value={step}
-            options={Object.keys(state.selectedRecipe.steps).map((step) => {
-              return { label: step, value: step };
-            })}
-            onSelect={setStep}
-          />
-        )}
-      </View>
+      {Platform.OS === 'ios' ? (
+        <IOSPicker
+          label={i18n.t('recipe_step')}
+          outputValue={step}
+          options={Object.keys(state.selectedRecipe.steps).map((step) => {
+            return { label: step, value: step };
+          })}
+          onSelect={setStep}
+        />
+      ) : (
+        <AndroidPicker
+          label={i18n.t('recipe_step')}
+          value={step}
+          options={Object.keys(state.selectedRecipe.steps).map((step) => {
+            return { label: step, value: step };
+          })}
+          onSelect={setStep}
+        />
+      )}
       <AppTextInput
         label={i18n.t('recipe_ingredient')}
         value={name}

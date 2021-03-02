@@ -9,12 +9,14 @@ const AppTextInput = ({
   onChangeText,
   multiline = false,
   numberOfLines = 1,
+  editable = true,
   maxLength,
 }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
+        editable={editable}
         autoCapitalize="none"
         style={{ ...styles.input, ...style }}
         keyboardType={keyboardType}

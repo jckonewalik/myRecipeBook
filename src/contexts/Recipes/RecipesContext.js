@@ -38,7 +38,7 @@ const INITIAL_STATE = {
     imageUrl: null,
     title: '',
     portions: '',
-    portionUnit: '',
+    portionUnit: 'select',
     calories: '',
     steps: {},
   },

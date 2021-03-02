@@ -17,12 +17,12 @@ import IOSPicker from '../components/IOSPicker';
 import AppImagePicker from '../components/AppImagePicker';
 import i18n from 'i18n-js';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const NewRecipeScreen = ({ navigation }) => {
   const { state, setBasicInfo } = useContext(Context);
   const portionUnitOptions = [
     { label: `${i18n.t('units')}`, value: 'units' },
-    { label: `${i18n.t('piece')}`, value: 'piece' },
+    { label: `${i18n.t('pieces')}`, value: 'pieces' },
     { label: `${i18n.t('portions')}`, value: 'portions' },
   ];
 
@@ -50,9 +50,7 @@ const NewRecipeScreen = ({ navigation }) => {
   };
 
   const isValidInput = () => {
-    return (
-      title && portions && portionUnit && portionUnit !== `${i18n.t('select')}`
-    );
+    return title && portions && portionUnit && portionUnit !== 'select';
   };
 
   return (
