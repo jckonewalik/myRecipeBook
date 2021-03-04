@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import i18n from 'i18n-js';
 
 import { integerText, fractionText } from '../utils/TextUtil';
 const DetailsTabView = ({ recipe, totalRecipes }) => {
@@ -7,11 +14,20 @@ const DetailsTabView = ({ recipe, totalRecipes }) => {
   return (
     <>
       <View style={styles.tabViewOptionsContainer}>
-        <View style={styles.tabViewOption}>
-          <Text style={styles.tabViewText}>Ingredients</Text>
+        <View style={getOptionStyle('ingredients', selectedOption)}>
+          <TouchableOpacity onPress={() => setSelectedOption('ingredients')}>
+            <Text style={styles.tabViewText}>
+              {' '}
+              {i18n.t('recipe_ingredients')}
+            </Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.tabViewOption}>
-          <Text style={styles.tabViewText}>Modo de preparo</Text>
+        <View style={getOptionStyle('instructions', selectedOption)}>
+          <TouchableOpacity onPress={() => setSelectedOption('instructions')}>
+            <Text style={styles.tabViewText}>
+              {i18n.t('recipe_preparation_mode')}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
       {selectedOption === 'ingredients' && (
@@ -83,23 +99,36 @@ const InstructionsList = ({ stepName, instructions = [] }) => {
     </View>
   );
 };
+const getOptionStyle = (tab, selectedOption) => {
+  return tab === selectedOption
+    ? styles.selectedTabViewOption
+    : styles.tabViewOption;
+};
 
 const fontBold = {
   color: '#37426B',
   fontFamily: 'Roboto_900Black',
   fontSize: 20,
 };
-
+const tabViewOption = {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingVertical: 20,
+  borderBottomWidth: 5,
+};
 const styles = StyleSheet.create({
   tabViewOptionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 20,
   },
   tabViewOption: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    ...tabViewOption,
+    borderBottomColor: 'transparent',
+  },
+  selectedTabViewOption: {
+    ...tabViewOption,
+    borderBottomColor: '#37426B',
   },
   tabViewText: {
     ...fontBold,
