@@ -1,7 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { Context } from '../contexts/Recipes/RecipesContext';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import { integerText, fractionText } from '../utils/TextUtil';
+import { MaterialIcons } from '@expo/vector-icons';
 import {
   SafeAreaView,
   View,
@@ -14,7 +13,9 @@ import {
   StyleSheet,
   PanResponder,
 } from 'react-native';
-import i18n from 'i18n-js';
+import ResizePortionContainer from '../components/ResizePortionContainer';
+import DetailsTabView from '../components/DetailsTabView';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const { height, width } = Dimensions.get('window');
 
@@ -23,7 +24,7 @@ const RecipeDetailsScreen = ({ navigation }) => {
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (event, gestureHandler) => {
-        return true;
+        return position.y._value !== 0 ? false : true;
       },
       onPanResponderGrant: () => {
         position.setOffset({
@@ -74,75 +75,43 @@ const RecipeDetailsScreen = ({ navigation }) => {
       >
         <MaterialIcons name="keyboard-backspace" size={30} color="#37426B" />
       </TouchableOpacity>
-      <Image
-        style={styles.thumb}
-        source={{ uri: state.selectedRecipe.imageUrl }}
-      />
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Animated.spring(position, {
+            toValue: { y: 0, x: 0 },
+            useNativeDriver: false,
+          }).start();
+        }}
+      >
+        {state.selectedRecipe.imageUrl ? (
+          <Image
+            style={styles.thumb}
+            source={{ uri: state.selectedRecipe.imageUrl }}
+          />
+        ) : (
+          <View style={styles.noThumb}>
+            <Image source={require('../../assets/no-image.png')} />
+          </View>
+        )}
+      </TouchableWithoutFeedback>
       <Animated.View style={getCardStyle()} {...panResponder.panHandlers}>
         <View style={styles.detailsHeader}>
           <Text style={styles.recipeTitle}>{state.selectedRecipe.title}</Text>
-          <Text
-            style={styles.recipePortions}
-          >{`${state.selectedRecipe.portions} ${state.selectedRecipe.portionUnit}`}</Text>
+          <Text style={styles.recipePortions}>{`${
+            state.selectedRecipe.portions * state.totalRecipes
+          } ${state.selectedRecipe.portionUnit}`}</Text>
         </View>
-        <View style={styles.resizeContainer}>
-          <TouchableOpacity onPress={decreaseFractionation}>
-            <FontAwesome name="minus" size={24} color="#37426B" />
-          </TouchableOpacity>
-          <View style={styles.resizePortionsContainer}>
-            <View style={styles.resizePortionsNumberContainer}>
-              <Text style={styles.resizePortionsIntegerAmount}>
-                {integerText(state.totalRecipes)}
-              </Text>
-              <Text style={styles.resizePortionsFractionAmount}>
-                {fractionText(state.totalRecipes)}
-              </Text>
-            </View>
-            <Text style={styles.resizePortionsDescription}>
-              {i18n.t('recipe')}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={increaseFractionation}>
-            <FontAwesome name="plus" size={24} color="#37426B" />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            paddingHorizontal: 30,
-          }}
-        >
-          {Object.keys(state.selectedRecipe.steps).map((key) => (
-            <Step
-              key={key}
-              stepName={key}
-              totalRecipes={state.totalRecipes}
-              ingredients={state.selectedRecipe.steps[key].ingredients}
-            />
-          ))}
-        </View>
+        <ResizePortionContainer
+          totalRecipes={state.totalRecipes}
+          onPressMinus={decreaseFractionation}
+          onPressPlus={increaseFractionation}
+        />
+        <DetailsTabView
+          recipe={state.selectedRecipe}
+          totalRecipes={state.totalRecipes}
+        />
       </Animated.View>
     </SafeAreaView>
-  );
-};
-
-const Step = ({ stepName, ingredients = [], totalRecipes }) => {
-  return (
-    <View style={{ marginTop: 10 }}>
-      <Text style={styles.steps}>{stepName}</Text>
-      {ingredients.map((ingredient) => (
-        <View key={ingredient.ingredient} style={styles.ingredientsContainer}>
-          <Text style={styles.ingredients}>
-            {integerText(ingredient.amount * totalRecipes)}
-          </Text>
-          <Text style={{ ...styles.ingredients, fontSize: 10 }}>
-            {fractionText(ingredient.amount * totalRecipes)}
-          </Text>
-          <Text style={styles.ingredients}>
-            {` ${ingredient.unit} - ${ingredient.ingredient}`}
-          </Text>
-        </View>
-      ))}
-    </View>
   );
 };
 
@@ -162,8 +131,13 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     height: height * 0.5,
   },
+  noThumb: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: height * 0.5,
+  },
   detailsContainer: {
-    height: height,
+    height: height * 0.9,
     width: width,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -181,50 +155,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto_900Black',
     fontSize: 15,
     marginTop: 10,
-  },
-  resizeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#E3EAEE',
-    paddingVertical: 10,
-  },
-  resizePortionsNumberContainer: {
-    flexDirection: 'row',
-  },
-  resizePortionsContainer: {
-    marginHorizontal: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  resizePortionsIntegerAmount: {
-    ...fontBold,
-    fontSize: 30,
-  },
-  resizePortionsFractionAmount: {
-    ...fontBold,
-    fontSize: 15,
-  },
-  resizePortionsDescription: {
-    ...fontBold,
-    fontSize: 12,
-  },
-  steps: {
-    ...fontBold,
-    fontFamily: 'Roboto_400Regular',
-    fontSize: 18,
-  },
-  ingredientsContainer: {
-    flexDirection: 'row',
-  },
-  ingredients: {
-    marginTop: 10,
-    fontFamily: 'Roboto_400Regular',
-    color: '#7895A1',
-    fontSize: 15,
   },
 });
 

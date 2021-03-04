@@ -12,6 +12,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
+  const image = recipe.imageUrl
+    ? { uri: recipe.imageUrl }
+    : require('../../assets/no-image.png');
   const position = useRef(new Animated.ValueXY()).current;
   const panResponder = useRef(
     PanResponder.create({
@@ -59,7 +62,7 @@ const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
         <TouchableWithoutFeedback onPress={() => onSelect(recipe.id)}>
           <View style={{ flexDirection: 'row', width: '100%' }}>
             <View style={styles.imageContainer}>
-              <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
+              <Image source={image} style={styles.image} />
             </View>
             <View style={styles.descriptionContainer}>
               <Text style={styles.title}>{recipe.title}</Text>

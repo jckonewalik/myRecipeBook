@@ -17,6 +17,10 @@ const { height } = Dimensions.get('window');
 const IOSPicker = ({ label, outputValue, options, onSelect }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [pickerValue, setPickerValue] = useState(`${i18n.t('select')}`);
+  let localeOutputValue = i18n.t(outputValue);
+  localeOutputValue = localeOutputValue.includes('missing')
+    ? outputValue
+    : localeOutputValue;
 
   const onModalSelect = () => {
     if (pickerValue !== `${i18n.t('select')}`) {
@@ -32,7 +36,7 @@ const IOSPicker = ({ label, outputValue, options, onSelect }) => {
     <>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View>
-          <AppOutputText label={label} value={outputValue} />
+          <AppOutputText label={label} value={localeOutputValue} />
         </View>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
