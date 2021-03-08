@@ -7,14 +7,24 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Text,
   Alert,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { deleteRecipe } from '../services/RecipesService';
 import { listAll, findById } from '../database/repository/RecipesRepository';
 import RecipeCard from '../components/RecipeCard';
+import SearchBar from '../components/SearchBar';
 import { Context } from '../contexts/Recipes/RecipesContext';
 const HomeScreen = ({ navigation }) => {
-  const { state, newRecipe, loadRecipes, loadRecipe } = useContext(Context);
+  const {
+    state,
+    newRecipe,
+    loadRecipes,
+    loadRecipe,
+    filterRecipes,
+  } = useContext(Context);
 
   useEffect(() => {
     listAll(loadRecipes);
@@ -51,20 +61,31 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.rootContainer}>
-      <View style={styles.body}>
-        <FlatList
-          data={state.recipes}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <RecipeCard
-              onSelect={onSelectRecipe}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              recipe={item}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        {state.recipes.length > 0 ? (
+          <View style={styles.body}>
+            <SearchBar onSearch={filterRecipes} />
+            <FlatList
+              style={{ marginTop: 10 }}
+              data={state.filteredRecipes}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <RecipeCard
+                  onSelect={onSelectRecipe}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  recipe={item}
+                />
+              )}
             />
-          )}
-        />
-      </View>
+            ) )
+          </View>
+        ) : (
+          <View style={styles.welcomeContainer}>
+            <Text style={styles.welcomeText}>{i18n.t('welcome_message')}</Text>
+          </View>
+        )}
+      </TouchableWithoutFeedback>
       <View style={styles.footer}>
         <TouchableOpacity onPress={createNewRecipe}>
           <View style={styles.addButton}>
@@ -85,6 +106,16 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 10,
+  },
+  welcomeContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+  },
+  welcomeText: {
+    color: '#37426B',
+    fontFamily: 'Roboto_400Regular',
+    textAlign: 'center',
   },
   footer: {
     backgroundColor: '#37426B',

@@ -11,6 +11,7 @@ import {
   LOAD_RECIPE,
   INCREASE_FRACTIONATION,
   DECREASE_FRACTIONATION,
+  FILTER_RECIPES,
 } from './ActionTypes';
 
 export const newRecipe = (dispatch) => {
@@ -119,6 +120,15 @@ export const decreaseFractionation = (dispatch) => {
   return () => {
     dispatch({
       type: DECREASE_FRACTIONATION,
+    });
+  };
+};
+
+export const filterRecipes = (dispatch) => {
+  return (text) => {
+    dispatch({
+      type: FILTER_RECIPES,
+      payload: text,
     });
   };
 };

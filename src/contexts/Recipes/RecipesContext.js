@@ -12,6 +12,7 @@ import {
   LOAD_RECIPE,
   INCREASE_FRACTIONATION,
   DECREASE_FRACTIONATION,
+  FILTER_RECIPES,
 } from './ActionTypes';
 import {
   loadRecipes,
@@ -27,12 +28,14 @@ import {
   increaseFractionation,
   decreaseFractionation,
   removeStepByName,
+  filterRecipes,
 } from './Actions';
 
 const INITIAL_STATE = {
   fractionation: 0.5,
   totalRecipes: 1,
   recipes: [],
+  filteredRecipes: [],
   selectedRecipe: {
     id: null,
     imageUrl: null,
@@ -51,6 +54,7 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         recipes: payload,
+        filteredRecipes: payload,
       };
     case LOAD_RECIPE: {
       return {
@@ -190,6 +194,14 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
         ),
       };
     }
+    case FILTER_RECIPES: {
+      return {
+        ...state,
+        filteredRecipes: state.recipes.filter((r) =>
+          r.title.toLowerCase().includes(payload.toLowerCase())
+        ),
+      };
+    }
     default:
       return state;
   }
@@ -218,6 +230,7 @@ export const { Context, Provider } = createDataContext(
     loadRecipe,
     increaseFractionation,
     decreaseFractionation,
+    filterRecipes,
   },
   INITIAL_STATE
 );
