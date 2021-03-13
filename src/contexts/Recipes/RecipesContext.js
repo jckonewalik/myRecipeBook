@@ -13,6 +13,7 @@ import {
   INCREASE_FRACTIONATION,
   DECREASE_FRACTIONATION,
   FILTER_RECIPES,
+  SET_FRACTIONATION,
 } from './ActionTypes';
 import {
   loadRecipes,
@@ -29,6 +30,7 @@ import {
   decreaseFractionation,
   removeStepByName,
   filterRecipes,
+  setFractionation,
 } from './Actions';
 
 const INITIAL_STATE = {
@@ -202,6 +204,12 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
         ),
       };
     }
+    case SET_FRACTIONATION: {
+      return {
+        ...state,
+        fractionation: payload,
+      };
+    }
     default:
       return state;
   }
@@ -231,6 +239,7 @@ export const { Context, Provider } = createDataContext(
     increaseFractionation,
     decreaseFractionation,
     filterRecipes,
+    setFractionation,
   },
   INITIAL_STATE
 );

@@ -6,6 +6,9 @@ export const fractionText = (value) => {
   const decimalValue = value % 1;
   let fractionText;
   switch (decimalValue) {
+    case 0.75:
+      fractionText = '3/4';
+      break;
     case 0.5:
       fractionText = '1/2';
       break;

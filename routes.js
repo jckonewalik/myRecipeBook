@@ -7,6 +7,7 @@ import StepsScreen from './src/screens/StepsScreen';
 import IngredientsScreen from './src/screens/IngredientsScreen';
 import PreparationModeScreen from './src/screens/PreparationModeScreen';
 import RecipeDetailsScreen from './src/screens/RecipeDetailsScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 
@@ -70,6 +71,14 @@ const Routes = () => {
           name="RecipeDetails"
           component={RecipeDetailsScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            headerTitle: `${i18n.t('settings')}`,
+            ...backButton,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

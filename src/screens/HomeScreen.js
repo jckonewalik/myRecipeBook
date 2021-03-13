@@ -33,6 +33,9 @@ const HomeScreen = ({ navigation }) => {
   const createNewRecipe = () => {
     newRecipe(() => navigation.navigate('NewRecipe'));
   };
+  const openSettings = () => {
+    navigation.navigate('Settings');
+  };
 
   const onEdit = (id) => {
     findById(id, loadRecipe, () => navigation.navigate('NewRecipe'));
@@ -78,7 +81,6 @@ const HomeScreen = ({ navigation }) => {
                 />
               )}
             />
-            ) )
           </View>
         ) : (
           <View style={styles.welcomeContainer}>
@@ -90,6 +92,11 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity onPress={createNewRecipe}>
           <View style={styles.addButton}>
             <FontAwesome name="plus" size={24} color="#37426B" />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.settingsButton} onPress={openSettings}>
+          <View>
+            <FontAwesome name="gear" size={34} color="white" />
           </View>
         </TouchableOpacity>
       </View>
@@ -130,6 +137,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 60,
     height: 60,
+  },
+  settingsButton: {
+    position: 'absolute',
+    right: 30,
   },
 });
 

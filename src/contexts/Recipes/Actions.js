@@ -12,6 +12,7 @@ import {
   INCREASE_FRACTIONATION,
   DECREASE_FRACTIONATION,
   FILTER_RECIPES,
+  SET_FRACTIONATION,
 } from './ActionTypes';
 
 export const newRecipe = (dispatch) => {
@@ -129,6 +130,15 @@ export const filterRecipes = (dispatch) => {
     dispatch({
       type: FILTER_RECIPES,
       payload: text,
+    });
+  };
+};
+
+export const setFractionation = (dispatch) => {
+  return (value) => {
+    dispatch({
+      type: SET_FRACTIONATION,
+      payload: value,
     });
   };
 };

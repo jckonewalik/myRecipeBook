@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { Context } from '../contexts/Recipes/RecipesContext';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import {
   SafeAreaView,
   View,
@@ -59,6 +59,9 @@ const RecipeDetailsScreen = ({ navigation }) => {
       ...styles.detailsContainer,
     };
   };
+  const openSettings = () => {
+    navigation.navigate('Settings');
+  };
   const { state, increaseFractionation, decreaseFractionation } = useContext(
     Context
   );
@@ -74,6 +77,19 @@ const RecipeDetailsScreen = ({ navigation }) => {
         onPress={() => navigation.goBack()}
       >
         <MaterialIcons name="keyboard-backspace" size={30} color="#37426B" />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          zIndex: 1,
+          right: 20,
+          marginTop: 30,
+        }}
+        onPress={openSettings}
+      >
+        <View>
+          <FontAwesome name="gear" size={34} color="#37426B" />
+        </View>
       </TouchableOpacity>
       <TouchableWithoutFeedback
         onPress={() => {

@@ -26,5 +26,7 @@
   "name": "Nome",
   "cancel": "Cancelar",
   "delete_recipe": "Deletar Receita",
-  "delete_confirmation": "Você tem certeza que deseja deletar essa receita?"
+  "delete_confirmation": "Você tem certeza que deseja deletar essa receita?",
+  "settings": "Configurações",
+  "settings_fractionation": "Fracionamento da Receita"
 }
