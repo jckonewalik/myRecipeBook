@@ -10,8 +10,8 @@ import {
   REMOVE_INSTRUCTION,
   NEW_RECIPE,
   LOAD_RECIPE,
-  INCREASE_FRACTIONATION,
-  DECREASE_FRACTIONATION,
+  INCREASE_RECIPE_SIZE,
+  DECREASE_RECIPE_SIZE,
   FILTER_RECIPES,
   SET_FRACTIONATION,
 } from './ActionTypes';
@@ -26,8 +26,8 @@ import {
   removeInstruction,
   newRecipe,
   loadRecipe,
-  increaseFractionation,
-  decreaseFractionation,
+  increaseRecipeSize,
+  decreaseRecipeSize,
   removeStepByName,
   filterRecipes,
   setFractionation,
@@ -178,7 +178,7 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
         },
       };
     }
-    case INCREASE_FRACTIONATION: {
+    case INCREASE_RECIPE_SIZE: {
       return {
         ...state,
         totalRecipes: calculateTotalRecipes(
@@ -187,7 +187,7 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
         ),
       };
     }
-    case DECREASE_FRACTIONATION: {
+    case DECREASE_RECIPE_SIZE: {
       return {
         ...state,
         totalRecipes: calculateTotalRecipes(
@@ -236,8 +236,8 @@ export const { Context, Provider } = createDataContext(
     removeInstruction,
     newRecipe,
     loadRecipe,
-    increaseFractionation,
-    decreaseFractionation,
+    increaseRecipeSize,
+    decreaseRecipeSize,
     filterRecipes,
     setFractionation,
   },

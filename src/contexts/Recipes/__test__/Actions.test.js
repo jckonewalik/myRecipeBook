@@ -9,6 +9,10 @@ import {
   ADD_INSTRUCTION,
   REMOVE_INGREDIENT,
   REMOVE_INSTRUCTION,
+  INCREASE_RECIPE_SIZE,
+  DECREASE_RECIPE_SIZE,
+  FILTER_RECIPES,
+  SET_FRACTIONATION,
 } from '../ActionTypes';
 import {
   loadRecipes,
@@ -22,6 +26,10 @@ import {
   newRecipe,
   loadRecipe,
   removeStepByName,
+  increaseRecipeSize,
+  decreaseRecipeSize,
+  filterRecipes,
+  setFractionation,
 } from '../Actions';
 
 describe('setBasicInfo', () => {
@@ -301,6 +309,48 @@ describe('removeInstruction', () => {
       expect.objectContaining({
         payload: payload,
       })
+    );
+  });
+});
+
+describe('increaseRecipeSize', () => {
+  it('should have a INCREASE_RECIPE_SIZE type', () => {
+    const dispatch = jest.fn();
+    increaseRecipeSize(dispatch)({});
+    expect(dispatch).toBeCalledWith(
+      expect.objectContaining({ type: INCREASE_RECIPE_SIZE })
+    );
+  });
+});
+
+describe('decreaseRecipeSize', () => {
+  it('should have a DECREASE_RECIPE_SIZE type', () => {
+    const dispatch = jest.fn();
+    decreaseRecipeSize(dispatch)({});
+    expect(dispatch).toBeCalledWith(
+      expect.objectContaining({ type: DECREASE_RECIPE_SIZE })
+    );
+  });
+});
+
+describe('filterRecipes', () => {
+  it('should have a FILTER_RECIPES type', () => {
+    const dispatch = jest.fn();
+    const text = 'Test';
+    filterRecipes(dispatch)(text);
+    expect(dispatch).toBeCalledWith(
+      expect.objectContaining({ type: FILTER_RECIPES, payload: 'Test' })
+    );
+  });
+});
+
+describe('setFractionation', () => {
+  it('should have a SET_FRACTIONATION type', () => {
+    const dispatch = jest.fn();
+    const value = 0.5;
+    setFractionation(dispatch)(value);
+    expect(dispatch).toBeCalledWith(
+      expect.objectContaining({ type: SET_FRACTIONATION, payload: value })
     );
   });
 });

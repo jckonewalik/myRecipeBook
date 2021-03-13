@@ -10,6 +10,10 @@ import {
   REMOVE_INGREDIENT,
   ADD_INSTRUCTION,
   REMOVE_INSTRUCTION,
+  INCREASE_RECIPE_SIZE,
+  DECREASE_RECIPE_SIZE,
+  FILTER_RECIPES,
+  SET_FRACTIONATION,
 } from '../ActionTypes';
 
 const INITIAL_STATE = {
@@ -278,6 +282,72 @@ it('when process REMOVE_INSTRUCTION action should remove the instruction on sele
   );
   const instructions = newState.selectedRecipe.steps['New Step'].instructions;
   expect(instructions.length).toBe(0);
+});
+
+it('when process INCREASE_RECIPE_SIZE action should increase the totalRecipes value', () => {
+  const state = {
+    totalRecipes: 1,
+    fractionation: 0.5,
+  };
+  const action = {
+    type: INCREASE_RECIPE_SIZE,
+  };
+  const newState = recipeReducer(state, action);
+  expect(newState.totalRecipes).toBe(1.5);
+});
+
+describe('DECREASE_RECIPE_SIZE', () => {
+  it('must decrease the totalRecipes value', () => {
+    const state = {
+      totalRecipes: 1,
+      fractionation: 0.5,
+    };
+    const action = {
+      type: DECREASE_RECIPE_SIZE,
+    };
+    const newState = recipeReducer(state, action);
+    expect(newState.totalRecipes).toBe(0.5);
+  });
+  it('when totalRecipes less or equal then fractionation must keep the totalRecipes value', () => {
+    const state = {
+      totalRecipes: 1,
+      fractionation: 1,
+    };
+    const action = {
+      type: DECREASE_RECIPE_SIZE,
+    };
+    const newState = recipeReducer(state, action);
+    expect(newState.totalRecipes).toBe(1);
+  });
+});
+
+it('when process FILTER_RECIPES action must filter recipes', () => {
+  const state = {
+    recipes: [{ title: 'Recipe 1' }, { title: 'Recipe 2' }, { title: 'Test' }],
+    filteredRecipes: [
+      { title: 'Recipe 1' },
+      { title: 'Recipe 2' },
+      { title: 'Test' },
+    ],
+  };
+  const action = {
+    type: FILTER_RECIPES,
+    payload: 'Test',
+  };
+  const newState = recipeReducer(state, action);
+  expect(newState.filteredRecipes.length).toBe(1);
+});
+
+it('when process SET_FRACTIONATION action must set fractionation value', () => {
+  const state = {
+    fractionation: 1,
+  };
+  const action = {
+    type: SET_FRACTIONATION,
+    payload: 0.5,
+  };
+  const newState = recipeReducer(state, action);
+  expect(newState.fractionation).toBe(0.5);
 });
 
 it('when pass an INVALID action type should not change the state', () => {

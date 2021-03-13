@@ -62,9 +62,7 @@ const RecipeDetailsScreen = ({ navigation }) => {
   const openSettings = () => {
     navigation.navigate('Settings');
   };
-  const { state, increaseFractionation, decreaseFractionation } = useContext(
-    Context
-  );
+  const { state, increaseRecipeSize, decreaseRecipeSize } = useContext(Context);
   return (
     <SafeAreaView style={styles.droidSafeArea}>
       <TouchableOpacity
@@ -119,8 +117,8 @@ const RecipeDetailsScreen = ({ navigation }) => {
         </View>
         <ResizePortionContainer
           totalRecipes={state.totalRecipes}
-          onPressMinus={decreaseFractionation}
-          onPressPlus={increaseFractionation}
+          onPressMinus={decreaseRecipeSize}
+          onPressPlus={increaseRecipeSize}
         />
         <DetailsTabView
           recipe={state.selectedRecipe}

@@ -9,8 +9,8 @@ import {
   REMOVE_INSTRUCTION,
   NEW_RECIPE,
   LOAD_RECIPE,
-  INCREASE_FRACTIONATION,
-  DECREASE_FRACTIONATION,
+  INCREASE_RECIPE_SIZE,
+  DECREASE_RECIPE_SIZE,
   FILTER_RECIPES,
   SET_FRACTIONATION,
 } from './ActionTypes';
@@ -109,18 +109,18 @@ export const loadRecipes = (dispatch) => {
   };
 };
 
-export const increaseFractionation = (dispatch) => {
+export const increaseRecipeSize = (dispatch) => {
   return () => {
     dispatch({
-      type: INCREASE_FRACTIONATION,
+      type: INCREASE_RECIPE_SIZE,
     });
   };
 };
 
-export const decreaseFractionation = (dispatch) => {
+export const decreaseRecipeSize = (dispatch) => {
   return () => {
     dispatch({
-      type: DECREASE_FRACTIONATION,
+      type: DECREASE_RECIPE_SIZE,
     });
   };
 };
