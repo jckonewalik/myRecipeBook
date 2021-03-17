@@ -19,7 +19,11 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <View style={styles.inputContainer}>
-      <TextInput onChangeText={setSearchValue} placeholder={i18n.t('search')} />
+      <TextInput
+        testID="searchText"
+        onChangeText={setSearchValue}
+        placeholder={i18n.t('search')}
+      />
       <FontAwesome
         style={styles.icon}
         name="search"
