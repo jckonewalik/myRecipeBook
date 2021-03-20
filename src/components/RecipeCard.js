@@ -7,9 +7,9 @@ import {
   Text,
   TouchableWithoutFeedback,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
   const image = recipe.imageUrl
@@ -59,7 +59,10 @@ const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
   return (
     <View style={styles.cardContainer}>
       <Animated.View style={getCardStyle()} {...panResponder.panHandlers}>
-        <TouchableWithoutFeedback onPress={() => onSelect(recipe.id)}>
+        <TouchableWithoutFeedback
+          testID="selectRecipeButton"
+          onPress={() => onSelect(recipe.id)}
+        >
           <View style={{ flexDirection: 'row', width: '100%' }}>
             <View style={styles.imageContainer}>
               <Image source={image} style={styles.image} />
@@ -73,12 +76,16 @@ const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.optionsContainer}>
-          <TouchableOpacity onPress={() => onEdit(recipe.id)}>
+          <TouchableOpacity
+            testID="editRecipeButton"
+            onPress={() => onEdit(recipe.id)}
+          >
             <View style={styles.editContainer}>
               <FontAwesome name="pencil" size={24} color="white" />
             </View>
           </TouchableOpacity>
           <TouchableOpacity
+            testID="deleteRecipeButton"
             onPress={() => onDelete(recipe.id, recipe.imageUrl)}
           >
             <View style={styles.deleteContainer}>
