@@ -12,12 +12,12 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { deleteRecipe } from '../services/RecipesService';
-import { listAll, findById } from '../database/repository/RecipesRepository';
+
 import RecipeCard from '../components/RecipeCard';
 import SearchBar from '../components/SearchBar';
 import { Context } from '../contexts/Recipes/RecipesContext';
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ route, navigation }) => {
+  const { repository, service } = route.params;
   const {
     state,
     newRecipe,
@@ -27,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
   } = useContext(Context);
 
   useEffect(() => {
-    listAll(loadRecipes);
+    repository.listAll(loadRecipes);
   }, []);
 
   const createNewRecipe = () => {
@@ -38,10 +38,12 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const onEdit = (id) => {
-    findById(id, loadRecipe, () => navigation.navigate('NewRecipe'));
+    repository.findById(id, loadRecipe, () => navigation.navigate('NewRecipe'));
   };
   const onSelectRecipe = (id) => {
-    findById(id, loadRecipe, () => navigation.navigate('RecipeDetails'));
+    repository.findById(id, loadRecipe, () =>
+      navigation.navigate('RecipeDetails')
+    );
   };
   const onDelete = (id, imageUrl) =>
     Alert.alert(
@@ -56,7 +58,9 @@ const HomeScreen = ({ navigation }) => {
         {
           text: 'OK',
           onPress: () =>
-            deleteRecipe({ id, imageUrl }, () => listAll(loadRecipes)),
+            service.deleteRecipe({ id, imageUrl }, () =>
+              repository.listAll(loadRecipes)
+            ),
         },
       ],
       { cancelable: false }
@@ -69,6 +73,7 @@ const HomeScreen = ({ navigation }) => {
           <View style={styles.body}>
             <SearchBar onSearch={filterRecipes} />
             <FlatList
+              testID="recipeFlatList"
               style={{ marginTop: 10 }}
               data={state.filteredRecipes}
               keyExtractor={(item) => item.id.toString()}
@@ -89,12 +94,16 @@ const HomeScreen = ({ navigation }) => {
         )}
       </TouchableWithoutFeedback>
       <View style={styles.footer}>
-        <TouchableOpacity onPress={createNewRecipe}>
+        <TouchableOpacity testID="createRecipeButton" onPress={createNewRecipe}>
           <View style={styles.addButton}>
             <FontAwesome name="plus" size={24} color="#37426B" />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingsButton} onPress={openSettings}>
+        <TouchableOpacity
+          testID="settingsButton"
+          style={styles.settingsButton}
+          onPress={openSettings}
+        >
           <View>
             <FontAwesome name="gear" size={34} color="white" />
           </View>

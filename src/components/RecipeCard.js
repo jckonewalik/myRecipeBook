@@ -9,12 +9,12 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+
 import { FontAwesome } from '@expo/vector-icons';
+import noImage from '../../assets/no-image.png';
 
 const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
-  const image = recipe.imageUrl
-    ? { uri: recipe.imageUrl }
-    : require('../../assets/no-image.png');
+  const image = recipe.imageUrl ? { uri: recipe.imageUrl } : noImage;
   const position = useRef(new Animated.ValueXY()).current;
   const panResponder = useRef(
     PanResponder.create({

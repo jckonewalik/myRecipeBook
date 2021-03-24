@@ -18,7 +18,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <View style={styles.inputContainer}>
+    <View style={styles.inputContainer} testID="searchBarComponent">
       <TextInput
         testID="searchText"
         onChangeText={setSearchValue}

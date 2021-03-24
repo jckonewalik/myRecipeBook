@@ -11,6 +11,9 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 
+import * as recipesService from './src/services/RecipesService';
+import * as repicesRepository from './src/database/repository/RecipesRepository';
+
 const Stack = createStackNavigator();
 
 const Routes = () => {
@@ -36,6 +39,10 @@ const Routes = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
+          initialParams={{
+            repository: repicesRepository,
+            service: recipesService,
+          }}
           options={{ headerTitle: `${i18n.t('my_recipes')}` }}
         />
         <Stack.Screen
