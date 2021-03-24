@@ -7,11 +7,11 @@ import {
   Text,
   TouchableWithoutFeedback,
   StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
 import colors from '../constants/colors';
 import { FontAwesome } from '@expo/vector-icons';
 import noImage from '../../assets/no-image.png';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
   const image = recipe.imageUrl ? { uri: recipe.imageUrl } : noImage;

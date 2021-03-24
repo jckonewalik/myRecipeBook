@@ -10,6 +10,9 @@
   },
   "jest": {
     "preset": "react-native",
+    "setupFiles": [
+      "./node_modules/react-native-gesture-handler/jestSetup.js"
+    ],
     "setupFilesAfterEnv": [
       "@testing-library/jest-native/extend-expect"
     ],
@@ -67,7 +70,7 @@
     "eslint-plugin-react": "^7.21.5",
     "jest-expo": "^40.0.1",
     "prettier": "^2.2.1",
-    "react-test-renderer": "^17.0.1"
+    "react-test-renderer": "16.14.0"
   },
   "private": true
 }
