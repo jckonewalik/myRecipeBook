@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import i18n from 'i18n-js';
+import colors from '../constants/colors';
+
 const { height } = Dimensions.get('window');
 const AppImagePicker = ({ image, setImage }) => {
   const pickImage = async () => {
@@ -41,7 +43,7 @@ const AppImagePicker = ({ image, setImage }) => {
 
 const border = {
   borderWidth: 1,
-  borderColor: '#37426B',
+  borderColor: colors.primaryColor,
   borderStyle: 'dashed',
 };
 const styles = StyleSheet.create({
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   text: {
-    color: '#37426B',
+    color: colors.primaryColor,
     fontFamily: 'Roboto_300Light',
     fontSize: 20,
   },

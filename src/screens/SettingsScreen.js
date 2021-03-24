@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import FractionOption from '../components/FractionOption';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import i18n from 'i18n-js';
-
+import colors from '../constants/colors';
 const SettingsScreen = () => {
   const { width } = Dimensions.get('window');
 
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontFamily: 'Roboto_900Black',
-    color: '#37426B',
+    color: colors.primaryColor,
   },
 });
 

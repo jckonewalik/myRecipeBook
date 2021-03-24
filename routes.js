@@ -10,6 +10,7 @@ import RecipeDetailsScreen from './src/screens/RecipeDetailsScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import i18n from 'i18n-js';
+import colors from './src/constants/colors';
 
 import * as recipesService from './src/services/RecipesService';
 import * as repicesRepository from './src/database/repository/RecipesRepository';
@@ -32,7 +33,7 @@ const Routes = () => {
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontFamily: 'Roboto_900Black',
-            color: '#37426B',
+            color: colors.primaryColor,
           },
         }}
       >
@@ -100,7 +101,7 @@ const backButton = {
       style={{ marginLeft: 20 }}
       name="keyboard-backspace"
       size={30}
-      color="#37426B"
+      color={colors.primaryColor}
     />
   ),
 };

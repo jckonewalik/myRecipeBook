@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import i18n from 'i18n-js';
-
+import colors from '../constants/colors';
 import {
   View,
   FlatList,
@@ -96,7 +96,7 @@ const HomeScreen = ({ route, navigation }) => {
       <View style={styles.footer}>
         <TouchableOpacity testID="createRecipeButton" onPress={createNewRecipe}>
           <View style={styles.addButton}>
-            <FontAwesome name="plus" size={24} color="#37426B" />
+            <FontAwesome name="plus" size={24} color={colors.primaryColor} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -129,12 +129,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   welcomeText: {
-    color: '#37426B',
+    color: colors.primaryColor,
     fontFamily: 'Roboto_400Regular',
     textAlign: 'center',
   },
   footer: {
-    backgroundColor: '#37426B',
+    backgroundColor: colors.primaryColor,
     height: 65,
     justifyContent: 'center',
     alignItems: 'center',

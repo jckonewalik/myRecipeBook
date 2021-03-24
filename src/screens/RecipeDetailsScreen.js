@@ -16,7 +16,7 @@ import {
 import ResizePortionContainer from '../components/ResizePortionContainer';
 import DetailsTabView from '../components/DetailsTabView';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-
+import colors from '../constants/colors';
 const { height, width } = Dimensions.get('window');
 
 const RecipeDetailsScreen = ({ navigation }) => {
@@ -74,7 +74,11 @@ const RecipeDetailsScreen = ({ navigation }) => {
         }}
         onPress={() => navigation.goBack()}
       >
-        <MaterialIcons name="keyboard-backspace" size={30} color="#37426B" />
+        <MaterialIcons
+          name="keyboard-backspace"
+          size={30}
+          color={colors.primaryColor}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         style={{
@@ -86,7 +90,7 @@ const RecipeDetailsScreen = ({ navigation }) => {
         onPress={openSettings}
       >
         <View>
-          <FontAwesome name="gear" size={34} color="#37426B" />
+          <FontAwesome name="gear" size={34} color={colors.primaryColor} />
         </View>
       </TouchableOpacity>
       <TouchableWithoutFeedback
@@ -130,7 +134,7 @@ const RecipeDetailsScreen = ({ navigation }) => {
 };
 
 const fontBold = {
-  color: '#37426B',
+  color: colors.primaryColor,
   fontFamily: 'Roboto_900Black',
   fontSize: 20,
 };

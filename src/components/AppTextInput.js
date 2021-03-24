@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextInput, Text, View, StyleSheet } from 'react-native';
-
+import colors from '../constants/colors';
 const AppTextInput = ({
   style,
   label,
@@ -38,15 +38,15 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: 'Roboto_300Light',
     fontSize: 20,
-    color: '#37426B',
+    color: colors.primaryColor,
   },
   input: {
     paddingVertical: 10,
     fontFamily: 'Roboto_400Regular',
     fontSize: 20,
-    color: '#37426B',
+    color: colors.primaryColor,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#37426B',
+    borderBottomColor: colors.primaryColor,
   },
 });
 

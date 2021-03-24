@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-
+import colors from '../constants/colors';
 const PrimaryButton = ({ disabled = false, text, onPress }) => {
   const getStyle = () => {
     if (disabled) {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     alignItems: 'center',
-    backgroundColor: '#37426B',
+    backgroundColor: colors.primaryColor,
   },
   text: {
     color: '#fff',

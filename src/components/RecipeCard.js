@@ -9,7 +9,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-
+import colors from '../constants/colors';
 import { FontAwesome } from '@expo/vector-icons';
 import noImage from '../../assets/no-image.png';
 
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: '#37426B',
+    color: colors.primaryColor,
     fontFamily: 'Roboto_900Black',
   },
   subTitle: {

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { limitText } from '../utils/TextUtil';
 import { FontAwesome } from '@expo/vector-icons';
+import colors from '../constants/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontFamily: 'Roboto_400Regular',
-    color: '#37426B',
+    color: colors.primaryColor,
     fontSize: 20,
   },
 });

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import i18n from 'i18n-js';
+import colors from '../constants/colors';
 
 import { integerText, fractionText } from '../utils/TextUtil';
 const DetailsTabView = ({ recipe, totalRecipes }) => {
@@ -106,7 +107,7 @@ const getOptionStyle = (tab, selectedOption) => {
 };
 
 const fontBold = {
-  color: '#37426B',
+  color: colors.primaryColor,
   fontFamily: 'Roboto_900Black',
   fontSize: 20,
 };
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
   },
   selectedTabViewOption: {
     ...tabViewOption,
-    borderBottomColor: '#37426B',
+    borderBottomColor: colors.primaryColor,
   },
   tabViewText: {
     ...fontBold,

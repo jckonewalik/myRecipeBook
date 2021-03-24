@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import i18n from 'i18n-js';
+import colors from '../constants/colors';
 
 const FractionOption = ({ label, value, selected, onPress }) => {
   const getLabelColor = () => {
-    return selected ? '#fff' : '#37426B';
+    return selected ? '#fff' : colors.primaryColor;
   };
   const getContainerColor = () => {
-    return selected ? '#37426B' : '#fff';
+    return selected ? colors.primaryColor : '#fff';
   };
   return (
     <TouchableWithoutFeedback onPress={() => onPress(value)}>
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#37426B',
+    borderColor: colors.primaryColor,
     padding: 20,
   },
   amount: {

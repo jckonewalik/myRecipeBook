@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import i18n from 'i18n-js';
+import colors from '../constants/colors';
+
 const IOSPicker = ({ label, value, options, onSelect }) => {
   return (
     <>
@@ -29,13 +31,13 @@ const IOSPicker = ({ label, value, options, onSelect }) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    borderBottomColor: '#37426B',
+    borderBottomColor: colors.primaryColor,
     borderBottomWidth: 0.5,
   },
   label: {
     fontFamily: 'Roboto_300Light',
     fontSize: 20,
-    color: '#37426B',
+    color: colors.primaryColor,
   },
 });
 

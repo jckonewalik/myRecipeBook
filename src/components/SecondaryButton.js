@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import colors from '../constants/colors';
 
 const SecondaryButton = ({ disabled = false, text, onPress }) => {
   const getContainerStyle = () => {
@@ -29,10 +30,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: '#37426B',
+    borderColor: colors.primaryColor,
   },
   text: {
-    color: '#37426B',
+    color: colors.primaryColor,
     fontSize: 14,
     fontFamily: 'Roboto_900Black',
   },

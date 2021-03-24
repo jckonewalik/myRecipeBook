@@ -3,7 +3,7 @@ import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { integerText, fractionText } from '../utils/TextUtil';
-
+import colors from '../constants/colors';
 import i18n from 'i18n-js';
 
 const ResizePortionContainer = ({
@@ -13,7 +13,7 @@ const ResizePortionContainer = ({
 }) => (
   <View style={styles.resizeContainer}>
     <TouchableOpacity onPress={onPressMinus}>
-      <FontAwesome name="minus" size={24} color="#37426B" />
+      <FontAwesome name="minus" size={24} color={colors.primaryColor} />
     </TouchableOpacity>
     <View style={styles.resizePortionsContainer}>
       <View style={styles.resizePortionsNumberContainer}>
@@ -27,13 +27,13 @@ const ResizePortionContainer = ({
       <Text style={styles.resizePortionsDescription}>{i18n.t('recipe')}</Text>
     </View>
     <TouchableOpacity onPress={onPressPlus}>
-      <FontAwesome name="plus" size={24} color="#37426B" />
+      <FontAwesome name="plus" size={24} color={colors.primaryColor} />
     </TouchableOpacity>
   </View>
 );
 
 const fontBold = {
-  color: '#37426B',
+  color: colors.primaryColor,
   fontFamily: 'Roboto_900Black',
   fontSize: 20,
 };

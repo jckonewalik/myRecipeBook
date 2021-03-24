@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-
+import colors from '../constants/colors';
 const AppOutputText = ({ label, value }) => {
   return (
     <View style={styles.container}>
@@ -14,21 +14,21 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: 'Roboto_300Light',
     fontSize: 20,
-    color: '#37426B',
+    color: colors.primaryColor,
   },
   value: {
     fontFamily: 'Roboto_400Regular',
     fontSize: 20,
     paddingVertical: 10,
-    color: '#37426B',
+    color: colors.primaryColor,
   },
   container: {
     marginTop: 10,
     fontFamily: 'Roboto_400Regular',
     fontSize: 20,
-    color: '#37426B',
+    color: colors.primaryColor,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#37426B',
+    borderBottomColor: colors.primaryColor,
   },
 });
 
