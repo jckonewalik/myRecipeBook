@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 import colors from '../constants/colors';
@@ -11,23 +11,27 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
 import RecipeCard from '../components/RecipeCard';
 import SearchBar from '../components/SearchBar';
 import { Context } from '../contexts/Recipes/RecipesContext';
-const HomeScreen = ({ context = { Context }, navigation }) => {
+const HomeScreen = ({ context = Context, navigation }) => {
   const {
     state,
     newRecipe,
     loadRecipes,
     loadRecipe,
     filterRecipes,
+    startLoadRecipes,
+    startLoadRecipe,
     recipeService,
     recipeRepository,
   } = useContext(context);
 
   useEffect(() => {
+    startLoadRecipes();
     recipeRepository.listAll(loadRecipes);
   }, []);
 
@@ -39,14 +43,12 @@ const HomeScreen = ({ context = { Context }, navigation }) => {
   };
 
   const onEdit = (id) => {
-    recipeRepository.findById(id, loadRecipe, () =>
-      navigation.navigate('NewRecipe')
-    );
+    startLoadRecipe();
+    navigation.navigate('NewRecipe', { recipeId: id });
   };
   const onSelectRecipe = (id) => {
-    recipeRepository.findById(id, loadRecipe, () =>
-      navigation.navigate('RecipeDetails')
-    );
+    startLoadRecipe();
+    navigation.navigate('RecipeDetails', { recipeId: id });
   };
   const onDelete = (id, imageUrl) =>
     Alert.alert(
@@ -61,9 +63,10 @@ const HomeScreen = ({ context = { Context }, navigation }) => {
         {
           text: 'OK',
           onPress: () =>
-            recipeService.deleteRecipe({ id, imageUrl }, () =>
-              recipeRepository.listAll(loadRecipes)
-            ),
+            recipeService.deleteRecipe({ id, imageUrl }, () => {
+              startLoadRecipes();
+              recipeRepository.listAll(loadRecipes);
+            }),
         },
       ],
       { cancelable: false }
@@ -71,31 +74,46 @@ const HomeScreen = ({ context = { Context }, navigation }) => {
 
   return (
     <View style={styles.rootContainer}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        {state.recipes.length > 0 ? (
-          <View style={styles.body}>
-            <SearchBar onSearch={filterRecipes} />
-            <FlatList
-              testID="recipeFlatList"
-              style={{ marginTop: 10 }}
-              data={state.filteredRecipes}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <RecipeCard
-                  onSelect={onSelectRecipe}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  recipe={item}
-                />
-              )}
-            />
-          </View>
-        ) : (
-          <View style={styles.welcomeContainer}>
-            <Text style={styles.welcomeText}>{i18n.t('welcome_message')}</Text>
-          </View>
-        )}
-      </TouchableWithoutFeedback>
+      {state.loadingRecipes ? (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#fff',
+            justifyContent: 'center',
+            alignContent: 'center',
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primaryColor} />
+        </View>
+      ) : (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          {state.recipes.length > 0 ? (
+            <View style={styles.body}>
+              <SearchBar onSearch={filterRecipes} />
+              <FlatList
+                testID="recipeFlatList"
+                style={{ marginTop: 10 }}
+                data={state.filteredRecipes}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <RecipeCard
+                    onSelect={onSelectRecipe}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    recipe={item}
+                  />
+                )}
+              />
+            </View>
+          ) : (
+            <View style={styles.welcomeContainer}>
+              <Text style={styles.welcomeText}>
+                {i18n.t('welcome_message')}
+              </Text>
+            </View>
+          )}
+        </TouchableWithoutFeedback>
+      )}
       <View style={styles.footer}>
         <TouchableOpacity testID="createRecipeButton" onPress={createNewRecipe}>
           <View style={styles.addButton}>

@@ -14,6 +14,8 @@ import {
   DECREASE_RECIPE_SIZE,
   FILTER_RECIPES,
   SET_FRACTIONATION,
+  START_LOAD_RECIPES,
+  START_LOAD_RECIPE,
 } from './ActionTypes';
 import {
   loadRecipes,
@@ -31,11 +33,15 @@ import {
   removeStepByName,
   filterRecipes,
   setFractionation,
+  startLoadRecipes,
+  startLoadRecipe,
 } from './Actions';
 import * as recipeService from '../../services/RecipesService';
 import * as recipeRepository from '../../database/repository/RecipesRepository';
 
 const INITIAL_STATE = {
+  loadingRecipes: true,
+  loadingRecipe: false,
   fractionation: 0.5,
   totalRecipes: 1,
   recipes: [],
@@ -57,18 +63,21 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
     case LOAD_RECIPES:
       return {
         ...state,
+        loadingRecipes: false,
         recipes: payload,
         filteredRecipes: payload,
       };
     case LOAD_RECIPE: {
       return {
         ...state,
+        loadingRecipe: false,
         selectedRecipe: payload,
       };
     }
     case NEW_RECIPE:
       return {
         ...state,
+        loadingRecipe: false,
         selectedRecipe: INITIAL_STATE.selectedRecipe,
       };
     case SET_BASIC_INFO:
@@ -212,6 +221,18 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
         fractionation: payload,
       };
     }
+    case START_LOAD_RECIPES: {
+      return {
+        ...state,
+        loadingRecipes: true,
+      };
+    }
+    case START_LOAD_RECIPE: {
+      return {
+        ...state,
+        loadingRecipe: true,
+      };
+    }
     default:
       return state;
   }
@@ -242,6 +263,8 @@ export const { Context, Provider } = createDataContext(
     decreaseRecipeSize,
     filterRecipes,
     setFractionation,
+    startLoadRecipes,
+    startLoadRecipe,
   },
   {
     recipeService,

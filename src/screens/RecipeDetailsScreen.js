@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import {
@@ -12,6 +12,7 @@ import {
   Text,
   StyleSheet,
   PanResponder,
+  ActivityIndicator,
 } from 'react-native';
 import ResizePortionContainer from '../components/ResizePortionContainer';
 import DetailsTabView from '../components/DetailsTabView';
@@ -19,7 +20,9 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import colors from '../constants/colors';
 const { height, width } = Dimensions.get('window');
 
-const RecipeDetailsScreen = ({ navigation }) => {
+const RecipeDetailsScreen = ({ route, navigation }) => {
+  const { recipeId } = route.params;
+
   const position = useRef(new Animated.ValueXY()).current;
   const panResponder = useRef(
     PanResponder.create({
@@ -62,73 +65,101 @@ const RecipeDetailsScreen = ({ navigation }) => {
   const openSettings = () => {
     navigation.navigate('Settings');
   };
-  const { state, increaseRecipeSize, decreaseRecipeSize } = useContext(Context);
+  const {
+    state,
+    loadRecipe,
+    increaseRecipeSize,
+    decreaseRecipeSize,
+    recipeRepository,
+  } = useContext(Context);
+
+  useEffect(() => {
+    recipeRepository.findById(recipeId, loadRecipe);
+  }, []);
+
   return (
     <SafeAreaView style={styles.droidSafeArea}>
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          marginLeft: 20,
-          marginTop: 30,
-        }}
-        onPress={() => navigation.goBack()}
-      >
-        <MaterialIcons
-          name="keyboard-backspace"
-          size={30}
-          color={colors.primaryColor}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          right: 20,
-          marginTop: 30,
-        }}
-        onPress={openSettings}
-      >
-        <View>
-          <FontAwesome name="gear" size={34} color={colors.primaryColor} />
+      {state.loadingRecipe ? (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#fff',
+            justifyContent: 'center',
+            alignContent: 'center',
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primaryColor} />
         </View>
-      </TouchableOpacity>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Animated.spring(position, {
-            toValue: { y: 0, x: 0 },
-            useNativeDriver: false,
-          }).start();
-        }}
-      >
-        {state.selectedRecipe.imageUrl ? (
-          <Image
-            style={styles.thumb}
-            source={{ uri: state.selectedRecipe.imageUrl }}
-          />
-        ) : (
-          <View style={styles.noThumb}>
-            <Image source={require('../../assets/no-image.png')} />
-          </View>
-        )}
-      </TouchableWithoutFeedback>
-      <Animated.View style={getCardStyle()} {...panResponder.panHandlers}>
-        <View style={styles.detailsHeader}>
-          <Text style={styles.recipeTitle}>{state.selectedRecipe.title}</Text>
-          <Text style={styles.recipePortions}>{`${
-            state.selectedRecipe.portions * state.totalRecipes
-          } ${state.selectedRecipe.portionUnit}`}</Text>
-        </View>
-        <ResizePortionContainer
-          totalRecipes={state.totalRecipes}
-          onPressMinus={decreaseRecipeSize}
-          onPressPlus={increaseRecipeSize}
-        />
-        <DetailsTabView
-          recipe={state.selectedRecipe}
-          totalRecipes={state.totalRecipes}
-        />
-      </Animated.View>
+      ) : (
+        <>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              marginLeft: 20,
+              marginTop: 30,
+            }}
+            onPress={() => navigation.goBack()}
+          >
+            <MaterialIcons
+              name="keyboard-backspace"
+              size={30}
+              color={colors.primaryColor}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              right: 20,
+              marginTop: 30,
+            }}
+            onPress={openSettings}
+          >
+            <View>
+              <FontAwesome name="gear" size={34} color={colors.primaryColor} />
+            </View>
+          </TouchableOpacity>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              Animated.spring(position, {
+                toValue: { y: 0, x: 0 },
+                useNativeDriver: false,
+              }).start();
+            }}
+          >
+            {state.selectedRecipe.imageUrl ? (
+              <Image
+                style={styles.thumb}
+                source={{ uri: state.selectedRecipe.imageUrl }}
+              />
+            ) : (
+              <View style={styles.noThumb}>
+                <Image source={require('../../assets/no-image.png')} />
+              </View>
+            )}
+          </TouchableWithoutFeedback>
+          <Animated.View style={getCardStyle()} {...panResponder.panHandlers}>
+            <View style={styles.detailsHeader}>
+              <Text style={styles.recipeTitle}>
+                {state.selectedRecipe.title}
+              </Text>
+              <Text style={styles.recipePortions}>{`${
+                state.selectedRecipe.portions * state.totalRecipes
+              } ${state.selectedRecipe.portionUnit}`}</Text>
+            </View>
+            <ResizePortionContainer
+              totalRecipes={state.totalRecipes}
+              onPressMinus={decreaseRecipeSize}
+              onPressPlus={increaseRecipeSize}
+            />
+            <DetailsTabView
+              recipe={state.selectedRecipe}
+              totalRecipes={state.totalRecipes}
+            />
+          </Animated.View>
+        </>
+      )}
     </SafeAreaView>
   );
 };
@@ -143,11 +174,11 @@ const styles = StyleSheet.create({
   droidSafeArea: {
     position: 'relative',
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? 35 : 0,
+    paddingTop: Platform.OS === 'android' ? 25 : 0,
   },
   thumb: {
     resizeMode: 'cover',
-    height: height * 0.5,
+    height: height * 0.4,
   },
   noThumb: {
     alignItems: 'center',

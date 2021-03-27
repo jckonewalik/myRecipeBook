@@ -51,7 +51,9 @@ export const saveOrUpdate = async (
 export const deleteRecipe = async ({ id, imageUrl }, callback) => {
   try {
     if (imageUrl) {
-      await FileSystem.deleteAsync(imageUrl);
+      try {
+        await FileSystem.deleteAsync(imageUrl);
+      } catch (e) {}
     }
 
     remove({

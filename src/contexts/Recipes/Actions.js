@@ -13,6 +13,8 @@ import {
   DECREASE_RECIPE_SIZE,
   FILTER_RECIPES,
   SET_FRACTIONATION,
+  START_LOAD_RECIPES,
+  START_LOAD_RECIPE,
 } from './ActionTypes';
 
 export const newRecipe = (dispatch) => {
@@ -139,6 +141,22 @@ export const setFractionation = (dispatch) => {
     dispatch({
       type: SET_FRACTIONATION,
       payload: value,
+    });
+  };
+};
+
+export const startLoadRecipes = (dispatch) => {
+  return () => {
+    dispatch({
+      type: START_LOAD_RECIPES,
+    });
+  };
+};
+
+export const startLoadRecipe = (dispatch) => {
+  return () => {
+    dispatch({
+      type: START_LOAD_RECIPE,
     });
   };
 };

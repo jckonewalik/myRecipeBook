@@ -13,12 +13,15 @@ import i18n from 'i18n-js';
 const { width } = Dimensions.get('window');
 
 const PreparationModeScreen = ({ navigation }) => {
-  const { state, addInstruction, loadRecipes } = useContext(Context);
+  const { state, addInstruction, loadRecipes, startLoadRecipes } = useContext(
+    Context
+  );
   const [description, setDescription] = useState('');
   const [step, setStep] = useState('select');
 
   const onSave = () => {
     saveOrUpdate(state.selectedRecipe, () => {
+      startLoadRecipes();
       listAll(loadRecipes, () => {
         navigation.navigate('Home');
       });
