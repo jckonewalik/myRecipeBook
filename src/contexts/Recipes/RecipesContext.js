@@ -32,6 +32,8 @@ import {
   filterRecipes,
   setFractionation,
 } from './Actions';
+import * as recipeService from '../../services/RecipesService';
+import * as recipeRepository from '../../database/repository/RecipesRepository';
 
 const INITIAL_STATE = {
   fractionation: 0.5,
@@ -240,6 +242,12 @@ export const { Context, Provider } = createDataContext(
     decreaseRecipeSize,
     filterRecipes,
     setFractionation,
+  },
+  {
+    recipeService,
+  },
+  {
+    recipeRepository,
   },
   INITIAL_STATE
 );

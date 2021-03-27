@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 import colors from '../constants/colors';
@@ -6,28 +6,29 @@ import {
   View,
   FlatList,
   StyleSheet,
-  TouchableOpacity,
   Text,
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 
 import RecipeCard from '../components/RecipeCard';
 import SearchBar from '../components/SearchBar';
 import { Context } from '../contexts/Recipes/RecipesContext';
-const HomeScreen = ({ route, navigation }) => {
-  const { repository, service } = route.params;
+const HomeScreen = ({ context = { Context }, navigation }) => {
   const {
     state,
     newRecipe,
     loadRecipes,
     loadRecipe,
     filterRecipes,
-  } = useContext(Context);
+    recipeService,
+    recipeRepository,
+  } = useContext(context);
 
   useEffect(() => {
-    repository.listAll(loadRecipes);
+    recipeRepository.listAll(loadRecipes);
   }, []);
 
   const createNewRecipe = () => {
@@ -38,10 +39,12 @@ const HomeScreen = ({ route, navigation }) => {
   };
 
   const onEdit = (id) => {
-    repository.findById(id, loadRecipe, () => navigation.navigate('NewRecipe'));
+    recipeRepository.findById(id, loadRecipe, () =>
+      navigation.navigate('NewRecipe')
+    );
   };
   const onSelectRecipe = (id) => {
-    repository.findById(id, loadRecipe, () =>
+    recipeRepository.findById(id, loadRecipe, () =>
       navigation.navigate('RecipeDetails')
     );
   };
@@ -58,8 +61,8 @@ const HomeScreen = ({ route, navigation }) => {
         {
           text: 'OK',
           onPress: () =>
-            service.deleteRecipe({ id, imageUrl }, () =>
-              repository.listAll(loadRecipes)
+            recipeService.deleteRecipe({ id, imageUrl }, () =>
+              recipeRepository.listAll(loadRecipes)
             ),
         },
       ],

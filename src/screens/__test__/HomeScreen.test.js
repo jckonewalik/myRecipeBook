@@ -1,17 +1,16 @@
 import React from 'react';
 import HomeScreen from '../HomeScreen';
 import { render, fireEvent } from '@testing-library/react-native';
-import { Provider } from '../../contexts/Recipes/RecipesContext';
-import * as recipesRepository from './mocks/RecipesRepository.mock';
+import {
+  Provider,
+  Context,
+} from '../../contexts/Recipes/__test__/mocks/MockRecipesContext';
 
 test('when click on new recipe must navigate to NewRecipe screen', () => {
   const navigate = jest.fn();
   const { getByTestId } = render(
     <Provider>
-      <HomeScreen
-        route={{ params: { repository: recipesRepository } }}
-        navigation={{ navigate: navigate }}
-      />
+      <HomeScreen context={Context} navigation={{ navigate: navigate }} />
     </Provider>
   );
   const createRecipeButton = getByTestId('createRecipeButton');
@@ -23,10 +22,7 @@ test('when click on settings button must navigate to Settings screen', () => {
   const navigate = jest.fn();
   const { getByTestId } = render(
     <Provider>
-      <HomeScreen
-        route={{ params: { repository: recipesRepository } }}
-        navigation={{ navigate: navigate }}
-      />
+      <HomeScreen context={Context} navigation={{ navigate: navigate }} />
     </Provider>
   );
   const settingsButton = getByTestId('settingsButton');
@@ -38,10 +34,7 @@ test('should render 3 recipe card components', async () => {
   const navigate = jest.fn();
   const { findAllByTestId } = render(
     <Provider>
-      <HomeScreen
-        route={{ params: { repository: recipesRepository } }}
-        navigation={{ navigate: navigate }}
-      />
+      <HomeScreen context={Context} navigation={{ navigate: navigate }} />
     </Provider>
   );
   const recipeCardList = await findAllByTestId('selectRecipeButton');
@@ -52,10 +45,7 @@ test('should render 1 Search Bar components', async () => {
   const navigate = jest.fn();
   const { findAllByTestId } = render(
     <Provider>
-      <HomeScreen
-        route={{ params: { repository: recipesRepository } }}
-        navigation={{ navigate: navigate }}
-      />
+      <HomeScreen context={Context} navigation={{ navigate: navigate }} />
     </Provider>
   );
   const recipeCardList = await findAllByTestId('searchBarComponent');
