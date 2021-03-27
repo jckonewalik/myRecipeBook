@@ -15,6 +15,8 @@ import {
   decreaseRecipeSize,
   filterRecipes,
   setFractionation,
+  startLoadRecipe,
+  startLoadRecipes,
 } from '../../Actions';
 import * as recipeService from '../../../../services/RecipesService';
 import * as recipeRepository from '../../../../database/repository/mocks/RecipesRepository.mock';
@@ -52,6 +54,8 @@ export const { Context, Provider } = createDataContext(
     decreaseRecipeSize,
     filterRecipes,
     setFractionation,
+    startLoadRecipe,
+    startLoadRecipes,
   },
   {
     recipeService,
