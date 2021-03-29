@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   },
   thumb: {
     resizeMode: 'cover',
-    height: height * 0.4,
+    height: height * 0.5,
   },
   noThumb: {
     alignItems: 'center',
