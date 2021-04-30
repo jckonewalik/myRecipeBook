@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import AppListItem from './AppListItem';
 import colors from '../constants/colors';
 
-const StepInstructionsList = ({ stepName, instructions }) => {
+const StepInstructionsList = ({ stepName, instructions = [] }) => {
+  console.log('StepInstructionsList rendered');
+
   const { removeInstruction } = useContext(Context);
   const onRemoveInstruction = ({ stepName, description }) => {
     removeInstruction({ stepName, description });
@@ -13,20 +15,17 @@ const StepInstructionsList = ({ stepName, instructions }) => {
   return (
     <View style={styles.instructionsContainer}>
       <Text style={styles.stepName}>{stepName}</Text>
-      <FlatList
-        data={instructions}
-        keyExtractor={(item) => item.description}
-        renderItem={({ item }) => (
-          <AppListItem
-            textLimit={100}
-            style={styles.itemText}
-            text={`${item.description}`}
-            onRemove={() =>
-              onRemoveInstruction({ stepName, description: item.description })
-            }
-          />
-        )}
-      />
+      {instructions.map((item) => (
+        <AppListItem
+          key={item.description}
+          textLimit={100}
+          style={styles.itemText}
+          text={`${item.description}`}
+          onRemove={() =>
+            onRemoveInstruction({ stepName, description: item.description })
+          }
+        />
+      ))}
     </View>
   );
 };
@@ -37,9 +36,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto_900Black',
     fontSize: 20,
     color: colors.primaryColor,
-  },
-  ingredientsContainer: {
-    marginTop: 10,
   },
   itemText: {
     fontSize: 15,

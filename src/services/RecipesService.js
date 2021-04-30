@@ -5,7 +5,7 @@ import {
   remove,
 } from '../database/repository/RecipesRepository';
 export const saveOrUpdate = async (
-  { id, imageUrl, title, portions, portionUnit, calories, steps },
+  { id, imageUrl, title, portions, portionUnit, calories, multiSteps, steps },
   callback
 ) => {
   try {
@@ -39,6 +39,7 @@ export const saveOrUpdate = async (
         portions,
         portionUnit,
         calories,
+        multiSteps,
         steps,
       });
     }

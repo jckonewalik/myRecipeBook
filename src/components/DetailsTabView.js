@@ -33,30 +33,45 @@ const DetailsTabView = ({ recipe, totalRecipes }) => {
       </View>
       {selectedOption === 'ingredients' && (
         <ScrollView style={styles.tabViewContainer}>
-          {Object.keys(recipe.steps).map(
-            (key) =>
-              recipe.steps[key].ingredients.length > 0 && (
-                <IngredientsList
-                  key={key}
-                  stepName={key}
-                  totalRecipes={totalRecipes}
-                  ingredients={recipe.steps[key].ingredients}
-                />
-              )
+          {recipe.multiSteps ? (
+            Object.keys(recipe.steps).map(
+              (key) =>
+                recipe.steps[key].ingredients.length > 0 && (
+                  <IngredientsList
+                    key={key}
+                    stepName={key}
+                    totalRecipes={totalRecipes}
+                    ingredients={recipe.steps[key].ingredients}
+                  />
+                )
+            )
+          ) : (
+            <IngredientsList
+              stepName={''}
+              totalRecipes={totalRecipes}
+              ingredients={recipe.steps.ingredients}
+            />
           )}
         </ScrollView>
       )}
       {selectedOption === 'instructions' && (
         <View style={styles.tabViewContainer}>
-          {Object.keys(recipe.steps).map(
-            (key) =>
-              recipe.steps[key].instructions.length > 0 && (
-                <InstructionsList
-                  key={key}
-                  stepName={key}
-                  instructions={recipe.steps[key].instructions}
-                />
-              )
+          {recipe.multiSteps ? (
+            Object.keys(recipe.steps).map(
+              (key) =>
+                recipe.steps[key].instructions.length > 0 && (
+                  <InstructionsList
+                    key={key}
+                    stepName={key}
+                    instructions={recipe.steps[key].instructions}
+                  />
+                )
+            )
+          ) : (
+            <InstructionsList
+              stepName={''}
+              instructions={recipe.steps.instructions}
+            />
           )}
         </View>
       )}

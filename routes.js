@@ -11,6 +11,7 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 import colors from './src/constants/colors';
+import CheckStepsScreen from './src/screens/CheckStepsScreen';
 
 const Stack = createStackNavigator();
 
@@ -46,6 +47,11 @@ const Routes = () => {
             headerTitle: `${i18n.t('new_recipe')}`,
             ...backButton,
           }}
+        />
+        <Stack.Screen
+          name="CheckSteps"
+          component={CheckStepsScreen}
+          options={{ headerTitle: `${i18n.t('recipe_steps')}`, ...backButton }}
         />
         <Stack.Screen
           name="Steps"

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     height: height * 0.4,
   },
   externalContainer: {
-    backgroundColor: '#DEDEDE',
+    backgroundColor: colors.grayColor,
     padding: 20,
     ...border,
   },

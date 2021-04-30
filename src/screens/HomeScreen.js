@@ -22,7 +22,6 @@ const HomeScreen = ({ context = Context, navigation }) => {
     state,
     newRecipe,
     loadRecipes,
-    loadRecipe,
     filterRecipes,
     startLoadRecipes,
     startLoadRecipe,

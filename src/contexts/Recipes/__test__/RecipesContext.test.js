@@ -14,6 +14,9 @@ import {
   DECREASE_RECIPE_SIZE,
   FILTER_RECIPES,
   SET_FRACTIONATION,
+  START_LOAD_RECIPE,
+  START_LOAD_RECIPES,
+  SET_MULTI_STEPS,
 } from '../ActionTypes';
 
 const INITIAL_STATE = {
@@ -158,6 +161,7 @@ it('when process ADD_INGREDIENT action should add a new ingredient on selectedRe
       portions: '',
       portionUnit: '',
       calories: '',
+      multiSteps: true,
       steps: {
         'New Step': {
           ingredients: [],
@@ -184,6 +188,34 @@ it('when process ADD_INGREDIENT action should add a new ingredient on selectedRe
   expect(ingredients[0].ingredient).toBe('Ingredient');
 });
 
+it('when process ADD_INGREDIENT action for single step should add a new ingredient on selectedRecipe', () => {
+  const state = {
+    recipes: [],
+    selectedRecipe: {
+      id: null,
+      imageUrl: null,
+      title: '',
+      portions: '',
+      portionUnit: '',
+      calories: '',
+      multiSteps: false,
+      steps: {},
+    },
+  };
+  const action = {
+    type: ADD_INGREDIENT,
+    payload: {
+      ingredient: 'Ingredient',
+      amount: 10,
+      unit: 'un',
+    },
+  };
+  const newState = recipeReducer(state, action);
+  const ingredients = newState.selectedRecipe.steps.ingredients;
+  expect(ingredients.length).toBe(1);
+  expect(ingredients[0].ingredient).toBe('Ingredient');
+});
+
 it('when process REMOVE_INGREDIENT action should remove the ingredient on selectedRecipe', () => {
   const state = {
     recipes: [],
@@ -194,6 +226,7 @@ it('when process REMOVE_INGREDIENT action should remove the ingredient on select
       portions: '',
       portionUnit: '',
       calories: '',
+      multiSteps: true,
       steps: {
         'New Step': {
           ingredients: [{ ingredient: 'Ingredient', amount: 10, unit: 'un' }],
@@ -217,6 +250,33 @@ it('when process REMOVE_INGREDIENT action should remove the ingredient on select
   expect(ingredients.length).toBe(0);
 });
 
+it('when process REMOVE_INGREDIENT action for single step should remove the ingredient on selectedRecipe', () => {
+  const state = {
+    recipes: [],
+    selectedRecipe: {
+      id: null,
+      imageUrl: null,
+      title: '',
+      portions: '',
+      portionUnit: '',
+      calories: '',
+      multiSteps: false,
+      steps: {
+        ingredients: [{ ingredient: 'Ingredient', amount: 10, unit: 'un' }],
+      },
+    },
+  };
+  const action = {
+    type: REMOVE_INGREDIENT,
+    payload: {
+      ingredient: 'Ingredient',
+    },
+  };
+  const newState = recipeReducer(state, action);
+  const ingredients = newState.selectedRecipe.steps.ingredients;
+  expect(ingredients.length).toBe(0);
+});
+
 it('when process ADD_INSTRUCTION action should add a new instruction on selectedRecipe', () => {
   const state = {
     recipes: [],
@@ -227,6 +287,7 @@ it('when process ADD_INSTRUCTION action should add a new instruction on selected
       portions: '',
       portionUnit: '',
       calories: '',
+      multiSteps: true,
       steps: {
         'New Step': {
           ingredients: [],
@@ -251,6 +312,32 @@ it('when process ADD_INSTRUCTION action should add a new instruction on selected
   expect(instructions[0].description).toBe('Instruction 1');
 });
 
+it('when process ADD_INSTRUCTION action for single step should add a new instruction on selectedRecipe', () => {
+  const state = {
+    recipes: [],
+    selectedRecipe: {
+      id: null,
+      imageUrl: null,
+      title: '',
+      portions: '',
+      portionUnit: '',
+      calories: '',
+      multiSteps: false,
+      steps: {},
+    },
+  };
+  const action = {
+    type: ADD_INSTRUCTION,
+    payload: {
+      description: 'Instruction 1',
+    },
+  };
+  const newState = recipeReducer(state, action);
+  const instructions = newState.selectedRecipe.steps.instructions;
+  expect(instructions.length).toBe(1);
+  expect(instructions[0].description).toBe('Instruction 1');
+});
+
 it('when process REMOVE_INSTRUCTION action should remove the instruction on selectedRecipe', () => {
   const state = {
     recipes: [],
@@ -261,6 +348,7 @@ it('when process REMOVE_INSTRUCTION action should remove the instruction on sele
       portions: '',
       portionUnit: '',
       calories: '',
+      multiSteps: true,
       steps: {
         'New Step': {
           ingredients: [],
@@ -281,6 +369,33 @@ it('when process REMOVE_INSTRUCTION action should remove the instruction on sele
     true
   );
   const instructions = newState.selectedRecipe.steps['New Step'].instructions;
+  expect(instructions.length).toBe(0);
+});
+
+it('when process REMOVE_INSTRUCTION action for single step should remove the instruction on selectedRecipe', () => {
+  const state = {
+    recipes: [],
+    selectedRecipe: {
+      id: null,
+      imageUrl: null,
+      title: '',
+      portions: '',
+      portionUnit: '',
+      calories: '',
+      multiSteps: false,
+      steps: {
+        instructions: [{ description: 'Instruction 1' }],
+      },
+    },
+  };
+  const action = {
+    type: REMOVE_INSTRUCTION,
+    payload: {
+      description: 'Instruction 1',
+    },
+  };
+  const newState = recipeReducer(state, action);
+  const instructions = newState.selectedRecipe.steps.instructions;
   expect(instructions.length).toBe(0);
 });
 
@@ -348,6 +463,42 @@ it('when process SET_FRACTIONATION action must set fractionation value', () => {
   };
   const newState = recipeReducer(state, action);
   expect(newState.fractionation).toBe(0.5);
+});
+
+it('when process START_LOAD_RECIPE action must set loadingRecipe value', () => {
+  const state = {
+    loadingRecipe: false,
+  };
+  const action = {
+    type: START_LOAD_RECIPE,
+  };
+  const newState = recipeReducer(state, action);
+  expect(newState.loadingRecipe).toBe(true);
+});
+
+it('when process START_LOAD_RECIPES action must set loadingRecipes value', () => {
+  const state = {
+    loadingRecipes: false,
+  };
+  const action = {
+    type: START_LOAD_RECIPES,
+  };
+  const newState = recipeReducer(state, action);
+  expect(newState.loadingRecipes).toBe(true);
+});
+
+it('when process SET_MULTI_STEPS action must set multiSteps value', () => {
+  const state = {
+    selectedRecipe: {
+      multiSteps: false,
+    },
+  };
+  const action = {
+    type: SET_MULTI_STEPS,
+    payload: true,
+  };
+  const newState = recipeReducer(state, action);
+  expect(newState.selectedRecipe.multiSteps).toBe(true);
 });
 
 it('when pass an INVALID action type should not change the state', () => {

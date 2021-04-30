@@ -15,6 +15,7 @@ import {
   SET_FRACTIONATION,
   START_LOAD_RECIPES,
   START_LOAD_RECIPE,
+  SET_MULTI_STEPS,
 } from './ActionTypes';
 
 export const newRecipe = (dispatch) => {
@@ -85,9 +86,11 @@ export const addInstruction = (dispatch) => {
 
 export const loadRecipe = (dispatch) => {
   return ({ recipe }, callback) => {
+    const multiSteps =
+      recipe?.multiSteps == undefined ? true : recipe.multiSteps;
     dispatch({
       type: LOAD_RECIPE,
-      payload: recipe,
+      payload: { ...recipe, multiSteps },
     });
     callback && callback();
   };
@@ -158,6 +161,16 @@ export const startLoadRecipe = (dispatch) => {
     dispatch({
       type: START_LOAD_RECIPE,
     });
+  };
+};
+
+export const setMultiSteps = (dispatch) => {
+  return (value, callback) => {
+    dispatch({
+      type: SET_MULTI_STEPS,
+      payload: value,
+    });
+    callback && callback();
   };
 };
 

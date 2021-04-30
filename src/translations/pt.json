@@ -28,5 +28,9 @@
   "delete_recipe": "Deletar Receita",
   "delete_confirmation": "Você tem certeza que deseja deletar essa receita?",
   "settings": "Configurações",
-  "settings_fractionation": "Fracionamento da Receita"
+  "settings_fractionation": "Fracionamento da Receita",
+  "multi_steps_question": "Sua receita possui mais de um processo?",
+  "multi_steps_examples": "Ex: Massa, Recheio, Cobertura",
+  "option_yes": "Sim",
+  "option_no": "Não"
 }

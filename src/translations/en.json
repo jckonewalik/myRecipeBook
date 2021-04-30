@@ -28,5 +28,9 @@
   "delete_recipe": "Delete Recipe",
   "delete_confirmation": "Are you sure you want to delete this recipe?",
   "settings": "Settings",
-  "settings_fractionation": "Recipe Fractionation"
+  "settings_fractionation": "Recipe Fractionation",
+  "multi_steps_question": "Does your recipe have more than one step?",
+  "multi_steps_examples": "Ex: Dough, Sauce, Topping",
+  "option_yes": "Yes",
+  "option_no": "No"
 }

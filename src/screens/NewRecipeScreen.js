@@ -55,10 +55,15 @@ const NewRecipeScreen = ({ route, navigation }) => {
     setCalories('' + state.selectedRecipe.calories);
   }, [state]);
 
-  const goToSteps = () => {
+  const navigate = () => {
+    const nextPage = !state.selectedRecipe.id
+      ? 'CheckSteps'
+      : state.selectedRecipe.multiSteps
+      ? 'Steps'
+      : 'Ingredients';
     setBasicInfo(
       { imageUrl: image, title, portions, portionUnit, calories },
-      () => navigation.navigate('Steps')
+      () => navigation.navigate(nextPage)
     );
   };
 
@@ -129,7 +134,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
                 <PrimaryButton
                   disabled={!isValidInput()}
                   text={i18n.t('recipe_steps')}
-                  onPress={() => goToSteps()}
+                  onPress={() => navigate()}
                 />
               </View>
             </ScrollView>

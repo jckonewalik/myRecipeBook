@@ -9,7 +9,10 @@ import {
   Roboto_400Regular,
   Roboto_900Black,
 } from '@expo-google-fonts/roboto';
-import { createTable } from './src/database/repository/RecipesRepository';
+import {
+  createTable,
+  dropTable,
+} from './src/database/repository/RecipesRepository';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import * as en from './src/translations/en.json';

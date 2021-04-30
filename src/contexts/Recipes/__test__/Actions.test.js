@@ -13,6 +13,9 @@ import {
   DECREASE_RECIPE_SIZE,
   FILTER_RECIPES,
   SET_FRACTIONATION,
+  START_LOAD_RECIPES,
+  START_LOAD_RECIPE,
+  SET_MULTI_STEPS,
 } from '../ActionTypes';
 import {
   loadRecipes,
@@ -30,6 +33,9 @@ import {
   decreaseRecipeSize,
   filterRecipes,
   setFractionation,
+  startLoadRecipes,
+  startLoadRecipe,
+  setMultiSteps,
 } from '../Actions';
 
 describe('setBasicInfo', () => {
@@ -124,7 +130,7 @@ describe('loadRecipe', () => {
     loadRecipe(dispatch)({ recipe: payload });
     expect(dispatch).toBeCalledWith(
       expect.objectContaining({
-        payload: payload,
+        payload: { ...payload, multiSteps: true },
       })
     );
   });
@@ -367,5 +373,37 @@ describe('removeStepByName', () => {
       Test1: 'Step test 1',
       Test3: 'Step test 3',
     });
+  });
+});
+
+describe('startLoadRecipes', () => {
+  it('should have a START_LOAD_RECIPES type', () => {
+    const dispatch = jest.fn();
+    startLoadRecipes(dispatch)();
+    expect(dispatch).toBeCalledWith(
+      expect.objectContaining({ type: START_LOAD_RECIPES })
+    );
+  });
+});
+
+describe('startLoadRecipe', () => {
+  it('should have a START_LOAD_RECIPE type', () => {
+    const dispatch = jest.fn();
+    startLoadRecipe(dispatch)();
+    expect(dispatch).toBeCalledWith(
+      expect.objectContaining({ type: START_LOAD_RECIPE })
+    );
+  });
+});
+
+describe('setMultiSteps', () => {
+  it('should have a SET_MULTI_STEPS type', () => {
+    const dispatch = jest.fn();
+    const callback = jest.fn();
+    setMultiSteps(dispatch)(true, callback);
+    expect(dispatch).toBeCalledWith(
+      expect.objectContaining({ type: SET_MULTI_STEPS, payload: true })
+    );
+    expect(callback).toHaveBeenCalled();
   });
 });

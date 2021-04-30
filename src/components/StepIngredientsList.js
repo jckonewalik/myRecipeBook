@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import AppListItem from './AppListItem';
 
 import colors from '../constants/colors';
-const StepIngredientsList = ({ stepName, ingredients }) => {
+const StepIngredientsList = ({ stepName, ingredients = [] }) => {
+  console.log('StepIngredientsList rendered');
   const { removeIngredient } = useContext(Context);
 
   const onRemoveIngredient = ({ stepName, ingredient }) => {
@@ -14,18 +15,15 @@ const StepIngredientsList = ({ stepName, ingredients }) => {
   return (
     <View style={styles.ingredientsContainer}>
       <Text style={styles.stepName}>{stepName}</Text>
-      <FlatList
-        data={ingredients}
-        keyExtractor={(item) => item.ingredient}
-        renderItem={({ item }) => (
-          <AppListItem
-            text={`${item.amount} ${item.unit} ${item.ingredient}`}
-            onRemove={() =>
-              onRemoveIngredient({ stepName, ingredient: item.ingredient })
-            }
-          />
-        )}
-      />
+      {ingredients.map((item) => (
+        <AppListItem
+          key={item.ingredient}
+          text={`${item.amount} ${item.unit} ${item.ingredient}`}
+          onRemove={() =>
+            onRemoveIngredient({ stepName, ingredient: item.ingredient })
+          }
+        />
+      ))}
     </View>
   );
 };
@@ -38,6 +36,7 @@ const styles = StyleSheet.create({
   },
   ingredientsContainer: {
     marginTop: 10,
+    backgroundColor: '#fff',
   },
 });
 

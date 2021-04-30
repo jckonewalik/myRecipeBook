@@ -3,7 +3,7 @@ import db from '../Connection';
 export const createTable = () => {
   db.transaction((tx) => {
     tx.executeSql(
-      'create table if not exists recipes (id integer primary key not null, imageUrl text, title text, portions numeric, portionUnit text, calories numeric, steps text);'
+      'create table if not exists recipes (id integer primary key not null, imageUrl text, title text, portions numeric, portionUnit text, calories numeric, multiSteps bit, steps text);'
     );
   });
 };
@@ -46,12 +46,21 @@ export const insert = ({
   portions,
   portionUnit,
   calories,
+  multiSteps,
   steps,
 }) => {
   db.transaction((tx) => {
     tx.executeSql(
-      'insert into recipes (imageUrl, title, portions, portionUnit, calories, steps) values (?, ?, ?, ?, ?, ?)',
-      [imageUrl, title, portions, portionUnit, calories, JSON.stringify(steps)]
+      'insert into recipes (imageUrl, title, portions, portionUnit, calories, multiSteps, steps) values (?, ?, ?, ?, ?, ?, ?)',
+      [
+        imageUrl,
+        title,
+        portions,
+        portionUnit,
+        calories,
+        multiSteps,
+        JSON.stringify(steps),
+      ]
     );
   });
 };

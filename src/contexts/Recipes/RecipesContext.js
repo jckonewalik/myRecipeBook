@@ -16,6 +16,7 @@ import {
   SET_FRACTIONATION,
   START_LOAD_RECIPES,
   START_LOAD_RECIPE,
+  SET_MULTI_STEPS,
 } from './ActionTypes';
 import {
   loadRecipes,
@@ -35,6 +36,7 @@ import {
   setFractionation,
   startLoadRecipes,
   startLoadRecipe,
+  setMultiSteps,
 } from './Actions';
 import * as recipeService from '../../services/RecipesService';
 import * as recipeRepository from '../../database/repository/RecipesRepository';
@@ -53,6 +55,7 @@ const INITIAL_STATE = {
     portions: '',
     portionUnit: 'select',
     calories: '',
+    multiSteps: false,
     steps: {},
   },
 };
@@ -60,6 +63,14 @@ const INITIAL_STATE = {
 export const recipeReducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
   switch (type) {
+    case SET_MULTI_STEPS:
+      return {
+        ...state,
+        selectedRecipe: {
+          ...state.selectedRecipe,
+          multiSteps: payload,
+        },
+      };
     case LOAD_RECIPES:
       return {
         ...state,
@@ -112,82 +123,16 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
         },
       };
     case ADD_INGREDIENT: {
-      return {
-        ...state,
-        selectedRecipe: {
-          ...state.selectedRecipe,
-          steps: {
-            ...state.selectedRecipe.steps,
-            [payload.stepName]: {
-              ...state.selectedRecipe.steps[payload.stepName],
-              ingredients: [
-                ...state.selectedRecipe.steps[payload.stepName].ingredients,
-                {
-                  ingredient: payload.ingredient,
-                  amount: payload.amount,
-                  unit: payload.unit,
-                },
-              ],
-            },
-          },
-        },
-      };
+      return addNewIngredient(state.selectedRecipe.multiSteps, payload, state);
     }
     case REMOVE_INGREDIENT: {
-      return {
-        ...state,
-        selectedRecipe: {
-          ...state.selectedRecipe,
-          steps: {
-            ...state.selectedRecipe.steps,
-            [payload.stepName]: {
-              ...state.selectedRecipe.steps[payload.stepName],
-              ingredients: state.selectedRecipe.steps[
-                payload.stepName
-              ].ingredients.filter((s) => s.ingredient !== payload.ingredient),
-            },
-          },
-        },
-      };
+      return deleteIngredient(state.selectedRecipe.multiSteps, payload, state);
     }
     case ADD_INSTRUCTION: {
-      return {
-        ...state,
-        selectedRecipe: {
-          ...state.selectedRecipe,
-          steps: {
-            ...state.selectedRecipe.steps,
-            [payload.stepName]: {
-              ...state.selectedRecipe.steps[payload.stepName],
-              instructions: [
-                ...state.selectedRecipe.steps[payload.stepName].instructions,
-                {
-                  description: payload.description,
-                },
-              ],
-            },
-          },
-        },
-      };
+      return addNewInstruction(state.selectedRecipe.multiSteps, payload, state);
     }
     case REMOVE_INSTRUCTION: {
-      return {
-        ...state,
-        selectedRecipe: {
-          ...state.selectedRecipe,
-          steps: {
-            ...state.selectedRecipe.steps,
-            [payload.stepName]: {
-              ...state.selectedRecipe.steps[payload.stepName],
-              instructions: state.selectedRecipe.steps[
-                payload.stepName
-              ].instructions.filter(
-                (s) => s.description !== payload.description
-              ),
-            },
-          },
-        },
-      };
+      return deleteInstruction(state.selectedRecipe.multiSteps, payload, state);
     }
     case INCREASE_RECIPE_SIZE: {
       return {
@@ -246,6 +191,180 @@ const calculateTotalRecipes = (currentValue, incrementValue) => {
   return currentValue;
 };
 
+const addNewIngredient = (multiSteps, payload, state) => {
+  return multiSteps
+    ? addIngredientMultiSteps(payload, state)
+    : addIngredientSingleStep(payload, state);
+};
+
+const deleteIngredient = (multiSteps, payload, state) => {
+  return multiSteps
+    ? removeIngredientMultiSteps(payload, state)
+    : removeIngredientSingleStep(payload, state);
+};
+
+const addIngredientMultiSteps = (payload, state) => {
+  return {
+    ...state,
+    selectedRecipe: {
+      ...state.selectedRecipe,
+      steps: {
+        ...state.selectedRecipe.steps,
+        [payload.stepName]: {
+          ...state.selectedRecipe.steps[payload.stepName],
+          ingredients: [
+            ...state.selectedRecipe.steps[payload.stepName].ingredients,
+            {
+              ingredient: payload.ingredient,
+              amount: payload.amount,
+              unit: payload.unit,
+            },
+          ],
+        },
+      },
+    },
+  };
+};
+
+const addIngredientSingleStep = (payload, state) => {
+  const ingredients = state.selectedRecipe.steps.ingredients || [];
+  return {
+    ...state,
+    selectedRecipe: {
+      ...state.selectedRecipe,
+      steps: {
+        ...state.selectedRecipe.steps,
+        ingredients: [
+          ...ingredients,
+          {
+            ingredient: payload.ingredient,
+            amount: payload.amount,
+            unit: payload.unit,
+          },
+        ],
+      },
+    },
+  };
+};
+
+const removeIngredientMultiSteps = (payload, state) => {
+  return {
+    ...state,
+    selectedRecipe: {
+      ...state.selectedRecipe,
+      steps: {
+        ...state.selectedRecipe.steps,
+        [payload.stepName]: {
+          ...state.selectedRecipe.steps[payload.stepName],
+          ingredients: state.selectedRecipe.steps[
+            payload.stepName
+          ].ingredients.filter((s) => s.ingredient !== payload.ingredient),
+        },
+      },
+    },
+  };
+};
+
+const removeIngredientSingleStep = (payload, state) => {
+  return {
+    ...state,
+    selectedRecipe: {
+      ...state.selectedRecipe,
+      steps: {
+        ...state.selectedRecipe.steps,
+        ingredients: state.selectedRecipe.steps.ingredients.filter(
+          (s) => s.ingredient !== payload.ingredient
+        ),
+      },
+    },
+  };
+};
+
+const addNewInstruction = (multiSteps, payload, state) => {
+  return multiSteps
+    ? addInstructionMultiSteps(payload, state)
+    : addInstructionSingleStep(payload, state);
+};
+
+const addInstructionMultiSteps = (payload, state) => {
+  return {
+    ...state,
+    selectedRecipe: {
+      ...state.selectedRecipe,
+      steps: {
+        ...state.selectedRecipe.steps,
+        [payload.stepName]: {
+          ...state.selectedRecipe.steps[payload.stepName],
+          instructions: [
+            ...state.selectedRecipe.steps[payload.stepName].instructions,
+            {
+              description: payload.description,
+            },
+          ],
+        },
+      },
+    },
+  };
+};
+
+const addInstructionSingleStep = (payload, state) => {
+  const instructions = state.selectedRecipe.steps.instructions || [];
+  return {
+    ...state,
+    selectedRecipe: {
+      ...state.selectedRecipe,
+      steps: {
+        ...state.selectedRecipe.steps,
+        instructions: [
+          ...instructions,
+          {
+            description: payload.description,
+          },
+        ],
+      },
+    },
+  };
+};
+
+const deleteInstruction = (multiSteps, payload, state) => {
+  return multiSteps
+    ? removeInstructionMultiSteps(payload, state)
+    : removeInstructionSingleStep(payload, state);
+};
+
+const removeInstructionMultiSteps = (payload, state) => {
+  return {
+    ...state,
+    selectedRecipe: {
+      ...state.selectedRecipe,
+      steps: {
+        ...state.selectedRecipe.steps,
+        [payload.stepName]: {
+          ...state.selectedRecipe.steps[payload.stepName],
+          instructions: state.selectedRecipe.steps[
+            payload.stepName
+          ].instructions.filter((s) => s.description !== payload.description),
+        },
+      },
+    },
+  };
+};
+
+const removeInstructionSingleStep = (payload, state) => {
+  return {
+    ...state,
+    selectedRecipe: {
+      ...state.selectedRecipe,
+      steps: {
+        ...state.selectedRecipe.steps,
+        instructions: state.selectedRecipe.steps.instructions.filter(
+          (s) => s.description !== payload.description
+        ),
+      },
+    },
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   recipeReducer,
   {
@@ -265,6 +384,7 @@ export const { Context, Provider } = createDataContext(
     setFractionation,
     startLoadRecipes,
     startLoadRecipe,
+    setMultiSteps,
   },
   {
     recipeService,

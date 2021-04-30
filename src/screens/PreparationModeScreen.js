@@ -1,5 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { View, FlatList, StyleSheet, Dimensions, Platform } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import AndroidPicker from '../components/AndroidPicker';
 import IOSPicker from '../components/IOSPicker';
@@ -37,30 +43,34 @@ const PreparationModeScreen = ({ navigation }) => {
   };
 
   const isValidPreparationMode = () => {
-    return step && step !== 'select' && description.trim() !== '';
+    return (
+      ((step && step !== 'select') || !state.selectedRecipe.multiSteps) &&
+      description.trim() !== ''
+    );
   };
 
   return (
     <View style={styles.rootContainer}>
-      {Platform.OS === 'ios' ? (
-        <IOSPicker
-          label={i18n.t('recipe_step')}
-          outputValue={step}
-          options={Object.keys(state.selectedRecipe.steps).map((step) => {
-            return { label: step, value: step };
-          })}
-          onSelect={setStep}
-        />
-      ) : (
-        <AndroidPicker
-          label={i18n.t('recipe_step')}
-          value={step}
-          options={Object.keys(state.selectedRecipe.steps).map((step) => {
-            return { label: step, value: step };
-          })}
-          onSelect={setStep}
-        />
-      )}
+      {!!state.selectedRecipe.multiSteps &&
+        (Platform.OS === 'ios' ? (
+          <IOSPicker
+            label={i18n.t('recipe_step')}
+            outputValue={step}
+            options={Object.keys(state.selectedRecipe.steps).map((step) => {
+              return { label: step, value: step };
+            })}
+            onSelect={setStep}
+          />
+        ) : (
+          <AndroidPicker
+            label={i18n.t('recipe_step')}
+            value={step}
+            options={Object.keys(state.selectedRecipe.steps).map((step) => {
+              return { label: step, value: step };
+            })}
+            onSelect={setStep}
+          />
+        ))}
       <AppTextInput
         style={styles.descriptionInput}
         label={i18n.t('step_description')}
@@ -82,20 +92,27 @@ const PreparationModeScreen = ({ navigation }) => {
           }
         />
       </View>
-      <FlatList
-        style={styles.instructionsList}
-        data={Object.keys(state.selectedRecipe.steps)}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
+      {(!!state.selectedRecipe.multiSteps && (
+        <ScrollView style={styles.instructionsList}>
+          {Object.keys(state.selectedRecipe.steps).map((item) => (
+            <StepInstructionsList
+              key={item}
+              stepName={item}
+              instructions={
+                state.selectedRecipe.steps[item] &&
+                state.selectedRecipe.steps[item].instructions
+              }
+            />
+          ))}
+        </ScrollView>
+      )) || (
+        <ScrollView style={{ flex: 1 }}>
           <StepInstructionsList
-            stepName={item}
-            instructions={
-              state.selectedRecipe.steps[item] &&
-              state.selectedRecipe.steps[item].instructions
-            }
+            stepName={''}
+            instructions={state.selectedRecipe.steps.instructions}
           />
-        )}
-      />
+        </ScrollView>
+      )}
       <View style={styles.footerContainer}>
         <PrimaryButton text={i18n.t('save')} onPress={() => onSave()} />
       </View>

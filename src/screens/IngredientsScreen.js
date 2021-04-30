@@ -1,5 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { View, FlatList, StyleSheet, Dimensions, Platform } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import AndroidPicker from '../components/AndroidPicker';
 import IOSPicker from '../components/IOSPicker';
@@ -28,42 +34,51 @@ const IngredientsScreen = ({ navigation }) => {
   };
 
   const onAddIngredient = ({ stepName, ingredient, amount, unit }) => {
-    const alreadyExists =
-      state.selectedRecipe.steps[stepName].ingredients &&
-      state.selectedRecipe.steps[stepName].ingredients.find(
-        (s) => s.ingredient === ingredient
-      );
+    if (state.selectedRecipe.multiSteps) {
+      const alreadyExists =
+        state.selectedRecipe.steps[stepName].ingredients &&
+        state.selectedRecipe.steps[stepName].ingredients.find(
+          (s) => s.ingredient === ingredient
+        );
 
-    if (!alreadyExists) {
-      addIngredient({ stepName, ingredient, amount, unit }, clearForm);
+      if (!alreadyExists) {
+        addIngredient({ stepName, ingredient, amount, unit }, clearForm);
+      }
+    } else {
+      addIngredient({ ingredient, amount, unit }, clearForm);
     }
   };
 
   const isValidIngredient = () => {
-    return step && step !== 'select' && name && amount && amountUnit;
+    return (
+      ((step && step !== 'select') || !state.selectedRecipe.multiSteps) &&
+      name &&
+      amount &&
+      amountUnit
+    );
   };
-
   return (
     <View style={styles.rootContainer}>
-      {Platform.OS === 'ios' ? (
-        <IOSPicker
-          label={i18n.t('recipe_step')}
-          outputValue={step}
-          options={Object.keys(state.selectedRecipe.steps).map((step) => {
-            return { label: step, value: step };
-          })}
-          onSelect={setStep}
-        />
-      ) : (
-        <AndroidPicker
-          label={i18n.t('recipe_step')}
-          value={step}
-          options={Object.keys(state.selectedRecipe.steps).map((step) => {
-            return { label: step, value: step };
-          })}
-          onSelect={setStep}
-        />
-      )}
+      {!!state.selectedRecipe.multiSteps &&
+        (Platform.OS === 'ios' ? (
+          <IOSPicker
+            label={i18n.t('recipe_step')}
+            outputValue={step}
+            options={Object.keys(state.selectedRecipe.steps).map((step) => {
+              return { label: step, value: step };
+            })}
+            onSelect={setStep}
+          />
+        ) : (
+          <AndroidPicker
+            label={i18n.t('recipe_step')}
+            value={step}
+            options={Object.keys(state.selectedRecipe.steps).map((step) => {
+              return { label: step, value: step };
+            })}
+            onSelect={setStep}
+          />
+        ))}
       <AppTextInput
         label={i18n.t('recipe_ingredient')}
         value={name}
@@ -100,19 +115,27 @@ const IngredientsScreen = ({ navigation }) => {
           }
         />
       </View>
-      <FlatList
-        data={Object.keys(state.selectedRecipe.steps)}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
+      {(!!state.selectedRecipe.multiSteps && (
+        <ScrollView style={styles.ingredientsList}>
+          {Object.keys(state.selectedRecipe.steps).map((item) => (
+            <StepIngredientsList
+              key={item}
+              stepName={item}
+              ingredients={
+                state.selectedRecipe.steps[item] &&
+                state.selectedRecipe.steps[item].ingredients
+              }
+            />
+          ))}
+        </ScrollView>
+      )) || (
+        <ScrollView style={{ flex: 1 }}>
           <StepIngredientsList
-            stepName={item}
-            ingredients={
-              state.selectedRecipe.steps[item] &&
-              state.selectedRecipe.steps[item].ingredients
-            }
+            stepName={''}
+            ingredients={state.selectedRecipe.steps.ingredients}
           />
-        )}
-      />
+        </ScrollView>
+      )}
       <View style={styles.footerContainer}>
         <PrimaryButton
           text={i18n.t('recipe_preparation_mode')}
@@ -139,6 +162,9 @@ const styles = StyleSheet.create({
     width: width * 0.4,
   },
   addButton: {
+    marginTop: 10,
+  },
+  ingredientsList: {
     marginTop: 10,
   },
   footerContainer: {
