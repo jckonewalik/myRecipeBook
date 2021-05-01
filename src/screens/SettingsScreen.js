@@ -9,24 +9,27 @@ const SettingsScreen = () => {
 
   const { state, setFractionation } = useContext(Context);
   return (
-    <View style={styles.rootContainer}>
+    <View testID="rootContainerSettingsScreeen" style={styles.rootContainer}>
       <View style={{ width: width * 0.4 }}>
         <Text style={styles.title}>{i18n.t('settings_fractionation')}</Text>
       </View>
       <View style={styles.optionsContainer}>
         <FractionOption
+          testID="fractionOptionOnePortion"
           label="1"
           value={1}
           onPress={setFractionation}
           selected={state.fractionation === 1}
         />
         <FractionOption
+          testID="fractionOptionHalfPortion"
           label="1/2"
           value={0.5}
           onPress={setFractionation}
           selected={state.fractionation === 0.5}
         />
         <FractionOption
+          testID="fractionOptionQuarterPortion"
           label="1/4"
           value={0.25}
           onPress={setFractionation}

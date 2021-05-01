@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import i18n from 'i18n-js';
 import colors from '../constants/colors';
 
-const FractionOption = ({ label, value, selected, onPress }) => {
+const FractionOption = ({ testID, label, value, selected, onPress }) => {
   const getLabelColor = () => {
     return selected ? '#fff' : colors.primaryColor;
   };
@@ -11,7 +11,7 @@ const FractionOption = ({ label, value, selected, onPress }) => {
     return selected ? colors.primaryColor : '#fff';
   };
   return (
-    <TouchableWithoutFeedback onPress={() => onPress(value)}>
+    <TouchableWithoutFeedback testID={testID} onPress={() => onPress(value)}>
       <View
         style={{
           ...styles.optionContainer,
