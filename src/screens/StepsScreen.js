@@ -6,6 +6,7 @@ import AppTextInput from '../components/AppTextInput';
 import AppListItem from '../components/AppListItem';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import i18n from 'i18n-js';
+import colors from '../constants/colors';
 
 const StepsScreen = ({ navigation }) => {
   const { state, addStep, removeStep } = useContext(Context);
@@ -40,6 +41,7 @@ const StepsScreen = ({ navigation }) => {
       <View style={styles.mainView}>
         <View style={styles.inputContainer}>
           <AppTextInput
+            testID="nameStepInput"
             label={i18n.t('name')}
             value={name}
             autoCorrect={false}
@@ -47,6 +49,7 @@ const StepsScreen = ({ navigation }) => {
           />
           <View style={styles.addButton}>
             <SecondaryButton
+              testID="addStepButton"
               disabled={!isValidStep()}
               text={i18n.t('add')}
               onPress={() => onAddStep(name)}
@@ -64,6 +67,7 @@ const StepsScreen = ({ navigation }) => {
         />
         <View style={styles.footerContainer}>
           <PrimaryButton
+            testID="stepsScreenNavigationButton"
             disabled={!isValidForm()}
             text={i18n.t('recipe_ingredients')}
             onPress={() => goToIngredients()}
@@ -80,7 +84,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     paddingTop: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   keyboardContainer: {
     flex: 1,

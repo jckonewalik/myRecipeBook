@@ -5,10 +5,10 @@ import colors from '../constants/colors';
 
 const FractionOption = ({ testID, label, value, selected, onPress }) => {
   const getLabelColor = () => {
-    return selected ? '#fff' : colors.primaryColor;
+    return selected ? colors.white : colors.primaryColor;
   };
   const getContainerColor = () => {
-    return selected ? colors.primaryColor : '#fff';
+    return selected ? colors.primaryColor : colors.white;
   };
   return (
     <TouchableWithoutFeedback testID={testID} onPress={() => onPress(value)}>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   circle: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderWidth: 1,
     height: 30,
     width: 30,

@@ -21,7 +21,7 @@ const Routes = () => {
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor: '#fff',
+            backgroundColor: colors.white,
             shadowColor: 'transparent',
             shadowRadius: 0,
             shadowOffset: {

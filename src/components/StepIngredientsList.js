@@ -5,7 +5,6 @@ import AppListItem from './AppListItem';
 
 import colors from '../constants/colors';
 const StepIngredientsList = ({ stepName, ingredients = [] }) => {
-  console.log('StepIngredientsList rendered');
   const { removeIngredient } = useContext(Context);
 
   const onRemoveIngredient = ({ stepName, ingredient }) => {
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
   },
   ingredientsContainer: {
     marginTop: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
 });
 

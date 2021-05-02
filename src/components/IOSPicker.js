@@ -14,7 +14,7 @@ import i18n from 'i18n-js';
 
 const { height } = Dimensions.get('window');
 
-const IOSPicker = ({ label, outputValue, options, onSelect }) => {
+const IOSPicker = ({ testID, label, outputValue, options, onSelect }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [pickerValue, setPickerValue] = useState(`${i18n.t('select')}`);
   let localeOutputValue = i18n.t(outputValue);
@@ -34,9 +34,16 @@ const IOSPicker = ({ label, outputValue, options, onSelect }) => {
   };
   return (
     <>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
+      <TouchableOpacity
+        testID={`${testID}ModalPress`}
+        onPress={() => setModalVisible(true)}
+      >
         <View>
-          <AppOutputText label={label} value={localeOutputValue} />
+          <AppOutputText
+            testID={`${testID}Output`}
+            label={label}
+            value={localeOutputValue}
+          />
         </View>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
@@ -48,11 +55,15 @@ const IOSPicker = ({ label, outputValue, options, onSelect }) => {
             <TouchableOpacity onPress={onModalCancel}>
               <Text style={styles.pickerOptions}>{i18n.t('cancel')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={onModalSelect}>
+            <TouchableOpacity
+              testID={`${testID}Select`}
+              onPress={onModalSelect}
+            >
               <Text style={styles.pickerOptions}>{i18n.t('select')}</Text>
             </TouchableOpacity>
           </View>
           <Picker
+            testID={`${testID}`}
             selectedValue={pickerValue}
             onValueChange={(itemValue) => setPickerValue(itemValue)}
           >

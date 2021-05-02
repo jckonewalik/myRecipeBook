@@ -1,11 +1,13 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import colors from '../constants/colors';
-const AppOutputText = ({ label, value }) => {
+const AppOutputText = ({ testID, label, value }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
-      <Text style={styles.value}>{value}</Text>
+      <Text testID={testID} style={styles.value}>
+        {value}
+      </Text>
     </View>
   );
 };

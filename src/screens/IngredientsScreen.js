@@ -15,6 +15,7 @@ import SecondaryButton from '../components/SecondaryButton';
 import StepIngredientsList from '../components/StepIngredientsList';
 import i18n from 'i18n-js';
 const { width } = Dimensions.get('window');
+import colors from '../constants/colors';
 
 const IngredientsScreen = ({ navigation }) => {
   const { state, addIngredient } = useContext(Context);
@@ -62,6 +63,7 @@ const IngredientsScreen = ({ navigation }) => {
       {!!state.selectedRecipe.multiSteps &&
         (Platform.OS === 'ios' ? (
           <IOSPicker
+            testID="ingredientStepPicker"
             label={i18n.t('recipe_step')}
             outputValue={step}
             options={Object.keys(state.selectedRecipe.steps).map((step) => {
@@ -80,6 +82,7 @@ const IngredientsScreen = ({ navigation }) => {
           />
         ))}
       <AppTextInput
+        testID="ingredientName"
         label={i18n.t('recipe_ingredient')}
         value={name}
         onChangeText={setName}
@@ -87,6 +90,7 @@ const IngredientsScreen = ({ navigation }) => {
       <View style={styles.amountContainer}>
         <View style={styles.amountInput}>
           <AppTextInput
+            testID="ingredientQuantity"
             label={i18n.t('quantity')}
             value={amount}
             keyboardType="numeric"
@@ -95,6 +99,7 @@ const IngredientsScreen = ({ navigation }) => {
         </View>
         <View style={styles.amountInput}>
           <AppTextInput
+            testID="ingredientQuantityUnit"
             label={i18n.t('unit')}
             value={amountUnit}
             onChangeText={setAmountUnit}
@@ -103,6 +108,7 @@ const IngredientsScreen = ({ navigation }) => {
       </View>
       <View style={styles.addButton}>
         <SecondaryButton
+          testID="addIngredientButton"
           text={i18n.t('add')}
           disabled={!isValidIngredient()}
           onPress={() =>
@@ -138,6 +144,7 @@ const IngredientsScreen = ({ navigation }) => {
       )}
       <View style={styles.footerContainer}>
         <PrimaryButton
+          testID="ingredientsScreenNavigationButton"
           text={i18n.t('recipe_preparation_mode')}
           onPress={() => goToPreparationMode()}
         />
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     paddingTop: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   amountContainer: {
     flexDirection: 'row',

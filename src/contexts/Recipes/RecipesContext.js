@@ -61,6 +61,7 @@ const INITIAL_STATE = {
 };
 
 export const recipeReducer = (state = INITIAL_STATE, action) => {
+  // console.log(action.payload);
   const { type, payload } = action;
   switch (type) {
     case SET_MULTI_STEPS:

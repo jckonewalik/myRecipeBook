@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import colors from '../constants/colors';
-const PrimaryButton = ({ disabled = false, text, onPress }) => {
+const PrimaryButton = ({ testID, disabled = false, text, onPress }) => {
   const getStyle = () => {
     if (disabled) {
       return { ...styles.container, backgroundColor: '#ddd' };
@@ -9,8 +9,8 @@ const PrimaryButton = ({ disabled = false, text, onPress }) => {
     return styles.container;
   };
   return (
-    <TouchableOpacity disabled={disabled} onPress={onPress}>
-      <View style={getStyle()}>
+    <TouchableOpacity testID={testID} disabled={disabled} onPress={onPress}>
+      <View testID={`${testID}View`} style={getStyle()}>
         <Text style={styles.text}>{text}</Text>
       </View>
     </TouchableOpacity>
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryColor,
   },
   text: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 20,
     fontFamily: 'Roboto_900Black',
   },

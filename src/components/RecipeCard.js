@@ -57,7 +57,7 @@ const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
     };
   };
   return (
-    <View style={styles.cardContainer}>
+    <View testID="recipeCard" style={styles.cardContainer}>
       <Animated.View style={getCardStyle()} {...panResponder.panHandlers}>
         <TouchableWithoutFeedback
           testID="selectRecipeButton"

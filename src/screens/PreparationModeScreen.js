@@ -17,6 +17,7 @@ import { saveOrUpdate } from '../services/RecipesService';
 import { listAll } from '../database/repository/RecipesRepository';
 import i18n from 'i18n-js';
 const { width } = Dimensions.get('window');
+import colors from '../constants/colors';
 
 const PreparationModeScreen = ({ navigation }) => {
   const { state, addInstruction, loadRecipes, startLoadRecipes } = useContext(
@@ -54,6 +55,7 @@ const PreparationModeScreen = ({ navigation }) => {
       {!!state.selectedRecipe.multiSteps &&
         (Platform.OS === 'ios' ? (
           <IOSPicker
+            testID="preparationModeStepPicker"
             label={i18n.t('recipe_step')}
             outputValue={step}
             options={Object.keys(state.selectedRecipe.steps).map((step) => {
@@ -72,6 +74,7 @@ const PreparationModeScreen = ({ navigation }) => {
           />
         ))}
       <AppTextInput
+        testID="preparationDescription"
         style={styles.descriptionInput}
         label={i18n.t('step_description')}
         value={description}
@@ -82,6 +85,7 @@ const PreparationModeScreen = ({ navigation }) => {
       />
       <View style={styles.addButton}>
         <SecondaryButton
+          testID="addPreparationDescription"
           disabled={!isValidPreparationMode()}
           text={i18n.t('add')}
           onPress={() =>
@@ -114,7 +118,11 @@ const PreparationModeScreen = ({ navigation }) => {
         </ScrollView>
       )}
       <View style={styles.footerContainer}>
-        <PrimaryButton text={i18n.t('save')} onPress={() => onSave()} />
+        <PrimaryButton
+          testID="saveRecipeButton"
+          text={i18n.t('save')}
+          onPress={() => onSave()}
+        />
       </View>
     </View>
   );
@@ -126,7 +134,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     paddingTop: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   amountContainer: {
     flexDirection: 'row',

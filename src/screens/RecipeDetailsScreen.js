@@ -83,7 +83,7 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: '#fff',
+            backgroundColor: colors.white,
             justifyContent: 'center',
             alignContent: 'center',
           }}
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     width: width,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   detailsHeader: {
     marginTop: 30,

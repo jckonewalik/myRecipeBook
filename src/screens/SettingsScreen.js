@@ -43,7 +43,7 @@ const SettingsScreen = () => {
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     padding: 20,
   },
   optionsContainer: {

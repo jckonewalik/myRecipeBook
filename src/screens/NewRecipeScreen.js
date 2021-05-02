@@ -77,7 +77,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: '#fff',
+            backgroundColor: colors.white,
             justifyContent: 'center',
             alignContent: 'center',
           }}
@@ -93,6 +93,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
             <ScrollView style={styles.inner}>
               <AppImagePicker image={image} setImage={setImage} />
               <AppTextInput
+                testID="recipeTitleInput"
                 label={i18n.t('recipe_title')}
                 value={title}
                 onChangeText={setTitle}
@@ -100,6 +101,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
               <View style={styles.portionsContainer}>
                 <View style={styles.protionsInput}>
                   <AppTextInput
+                    testID="recipePortionsInput"
                     label={i18n.t('recipe_portions')}
                     value={portions}
                     keyboardType="numeric"
@@ -109,6 +111,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
                 <View style={styles.protionsInput}>
                   {Platform.OS === 'ios' ? (
                     <IOSPicker
+                      testID="portionUnitPicker"
                       label={i18n.t('unit')}
                       outputValue={portionUnit}
                       options={portionUnitOptions}
@@ -125,6 +128,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
                 </View>
               </View>
               <AppTextInput
+                testID="recipeCaloriesInput"
                 label={i18n.t('recipe_calories')}
                 value={calories}
                 keyboardType="numeric"
@@ -132,6 +136,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
               />
               <View style={styles.footerContainer}>
                 <PrimaryButton
+                  testID="navigateToCheckStepsButton"
                   disabled={!isValidInput()}
                   text={i18n.t('recipe_steps')}
                   onPress={() => navigate()}
@@ -151,7 +156,7 @@ const styles = StyleSheet.create({
   },
   inner: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   rootContainer: {
     flex: 1,

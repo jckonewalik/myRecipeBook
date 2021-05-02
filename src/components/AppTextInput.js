@@ -2,6 +2,7 @@ import React from 'react';
 import { TextInput, Text, View, StyleSheet } from 'react-native';
 import colors from '../constants/colors';
 const AppTextInput = ({
+  testID,
   style,
   label,
   value,
@@ -16,6 +17,7 @@ const AppTextInput = ({
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
+        testID={testID}
         editable={editable}
         autoCapitalize="none"
         style={{ ...styles.input, ...style }}

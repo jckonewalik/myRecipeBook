@@ -30,7 +30,10 @@ const CheckStepsScreen = ({ navigation }) => {
           <Text style={styles.itemText}>{i18n.t('multi_steps_examples')}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 30 }}>
-          <TouchableWithoutFeedback onPress={() => setMultiSteps(true)}>
+          <TouchableWithoutFeedback
+            testID="multiStepOption"
+            onPress={() => setMultiSteps(true)}
+          >
             <View
               style={{
                 flexDirection: 'row',
@@ -50,7 +53,10 @@ const CheckStepsScreen = ({ navigation }) => {
               <Text style={styles.itemText}>{i18n.t('option_yes')}</Text>
             </View>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => setMultiSteps(false)}>
+          <TouchableWithoutFeedback
+            testID="singleStepOption"
+            onPress={() => setMultiSteps(false)}
+          >
             <View
               style={{
                 flexDirection: 'row',
@@ -73,6 +79,7 @@ const CheckStepsScreen = ({ navigation }) => {
       </View>
       <View style={styles.footerContainer}>
         <PrimaryButton
+          testID="checkStepsNavigationButton"
           text={
             multiSteps ? i18n.t('recipe_steps') : i18n.t('recipe_ingredients')
           }
@@ -89,7 +96,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     paddingTop: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   itemText: {
     fontFamily: 'Roboto_900Black',

@@ -77,7 +77,7 @@ const HomeScreen = ({ context = Context, navigation }) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: '#fff',
+            backgroundColor: colors.white,
             justifyContent: 'center',
             alignContent: 'center',
           }}
@@ -136,7 +136,7 @@ const HomeScreen = ({ context = Context, navigation }) => {
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   body: {
     flex: 1,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   addButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 30,
     width: 60,
     height: 60,

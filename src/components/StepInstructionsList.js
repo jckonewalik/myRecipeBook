@@ -5,8 +5,6 @@ import AppListItem from './AppListItem';
 import colors from '../constants/colors';
 
 const StepInstructionsList = ({ stepName, instructions = [] }) => {
-  console.log('StepInstructionsList rendered');
-
   const { removeInstruction } = useContext(Context);
   const onRemoveInstruction = ({ stepName, description }) => {
     removeInstruction({ stepName, description });
