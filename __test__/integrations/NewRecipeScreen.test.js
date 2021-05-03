@@ -1,10 +1,7 @@
 import { act, render, fireEvent } from '@testing-library/react-native';
 import React from 'react';
 import Routes from '../../routes';
-import {
-  recipes,
-  clearDatabase,
-} from '../../src/database/repository/__mocks__/RecipesRepository';
+import { clearDatabase } from '../../src/database/repository/__mocks__/RecipesRepository';
 import { Provider } from '../../src/contexts/Recipes/RecipesContext';
 
 jest.useFakeTimers();
@@ -118,5 +115,37 @@ test('create a new recipe with single step and save it', async () => {
 
   await act(async () => {
     expect(screen.getAllByTestId('recipeCard').length).toEqual(1);
+  });
+});
+
+test('update a recipe and save it', async () => {
+  const component = (
+    <Provider>
+      <Routes />
+    </Provider>
+  );
+  // render home screen
+  const screen = render(component);
+
+  await act(async () => {
+    expect(screen.getByTestId('recipeCard')).toHaveTextContent('Test 01 unit');
+  });
+
+  const editRecipeButton = screen.getByTestId('editRecipeButton');
+  fireEvent.press(editRecipeButton);
+
+  // New Recipe Screen -> setting values
+  fireEvent.changeText(screen.getByTestId('recipeTitleInput'), 'Test Edited');
+  fireEvent.press(screen.getByTestId('navigateToCheckStepsButton'));
+
+  fireEvent.press(screen.getByTestId('ingredientsScreenNavigationButton'));
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('saveRecipeButton'));
+  });
+
+  await act(async () => {
+    expect(screen.getByTestId('recipeCard')).toHaveTextContent(
+      'Test Edited1 unit'
+    );
   });
 });

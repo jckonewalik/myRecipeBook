@@ -1,5 +1,10 @@
 import db from '../Connection';
 
+export const dropTable = () => {
+  db.transaction((tx) => {
+    tx.executeSql('drop table if exists recipes;');
+  });
+};
 export const createTable = () => {
   db.transaction((tx) => {
     tx.executeSql(
@@ -12,11 +17,6 @@ export const createTable = () => {
     } catch (err) {
       console.log(err);
     }
-  });
-};
-export const dropTable = () => {
-  db.transaction((tx) => {
-    tx.executeSql('drop table recipes');
   });
 };
 

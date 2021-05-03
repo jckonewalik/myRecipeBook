@@ -69,3 +69,25 @@ export const insert = jest
       });
     }
   );
+
+export const update = jest
+  .fn()
+  .mockImplementation(
+    ({ id, imageUrl, title, portions, portionUnit, calories, steps }) => {
+      const recipe = recipes.find((r) => r.id == id);
+      recipe.title = title;
+      recipe.imageUrl = imageUrl;
+      recipe.portions = portions;
+      recipe.portionUnit = portionUnit;
+      recipe.calories = calories;
+      recipe.steps = steps;
+    }
+  );
+
+export const remove = jest.fn().mockImplementation(({ id }) => {
+  const filtered = recipes.filter((recipe) => recipe.id != id);
+  recipes.length = 0;
+  for (var i = 0; i < filtered.length; i++) {
+    recipes.push(filtered[i]);
+  }
+});

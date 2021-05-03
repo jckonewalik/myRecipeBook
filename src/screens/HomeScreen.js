@@ -105,7 +105,7 @@ const HomeScreen = ({ context = Context, navigation }) => {
               />
             </View>
           ) : (
-            <View style={styles.welcomeContainer}>
+            <View testID="welcomeMessage" style={styles.welcomeContainer}>
               <Text style={styles.welcomeText}>
                 {i18n.t('welcome_message')}
               </Text>
