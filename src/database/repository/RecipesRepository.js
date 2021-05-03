@@ -5,6 +5,13 @@ export const createTable = () => {
     tx.executeSql(
       'create table if not exists recipes (id integer primary key not null, imageUrl text, title text, portions numeric, portionUnit text, calories numeric, multiSteps bit, steps text);'
     );
+    try {
+      tx.executeSql(
+        'alter table recipes add column if not exists multiSteps bit'
+      );
+    } catch (err) {
+      console.log(err);
+    }
   });
 };
 export const dropTable = () => {

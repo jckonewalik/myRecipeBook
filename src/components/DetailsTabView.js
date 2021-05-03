@@ -83,9 +83,16 @@ const IngredientsList = ({ stepName, ingredients = [], totalRecipes }) => {
   return (
     <View style={styles.tabViewItem}>
       <Text style={styles.tabViewItemTitle}>{stepName}</Text>
-      {ingredients.map((ingredient) => (
-        <View key={ingredient.ingredient} style={styles.tabViewItemContainer}>
-          <Text style={styles.tabViewItemText}>
+      {ingredients.map((ingredient, idx) => (
+        <View
+          testID={`ingredientListItem${idx}`}
+          key={ingredient.ingredient}
+          style={styles.tabViewItemContainer}
+        >
+          <Text
+            style={styles.tabViewItemText}
+            testID={`ingredientListItem${idx}Amount`}
+          >
             {integerText(ingredient.amount * totalRecipes)}
           </Text>
           <Text style={{ ...styles.tabViewItemText, fontSize: 10 }}>

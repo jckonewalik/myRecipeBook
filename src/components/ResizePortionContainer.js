@@ -12,7 +12,7 @@ const ResizePortionContainer = ({
   onPressPlus,
 }) => (
   <View style={styles.resizeContainer}>
-    <TouchableOpacity onPress={onPressMinus}>
+    <TouchableOpacity testID="decreaseRecipeQuantity" onPress={onPressMinus}>
       <FontAwesome name="minus" size={24} color={colors.primaryColor} />
     </TouchableOpacity>
     <View style={styles.resizePortionsContainer}>
@@ -26,7 +26,7 @@ const ResizePortionContainer = ({
       </View>
       <Text style={styles.resizePortionsDescription}>{i18n.t('recipe')}</Text>
     </View>
-    <TouchableOpacity onPress={onPressPlus}>
+    <TouchableOpacity testID="increaseRecipeQuantity" onPress={onPressPlus}>
       <FontAwesome name="plus" size={24} color={colors.primaryColor} />
     </TouchableOpacity>
   </View>
