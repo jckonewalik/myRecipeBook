@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   itemText: {
-    fontFamily: 'Roboto_900Black',
+    fontFamily: 'Roboto_300Light',
     color: colors.primaryColor,
     fontSize: 20,
   },
