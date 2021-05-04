@@ -10,13 +10,18 @@ export const createTable = () => {
     tx.executeSql(
       'create table if not exists recipes (id integer primary key not null, imageUrl text, title text, portions numeric, portionUnit text, calories numeric, multiSteps bit, steps text);'
     );
-    try {
-      tx.executeSql(
-        'alter table recipes add column if not exists multiSteps bit'
-      );
-    } catch (err) {
-      console.log(err);
-    }
+  });
+  db.transaction((tx) => {
+    tx.executeSql(
+      'PRAGMA table_info(recipes)',
+      [],
+      (_, { rows: { _array } }) => {
+        const multiStep = _array.find((column) => column.name === 'multiSteps');
+        if (multiStep) {
+          tx.executeSql('alter table recipes add column multiSteps bit');
+        }
+      }
+    );
   });
 };
 
