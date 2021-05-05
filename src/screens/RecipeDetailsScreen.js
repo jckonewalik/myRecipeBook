@@ -1,14 +1,11 @@
 import React, { useEffect, useContext, useRef } from 'react';
 import { Context } from '../contexts/Recipes/RecipesContext';
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import {
   SafeAreaView,
   View,
   Animated,
   Dimensions,
   Image,
-  Platform,
-  TouchableOpacity,
   Text,
   StyleSheet,
   PanResponder,
@@ -23,11 +20,12 @@ const { height, width } = Dimensions.get('window');
 const RecipeDetailsScreen = ({ route, navigation }) => {
   const { recipeId } = route.params;
 
-  const position = useRef(new Animated.ValueXY()).current;
+  const position = useRef(new Animated.ValueXY({ x: 0, y: -(width * 0.07) }))
+    .current;
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (event, gestureHandler) => {
-        return position.y._value !== 0 ? false : true;
+        return position.y._value !== -(width * 0.07) ? false : true;
       },
       onPanResponderGrant: () => {
         position.setOffset({
@@ -45,7 +43,7 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
         const open = position.y._value < -height * 0.1;
         position.flattenOffset();
         Animated.spring(position, {
-          toValue: { y: open ? -height * 0.4 : 0, x: 0 },
+          toValue: { y: open ? -height * 0.4 : -(width * 0.07), x: 0 },
           useNativeDriver: false,
         }).start();
       },
@@ -62,9 +60,6 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
       ...styles.detailsContainer,
     };
   };
-  const openSettings = () => {
-    navigation.navigate('Settings');
-  };
   const {
     state,
     loadRecipe,
@@ -78,7 +73,7 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.droidSafeArea}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
       {state.loadingRecipe ? (
         <View
           style={{
@@ -92,38 +87,10 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
         </View>
       ) : (
         <>
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              zIndex: 1,
-              marginLeft: 20,
-              marginTop: 30,
-            }}
-            onPress={() => navigation.goBack()}
-          >
-            <MaterialIcons
-              name="keyboard-backspace"
-              size={30}
-              color={colors.primaryColor}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              zIndex: 1,
-              right: 20,
-              marginTop: 30,
-            }}
-            onPress={openSettings}
-          >
-            <View>
-              <FontAwesome name="gear" size={34} color={colors.primaryColor} />
-            </View>
-          </TouchableOpacity>
           <TouchableWithoutFeedback
             onPress={() => {
               Animated.spring(position, {
-                toValue: { y: 0, x: 0 },
+                toValue: { y: -(width * 0.07), x: 0 },
                 useNativeDriver: false,
               }).start();
             }}
@@ -171,11 +138,6 @@ const fontBold = {
 };
 
 const styles = StyleSheet.create({
-  droidSafeArea: {
-    position: 'relative',
-    flex: 1,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
-  },
   thumb: {
     resizeMode: 'cover',
     height: height * 0.5,

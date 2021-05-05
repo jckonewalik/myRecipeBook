@@ -8,10 +8,11 @@ import IngredientsScreen from './src/screens/IngredientsScreen';
 import PreparationModeScreen from './src/screens/PreparationModeScreen';
 import RecipeDetailsScreen from './src/screens/RecipeDetailsScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 import colors from './src/constants/colors';
 import CheckStepsScreen from './src/screens/CheckStepsScreen';
+import { View, TouchableOpacity } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -77,7 +78,12 @@ const Routes = () => {
         <Stack.Screen
           name="RecipeDetails"
           component={RecipeDetailsScreen}
-          options={{ headerShown: false }}
+          options={({ navigation }) => ({
+            headerTitle: ``,
+            ...backButton,
+            // eslint-disable-next-line react/display-name
+            headerRight: () => <SettingsButton navigation={navigation} />,
+          })}
         />
         <Stack.Screen
           name="Settings"
@@ -104,5 +110,21 @@ const backButton = {
     />
   ),
 };
+
+const SettingsButton = ({ navigation }) => (
+  <TouchableOpacity
+    style={{
+      position: 'absolute',
+      zIndex: 1,
+      right: 20,
+      marginTop: 30,
+    }}
+    onPress={() => navigation.navigate('Settings')}
+  >
+    <View>
+      <FontAwesome name="gear" size={34} color={colors.primaryColor} />
+    </View>
+  </TouchableOpacity>
+);
 
 export default Routes;
