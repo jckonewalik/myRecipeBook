@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import i18n from 'i18n-js';
 import {
   Animated,
   PanResponder,
@@ -69,9 +70,9 @@ const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
             </View>
             <View style={styles.descriptionContainer}>
               <Text style={styles.title}>{recipe.title}</Text>
-              <Text
-                style={styles.subTitle}
-              >{`${recipe.portions} ${recipe.portionUnit}`}</Text>
+              <Text style={styles.subTitle}>{`${recipe.portions} ${i18n.t(
+                recipe.portionUnit
+              )}`}</Text>
             </View>
           </View>
         </TouchableWithoutFeedback>

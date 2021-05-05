@@ -36,9 +36,9 @@ My Recipe Book - é um aplicativo para você que gosta de cozinhar mas sofre com
 ## 🎨 Layout
 
 <p align="center">
-  <img alt="MyRecipeBook" title="#MyRecipeBook" src="./assets/home-mobile.png" width="200px">
-
-  <img alt="MyRecipeBook" title="#MyRecipeBook" src="./assets/detalhes-mobile.svg" width="200px">
+  <img alt="MyRecipeBook" title="#MyRecipeBook" src="./assets/myRecipeBook.gif" width="200px">
+  <img alt="MyRecipeBook Edit" title="#MyRecipeBook_edit" src="./assets/myRecipeBook_edit.gif" width="200px">
+  <img alt="MyRecipeBook Delete" title="#MyRecipeBook_delete" src="./assets/myRecipeBook_delete.gif" width="200px">
 </p>
 
 ## 🚀 Como executar o projeto

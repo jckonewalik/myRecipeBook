@@ -82,6 +82,7 @@ export const recipeReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loadingRecipe: false,
+        totalRecipes: 1,
         selectedRecipe: payload,
       };
     }

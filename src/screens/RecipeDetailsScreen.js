@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useRef } from 'react';
 import { Context } from '../contexts/Recipes/RecipesContext';
+import i18n from 'i18n-js';
 import {
   SafeAreaView,
   View,
@@ -73,7 +74,7 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+    <SafeAreaView style={{ flex: 1 }}>
       {state.loadingRecipe ? (
         <View
           style={{
@@ -113,7 +114,7 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
               </Text>
               <Text style={styles.recipePortions}>{`${
                 state.selectedRecipe.portions * state.totalRecipes
-              } ${state.selectedRecipe.portionUnit}`}</Text>
+              } ${i18n.t(state.selectedRecipe.portionUnit)}`}</Text>
             </View>
             <ResizePortionContainer
               totalRecipes={state.totalRecipes}
@@ -153,6 +154,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     backgroundColor: colors.white,
+    shadowColor: '#555',
+    shadowRadius: 15,
+    shadowOffset: {
+      height: 1,
+      width: 0,
+    },
+    shadowOpacity: 0.8,
   },
   detailsHeader: {
     marginTop: 30,

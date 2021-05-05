@@ -128,7 +128,9 @@ test('update a recipe and save it', async () => {
   const screen = render(component);
 
   await act(async () => {
-    expect(screen.getByTestId('recipeCard')).toHaveTextContent('Test 01 unit');
+    expect(screen.getByTestId('recipeCard')).toHaveTextContent(
+      'Test 01 [missing "en.unit" translation]'
+    );
   });
 
   const editRecipeButton = screen.getByTestId('editRecipeButton');
@@ -145,7 +147,7 @@ test('update a recipe and save it', async () => {
 
   await act(async () => {
     expect(screen.getByTestId('recipeCard')).toHaveTextContent(
-      'Test Edited1 unit'
+      'Test Edited1 [missing "en.unit" translation]'
     );
   });
 });
