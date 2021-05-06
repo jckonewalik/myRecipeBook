@@ -23,6 +23,7 @@
     "android": {
       "package": "com.jcstecnologia.myrecipebook",
       "versionCode": 1,
+      "permissions": ["READ_EXTERNAL_STORAGE"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
