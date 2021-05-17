@@ -12,7 +12,7 @@ import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 import colors from './src/constants/colors';
 import CheckStepsScreen from './src/screens/CheckStepsScreen';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -102,23 +102,28 @@ const backButton = {
   headerBackTitle: ' ',
   // eslint-disable-next-line react/display-name
   headerBackImage: () => (
-    <MaterialIcons
-      style={{ marginLeft: 20 }}
-      name="keyboard-backspace"
-      size={30}
-      color={colors.primaryColor}
-    />
+    <View style={styles.touchButton}>
+      <MaterialIcons
+        style={{ marginLeft: 20 }}
+        name="keyboard-backspace"
+        size={30}
+        color={colors.primaryColor}
+      />
+    </View>
   ),
 };
 
 const SettingsButton = ({ navigation }) => (
   <TouchableOpacity
-    style={{
-      position: 'absolute',
-      zIndex: 1,
-      right: 20,
-      marginTop: 30,
-    }}
+    style={[
+      styles.touchButton,
+      {
+        position: 'absolute',
+        zIndex: 1,
+        right: 10,
+        marginTop: 30,
+      },
+    ]}
     onPress={() => navigation.navigate('Settings')}
   >
     <View>
@@ -126,5 +131,14 @@ const SettingsButton = ({ navigation }) => (
     </View>
   </TouchableOpacity>
 );
+
+const styles = StyleSheet.create({
+  touchButton: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default Routes;

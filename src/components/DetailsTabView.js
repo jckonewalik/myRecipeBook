@@ -55,7 +55,7 @@ const DetailsTabView = ({ recipe, totalRecipes }) => {
         </ScrollView>
       )}
       {selectedOption === 'instructions' && (
-        <View style={styles.tabViewContainer}>
+        <ScrollView style={styles.tabViewContainer}>
           {recipe.multiSteps ? (
             Object.keys(recipe.steps).map(
               (key) =>
@@ -73,7 +73,7 @@ const DetailsTabView = ({ recipe, totalRecipes }) => {
               instructions={recipe.steps.instructions}
             />
           )}
-        </View>
+        </ScrollView>
       )}
     </>
   );

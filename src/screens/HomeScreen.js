@@ -168,8 +168,12 @@ const styles = StyleSheet.create({
     height: 60,
   },
   settingsButton: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'absolute',
-    right: 30,
+    right: 10,
   },
 });
 

@@ -14,19 +14,18 @@ import {
 } from 'react-native';
 import ResizePortionContainer from '../components/ResizePortionContainer';
 import DetailsTabView from '../components/DetailsTabView';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import colors from '../constants/colors';
-const { height, width } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
-const RecipeDetailsScreen = ({ route, navigation }) => {
+const RecipeDetailsScreen = ({ route }) => {
   const { recipeId } = route.params;
 
-  const position = useRef(new Animated.ValueXY({ x: 0, y: -(width * 0.07) }))
+  const position = useRef(new Animated.ValueXY({ x: 0, y: -(height * 0.04) }))
     .current;
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (event, gestureHandler) => {
-        return position.y._value !== -(width * 0.07) ? false : true;
+        return true;
       },
       onPanResponderGrant: () => {
         position.setOffset({
@@ -41,10 +40,10 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
         });
       },
       onPanResponderRelease: () => {
-        const open = position.y._value < -height * 0.1;
+        const open = position.y._value < -(height * 0.15);
         position.flattenOffset();
         Animated.spring(position, {
-          toValue: { y: open ? -height * 0.4 : -(width * 0.07), x: 0 },
+          toValue: { y: open ? -(height * 0.39) : -(height * 0.04), x: 0 },
           useNativeDriver: false,
         }).start();
       },
@@ -53,12 +52,11 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
   const getCardStyle = () => {
     const translateY = position.y.interpolate({
       inputRange: [-height, 0, height],
-      outputRange: [-height, 0, 10],
+      outputRange: [-height, 0, height * 0.01],
       extrapolate: 'clamp',
     });
     return {
       transform: [{ translateY }],
-      ...styles.detailsContainer,
     };
   };
   const {
@@ -88,34 +86,28 @@ const RecipeDetailsScreen = ({ route, navigation }) => {
         </View>
       ) : (
         <>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              Animated.spring(position, {
-                toValue: { y: -(width * 0.07), x: 0 },
-                useNativeDriver: false,
-              }).start();
-            }}
-          >
-            {state.selectedRecipe.imageUrl ? (
-              <Image
-                style={styles.thumb}
-                source={{ uri: state.selectedRecipe.imageUrl }}
-              />
-            ) : (
-              <View style={styles.noThumb}>
-                <Image source={require('../../assets/no-image.png')} />
-              </View>
-            )}
-          </TouchableWithoutFeedback>
-          <Animated.View style={getCardStyle()} {...panResponder.panHandlers}>
-            <View style={styles.detailsHeader}>
+          {state.selectedRecipe.imageUrl ? (
+            <Image
+              style={styles.thumb}
+              source={{ uri: state.selectedRecipe.imageUrl }}
+            />
+          ) : (
+            <View style={styles.noThumb}>
+              <Image source={require('../../assets/no-image.png')} />
+            </View>
+          )}
+          <Animated.View style={[getCardStyle(), styles.detailsContainer]}>
+            <Animated.View
+              style={styles.detailsHeader}
+              {...panResponder.panHandlers}
+            >
               <Text style={styles.recipeTitle}>
                 {state.selectedRecipe.title}
               </Text>
               <Text style={styles.recipePortions}>{`${
                 state.selectedRecipe.portions * state.totalRecipes
               } ${i18n.t(state.selectedRecipe.portionUnit)}`}</Text>
-            </View>
+            </Animated.View>
             <ResizePortionContainer
               totalRecipes={state.totalRecipes}
               onPressMinus={decreaseRecipeSize}
@@ -149,8 +141,7 @@ const styles = StyleSheet.create({
     height: height * 0.5,
   },
   detailsContainer: {
-    height: height * 0.9,
-    width: width,
+    height: height * 0.8,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     backgroundColor: colors.white,
