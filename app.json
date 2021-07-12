@@ -2,7 +2,7 @@
   "expo": {
     "name": "My Recipe Book",
     "slug": "myRecipeBook",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -16,11 +16,11 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.jcstecnologia.myrecipebook",
-      "buildNumber": "1.1.0"
+      "buildNumber": "1.2.0"
     },
     "android": {
       "package": "com.jcstecnologia.myrecipebook",
-      "versionCode": 2,
+      "versionCode": 3,
       "permissions": ["READ_EXTERNAL_STORAGE"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

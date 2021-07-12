@@ -35,12 +35,21 @@ const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
         });
       },
       onPanResponderRelease: () => {
-        const open = position.x._value < -100.0;
-        position.flattenOffset();
-        Animated.spring(position, {
-          toValue: { x: open ? -250 : 0, y: 0 },
-          useNativeDriver: false,
-        }).start();
+        if (position.x._value > -5 && position.x._value < 5) {
+          position.flattenOffset();
+          Animated.spring(position, {
+            toValue: { x: 0, y: 0 },
+            useNativeDriver: false,
+          }).start();
+          onSelect(recipe.id);
+        } else {
+          const open = position.x._value < -100.0;
+          position.flattenOffset();
+          Animated.spring(position, {
+            toValue: { x: open ? -250 : 0, y: 0 },
+            useNativeDriver: false,
+          }).start();
+        }
       },
     })
   ).current;
