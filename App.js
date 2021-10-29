@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import Routes from './routes';
 import { Provider } from './src/contexts/Recipes/RecipesContext';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import {
   useFonts,
   Roboto_300Light,
