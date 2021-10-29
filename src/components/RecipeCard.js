@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import i18n from 'i18n-js';
 import {
   Animated,
@@ -15,44 +15,17 @@ import noImage from '../../assets/no-image.png';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
+  const [openned, setOpenned] = useState(false);
   const image = recipe.imageUrl ? { uri: recipe.imageUrl } : noImage;
   const position = useRef(new Animated.ValueXY()).current;
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (event, gestureHandler) => {
-        return true;
-      },
-      onPanResponderGrant: () => {
-        position.setOffset({
-          x: position.x._value,
-          y: position.y._value,
-        });
-      },
-      onPanResponderMove: (event, gestureHandler) => {
-        position.setValue({
-          x: gestureHandler.dx,
-          y: 0,
-        });
-      },
-      onPanResponderRelease: () => {
-        if (position.x._value > -5 && position.x._value < 5) {
-          position.flattenOffset();
-          Animated.spring(position, {
-            toValue: { x: 0, y: 0 },
-            useNativeDriver: false,
-          }).start();
-          onSelect(recipe.id);
-        } else {
-          const open = position.x._value < -100.0;
-          position.flattenOffset();
-          Animated.spring(position, {
-            toValue: { x: open ? -250 : 0, y: 0 },
-            useNativeDriver: false,
-          }).start();
-        }
-      },
-    })
-  ).current;
+  const openCardOptions = () => {
+    position.flattenOffset();
+    Animated.spring(position, {
+      toValue: { x: openned ? 0 : -250, y: 0 },
+      useNativeDriver: false,
+    }).start();
+    setOpenned(!openned);
+  };
   const getCardStyle = () => {
     const translateX = position.x.interpolate({
       inputRange: [-500, 0, 500],
@@ -68,23 +41,30 @@ const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
   };
   return (
     <View testID="recipeCard" style={styles.cardContainer}>
-      <Animated.View style={getCardStyle()} {...panResponder.panHandlers}>
-        <TouchableWithoutFeedback
-          testID="selectRecipeButton"
-          onPress={() => onSelect(recipe.id)}
-        >
-          <View style={{ flexDirection: 'row', width: '100%' }}>
-            <View style={styles.imageContainer}>
-              <Image source={image} style={styles.image} />
+      <Animated.View style={getCardStyle()}>
+        <View style={{ flexDirection: 'row', width: '100%' }}>
+          <TouchableWithoutFeedback
+            testID="selectRecipeButton"
+            onPress={() => onSelect(recipe.id)}
+          >
+            <View style={{ flexDirection: 'row', flex: 1 }}>
+              <View style={styles.imageContainer}>
+                <Image source={image} style={styles.image} />
+              </View>
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.title}>{recipe.title}</Text>
+                <Text style={styles.subTitle}>{`${recipe.portions} ${i18n.t(
+                  recipe.portionUnit
+                )}`}</Text>
+              </View>
             </View>
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.title}>{recipe.title}</Text>
-              <Text style={styles.subTitle}>{`${recipe.portions} ${i18n.t(
-                recipe.portionUnit
-              )}`}</Text>
+          </TouchableWithoutFeedback>
+          <TouchableOpacity onPress={openCardOptions}>
+            <View style={styles.menuContainer}>
+              <FontAwesome name="ellipsis-v" size={20} />
             </View>
-          </View>
-        </TouchableWithoutFeedback>
+          </TouchableOpacity>
+        </View>
         <View style={styles.optionsContainer}>
           <TouchableOpacity
             testID="editRecipeButton"
@@ -158,6 +138,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 50,
     height: '100%',
+  },
+  menuContainer: {
+    width: 50,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
