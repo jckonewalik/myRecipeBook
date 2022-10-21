@@ -2,34 +2,35 @@
     <img alt="MyRecipeBook" title="#MyRecipeBook" src="./assets/adaptive-icon.png" />
 </h1>
 <h4 align="center"> 
-	🚧  My Recipe Book - Concluído 🚧
+	My Recipe Book
 </h4>
 <p align="center">
- <a href="#-sobre-o-projeto">Sobre</a> •
- <a href="#-funcionalidades">Funcionalidades</a> •
+ <a href="#-about">About</a> •
+ <a href="#-features">Features</a> •
  <a href="#-layout">Layout</a> • 
- <a href="#-como-executar-o-projeto">Como executar</a> • 
- <a href="#-tecnologias">Tecnologias</a> • 
- <a href="#-autor">Autor</a> • 
- <a href="#user-content--licença">Licença</a>
+ <a href="#-how-to-run">How to run</a> • 
+ <a href="#-technologies">Technologies</a> • 
+ <a href="#-author">Author</a> • 
+ <a href="#user-content-license">License</a>
 </p>
 
-## 💻 Sobre o projeto
+## 💻 About
 
-My Recipe Book - é um aplicativo para você que gosta de cozinhar mas sofre com as quantidades dos ingredientes sempre que sua fome é maior ou menor do que prevista na receita original
+My Recipe Book - is an App for you who like to cook but face difficulties with ingredients amount when you want to change the original recipe size.
 
 ---
 
-## ⚙️ Funcionalidades
+## ⚙️ Features
 
-- [x] Cadastro de novas receitas contendo:
-  - [x] uma imagem da receita
-  - [x] nome, rendimento da receita e calorias
-  - [x] processos para preparação
-  - [x] ingredientes
-  - [x] modo de preparo
+- [x] New Recipes:
+  - [x] recipe picture
+  - [x] name, portions, and calories
+  - [x] preparation steps
+  - [x] ingredients
+  - [x] preparation description
 
-- [x] Consulta das receitas com funcionalidade de fracionamento da receita
+- [x] Recipe list with a search by name
+- [x] Recipe details with fractionation feature
   
 ---
 
@@ -41,38 +42,38 @@ My Recipe Book - é um aplicativo para você que gosta de cozinhar mas sofre com
   <img alt="MyRecipeBook Delete" title="#MyRecipeBook_delete" src="./assets/myRecipeBook_delete.gif" width="200px">
 </p>
 
-## 🚀 Como executar o projeto
+## 🚀 How to run
 
-### Pré-requisitos
+### Pre requirements
 
-Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
+Before start you will need the tools listed below
 [Git](https://git-scm.com). [Node.js](https://nodejs.org/en/). [Yarn](https://yarnpkg.com/) [Expo-cli](https://docs.expo.io/workflow/expo-cli/)
-Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
+And also a code editor like [VSCode](https://code.visualstudio.com/)
 
 
-#### 🧭 Rodando a aplicação
+#### 🧭 Running the App
 
 ```bash
 
-# Clone este repositório
+# Clone this repo
 $ git clone git@github.com:jckonewalik/myRecipeBook.git
 
-# Acesse a pasta do projeto no seu terminal/cmd
+# Access the project folder via terminal/cmd
 $ cd myRecipeBook
 
-# Instale as dependências
+# Install the dependencies
 $ yarn
 
-# Execute a aplicação em modo de desenvolvimento
+# Run the app in development mode
 $ yarn start
 
 ```
 
 ---
 
-## 🛠 Tecnologias
+## 🛠 Technologies
 
-As seguintes ferramentas foram usadas na construção do projeto:
+To build this app, the following tools were used:
 
 -   **[Expo](https://expo.io/)**
 -   **[React Navigation](https://reactnavigation.org/)**
@@ -80,11 +81,11 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Expo FileSystem](https://docs.expo.io/versions/latest/sdk/filesystem/)**
 -   **[Expo Localization](https://docs.expo.io/versions/latest/sdk/localization/)**
 
-> Veja o arquivo  [package.json](https://github.com/jckonewalik/myRecipeBook/blob/master/package.json)
+> See the [package.json](https://github.com/jckonewalik/myRecipeBook/blob/master/package.json)
 
 ---
 
-## 🦸 Autor
+## 🦸 Author
 
 <a href="https://github.com/jckonewalik">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/8429781?v=4" width="100px;" alt=""/>
