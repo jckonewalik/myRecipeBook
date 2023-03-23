@@ -1,23 +1,23 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  ScrollView,
-  View,
-  Keyboard,
-  Dimensions,
-  StyleSheet,
-  Platform,
   ActivityIndicator,
+  Dimensions,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
-import PrimaryButton from '../components/PrimaryButton';
-import AppTextInput from '../components/AppTextInput';
-import { Context } from '../contexts/Recipes/RecipesContext';
 import AndroidPicker from '../components/AndroidPicker';
-import IOSPicker from '../components/IOSPicker';
 import AppImagePicker from '../components/AppImagePicker';
+import AppTextInput from '../components/AppTextInput';
+import IOSPicker from '../components/IOSPicker';
+import PrimaryButton from '../components/PrimaryButton';
 import colors from '../constants/colors';
-import i18n from 'i18n-js';
+import { Context } from '../contexts/Recipes/RecipesContext';
+import { translate } from '../translations';
 
 const { width } = Dimensions.get('window');
 const NewRecipeScreen = ({ route, navigation }) => {
@@ -26,9 +26,9 @@ const NewRecipeScreen = ({ route, navigation }) => {
     Context
   );
   const portionUnitOptions = [
-    { label: `${i18n.t('units')}`, value: 'units' },
-    { label: `${i18n.t('pieces')}`, value: 'pieces' },
-    { label: `${i18n.t('portions')}`, value: 'portions' },
+    { label: `${translate('units')}`, value: 'units' },
+    { label: `${translate('pieces')}`, value: 'pieces' },
+    { label: `${translate('portions')}`, value: 'portions' },
   ];
 
   const [title, setTitle] = useState('');
@@ -94,7 +94,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
               <AppImagePicker image={image} setImage={setImage} />
               <AppTextInput
                 testID="recipeTitleInput"
-                label={i18n.t('recipe_title')}
+                label={translate('recipe_title')}
                 value={title}
                 onChangeText={setTitle}
               />
@@ -102,7 +102,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
                 <View style={styles.protionsInput}>
                   <AppTextInput
                     testID="recipePortionsInput"
-                    label={i18n.t('recipe_portions')}
+                    label={translate('recipe_portions')}
                     value={portions}
                     keyboardType="numeric"
                     onChangeText={setPortions}
@@ -112,14 +112,14 @@ const NewRecipeScreen = ({ route, navigation }) => {
                   {Platform.OS === 'ios' ? (
                     <IOSPicker
                       testID="portionUnitPicker"
-                      label={i18n.t('unit')}
+                      label={translate('unit')}
                       outputValue={portionUnit}
                       options={portionUnitOptions}
                       onSelect={setPortionUnit}
                     />
                   ) : (
                     <AndroidPicker
-                      label={i18n.t('unit')}
+                      label={translate('unit')}
                       value={portionUnit}
                       options={portionUnitOptions}
                       onSelect={setPortionUnit}
@@ -129,7 +129,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
               </View>
               <AppTextInput
                 testID="recipeCaloriesInput"
-                label={i18n.t('recipe_calories')}
+                label={translate('recipe_calories')}
                 value={calories}
                 keyboardType="numeric"
                 onChangeText={setCalories}
@@ -138,7 +138,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
                 <PrimaryButton
                   testID="navigateToCheckStepsButton"
                   disabled={!isValidInput()}
-                  text={i18n.t('recipe_steps')}
+                  text={translate('recipe_steps')}
                   onPress={() => navigate()}
                 />
               </View>

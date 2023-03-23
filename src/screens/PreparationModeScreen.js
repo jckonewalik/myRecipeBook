@@ -1,23 +1,23 @@
 import React, { useContext, useState } from 'react';
 import {
-  View,
-  ScrollView,
-  StyleSheet,
   Dimensions,
   Platform,
+  ScrollView,
+  StyleSheet,
+  View,
 } from 'react-native';
-import { Context } from '../contexts/Recipes/RecipesContext';
 import AndroidPicker from '../components/AndroidPicker';
-import IOSPicker from '../components/IOSPicker';
 import AppTextInput from '../components/AppTextInput';
+import IOSPicker from '../components/IOSPicker';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import StepInstructionsList from '../components/StepInstructionsList';
-import { saveOrUpdate } from '../services/RecipesService';
-import { listAll } from '../database/repository/RecipesRepository';
-import i18n from 'i18n-js';
-const { width } = Dimensions.get('window');
 import colors from '../constants/colors';
+import { Context } from '../contexts/Recipes/RecipesContext';
+import { listAll } from '../database/repository/RecipesRepository';
+import { saveOrUpdate } from '../services/RecipesService';
+import { translate } from '../translations';
+const { width } = Dimensions.get('window');
 
 const PreparationModeScreen = ({ navigation }) => {
   const { state, addInstruction, loadRecipes, startLoadRecipes } = useContext(
@@ -56,7 +56,7 @@ const PreparationModeScreen = ({ navigation }) => {
         (Platform.OS === 'ios' ? (
           <IOSPicker
             testID="preparationModeStepPicker"
-            label={i18n.t('recipe_step')}
+            label={translate('recipe_step')}
             outputValue={step}
             options={Object.keys(state.selectedRecipe.steps).map((step) => {
               return { label: step, value: step };
@@ -65,7 +65,7 @@ const PreparationModeScreen = ({ navigation }) => {
           />
         ) : (
           <AndroidPicker
-            label={i18n.t('recipe_step')}
+            label={translate('recipe_step')}
             value={step}
             options={Object.keys(state.selectedRecipe.steps).map((step) => {
               return { label: step, value: step };
@@ -76,7 +76,7 @@ const PreparationModeScreen = ({ navigation }) => {
       <AppTextInput
         testID="preparationDescription"
         style={styles.descriptionInput}
-        label={i18n.t('step_description')}
+        label={translate('step_description')}
         value={description}
         multiline={true}
         numberOfLines={3}
@@ -87,7 +87,7 @@ const PreparationModeScreen = ({ navigation }) => {
         <SecondaryButton
           testID="addPreparationDescription"
           disabled={!isValidPreparationMode()}
-          text={i18n.t('add')}
+          text={translate('add')}
           onPress={() =>
             onAddPreparationMode({
               stepName: step,
@@ -120,7 +120,7 @@ const PreparationModeScreen = ({ navigation }) => {
       <View style={styles.footerContainer}>
         <PrimaryButton
           testID="saveRecipeButton"
-          text={i18n.t('save')}
+          text={translate('save')}
           onPress={() => onSave()}
         />
       </View>

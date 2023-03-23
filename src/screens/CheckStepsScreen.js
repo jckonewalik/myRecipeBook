@@ -1,10 +1,9 @@
-import React, { useState, useContext } from 'react';
-import { Text, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
-import i18n from 'i18n-js';
-import { Context } from '../contexts/Recipes/RecipesContext';
 import colors from '../constants/colors';
-
+import { Context } from '../contexts/Recipes/RecipesContext';
+import { translate } from '../translations';
 const CheckStepsScreen = ({ navigation }) => {
   const { setMultiSteps: setMultiStepsAction } = useContext(Context);
 
@@ -24,10 +23,14 @@ const CheckStepsScreen = ({ navigation }) => {
     <View style={styles.rootContainer}>
       <View style={{ flex: 1 }}>
         <View style={{ marginTop: 10 }}>
-          <Text style={styles.itemText}>{i18n.t('multi_steps_question')}</Text>
+          <Text style={styles.itemText}>
+            {translate('multi_steps_question')}
+          </Text>
         </View>
         <View style={{ marginTop: 10 }}>
-          <Text style={styles.itemText}>{i18n.t('multi_steps_examples')}</Text>
+          <Text style={styles.itemText}>
+            {translate('multi_steps_examples')}
+          </Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 30 }}>
           <TouchableWithoutFeedback
@@ -50,7 +53,7 @@ const CheckStepsScreen = ({ navigation }) => {
                   marginRight: 10,
                 }}
               />
-              <Text style={styles.itemText}>{i18n.t('option_yes')}</Text>
+              <Text style={styles.itemText}>{translate('option_yes')}</Text>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
@@ -72,7 +75,7 @@ const CheckStepsScreen = ({ navigation }) => {
                   backgroundColor: getOptionColor(!multiSteps),
                 }}
               />
-              <Text style={styles.itemText}>{i18n.t('option_no')}</Text>
+              <Text style={styles.itemText}>{translate('option_no')}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -81,7 +84,9 @@ const CheckStepsScreen = ({ navigation }) => {
         <PrimaryButton
           testID="checkStepsNavigationButton"
           text={
-            multiSteps ? i18n.t('recipe_steps') : i18n.t('recipe_ingredients')
+            multiSteps
+              ? translate('recipe_steps')
+              : translate('recipe_ingredients')
           }
           onPress={() => navigate()}
         />

@@ -1,19 +1,18 @@
-import React from 'react';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import colors from './src/constants/colors';
+import CheckStepsScreen from './src/screens/CheckStepsScreen';
 import HomeScreen from './src/screens/HomeScreen';
-import NewRecipeScreen from './src/screens/NewRecipeScreen';
-import StepsScreen from './src/screens/StepsScreen';
 import IngredientsScreen from './src/screens/IngredientsScreen';
+import NewRecipeScreen from './src/screens/NewRecipeScreen';
 import PreparationModeScreen from './src/screens/PreparationModeScreen';
 import RecipeDetailsScreen from './src/screens/RecipeDetailsScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
-import i18n from 'i18n-js';
-import colors from './src/constants/colors';
-import CheckStepsScreen from './src/screens/CheckStepsScreen';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-
+import StepsScreen from './src/screens/StepsScreen';
+import { translate } from './src/translations';
 const Stack = createStackNavigator();
 
 const Routes = () => {
@@ -39,31 +38,37 @@ const Routes = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerTitle: `${i18n.t('my_recipes')}` }}
+          options={{ headerTitle: `${translate('my_recipes')}` }}
         />
         <Stack.Screen
           name="NewRecipe"
           component={NewRecipeScreen}
           options={{
-            headerTitle: `${i18n.t('new_recipe')}`,
+            headerTitle: `${translate('new_recipe')}`,
             ...backButton,
           }}
         />
         <Stack.Screen
           name="CheckSteps"
           component={CheckStepsScreen}
-          options={{ headerTitle: `${i18n.t('recipe_steps')}`, ...backButton }}
+          options={{
+            headerTitle: `${translate('recipe_steps')}`,
+            ...backButton,
+          }}
         />
         <Stack.Screen
           name="Steps"
           component={StepsScreen}
-          options={{ headerTitle: `${i18n.t('recipe_steps')}`, ...backButton }}
+          options={{
+            headerTitle: `${translate('recipe_steps')}`,
+            ...backButton,
+          }}
         />
         <Stack.Screen
           name="Ingredients"
           component={IngredientsScreen}
           options={{
-            headerTitle: `${i18n.t('recipe_ingredients')}`,
+            headerTitle: `${translate('recipe_ingredients')}`,
             ...backButton,
           }}
         />
@@ -71,7 +76,7 @@ const Routes = () => {
           name="PreparationMode"
           component={PreparationModeScreen}
           options={{
-            headerTitle: `${i18n.t('recipe_preparation_mode')}`,
+            headerTitle: `${translate('recipe_preparation_mode')}`,
             ...backButton,
           }}
         />
@@ -89,7 +94,7 @@ const Routes = () => {
           name="Settings"
           component={SettingsScreen}
           options={{
-            headerTitle: `${i18n.t('settings')}`,
+            headerTitle: `${translate('settings')}`,
             ...backButton,
           }}
         />

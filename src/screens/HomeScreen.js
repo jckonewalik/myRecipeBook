@@ -1,18 +1,18 @@
-import React, { useEffect, useContext } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import i18n from 'i18n-js';
-import colors from '../constants/colors';
+import React, { useContext, useEffect } from 'react';
 import {
-  View,
+  ActivityIndicator,
+  Alert,
   FlatList,
+  Keyboard,
   StyleSheet,
   Text,
-  Alert,
-  Keyboard,
-  TouchableWithoutFeedback,
   TouchableOpacity,
-  ActivityIndicator,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
+import colors from '../constants/colors';
+import { translate } from '../translations';
 
 import RecipeCard from '../components/RecipeCard';
 import SearchBar from '../components/SearchBar';
@@ -51,11 +51,11 @@ const HomeScreen = ({ context = Context, navigation }) => {
   };
   const onDelete = (id, imageUrl) =>
     Alert.alert(
-      `${i18n.t('delete_recipe')}`,
-      `${i18n.t('delete_confirmation')}`,
+      `${translate('delete_recipe')}`,
+      `${translate('delete_confirmation')}`,
       [
         {
-          text: `${i18n.t('cancel')}`,
+          text: `${translate('cancel')}`,
           onPress: () => {},
           style: 'cancel',
         },
@@ -107,7 +107,7 @@ const HomeScreen = ({ context = Context, navigation }) => {
           ) : (
             <View testID="welcomeMessage" style={styles.welcomeContainer}>
               <Text style={styles.welcomeText}>
-                {i18n.t('welcome_message')}
+                {translate('welcome_message')}
               </Text>
             </View>
           )}

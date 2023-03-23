@@ -1,11 +1,10 @@
 import React from 'react';
 
 import { FontAwesome } from '@expo/vector-icons';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { integerText, fractionText } from '../utils/TextUtil';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import colors from '../constants/colors';
-import i18n from 'i18n-js';
-
+import { translate } from '../translations';
+import { fractionText, integerText } from '../utils/TextUtil';
 const ResizePortionContainer = ({
   totalRecipes,
   onPressMinus,
@@ -24,7 +23,9 @@ const ResizePortionContainer = ({
           {fractionText(totalRecipes)}
         </Text>
       </View>
-      <Text style={styles.resizePortionsDescription}>{i18n.t('recipe')}</Text>
+      <Text style={styles.resizePortionsDescription}>
+        {translate('recipe')}
+      </Text>
     </View>
     <TouchableOpacity testID="increaseRecipeQuantity" onPress={onPressPlus}>
       <FontAwesome name="plus" size={24} color={colors.primaryColor} />

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import {
-  View,
   ScrollView,
-  Text,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import i18n from 'i18n-js';
 import colors from '../constants/colors';
-
-import { integerText, fractionText } from '../utils/TextUtil';
+import { translate } from '../translations';
+import { fractionText, integerText } from '../utils/TextUtil';
 const DetailsTabView = ({ recipe, totalRecipes }) => {
   const [selectedOption, setSelectedOption] = useState('ingredients');
   return (
@@ -19,14 +18,14 @@ const DetailsTabView = ({ recipe, totalRecipes }) => {
           <TouchableOpacity onPress={() => setSelectedOption('ingredients')}>
             <Text style={styles.tabViewText}>
               {' '}
-              {i18n.t('recipe_ingredients')}
+              {translate('recipe_ingredients')}
             </Text>
           </TouchableOpacity>
         </View>
         <View style={getOptionStyle('instructions', selectedOption)}>
           <TouchableOpacity onPress={() => setSelectedOption('instructions')}>
             <Text style={styles.tabViewText}>
-              {i18n.t('recipe_preparation_mode')}
+              {translate('recipe_preparation_mode')}
             </Text>
           </TouchableOpacity>
         </View>

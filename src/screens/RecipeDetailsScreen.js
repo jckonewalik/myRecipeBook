@@ -1,20 +1,20 @@
-import React, { useEffect, useContext, useRef } from 'react';
-import { Context } from '../contexts/Recipes/RecipesContext';
-import i18n from 'i18n-js';
+import React, { useContext, useEffect, useRef } from 'react';
 import {
-  SafeAreaView,
-  View,
+  ActivityIndicator,
   Animated,
   Dimensions,
   Image,
-  Text,
-  StyleSheet,
   PanResponder,
-  ActivityIndicator,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
-import ResizePortionContainer from '../components/ResizePortionContainer';
 import DetailsTabView from '../components/DetailsTabView';
+import ResizePortionContainer from '../components/ResizePortionContainer';
 import colors from '../constants/colors';
+import { Context } from '../contexts/Recipes/RecipesContext';
+import { translate } from '../translations';
 const { height } = Dimensions.get('window');
 
 const RecipeDetailsScreen = ({ route }) => {
@@ -106,7 +106,7 @@ const RecipeDetailsScreen = ({ route }) => {
               </Text>
               <Text style={styles.recipePortions}>{`${
                 state.selectedRecipe.portions * state.totalRecipes
-              } ${i18n.t(state.selectedRecipe.portionUnit)}`}</Text>
+              } ${translate(state.selectedRecipe.portionUnit)}`}</Text>
             </Animated.View>
             <ResizePortionContainer
               totalRecipes={state.totalRecipes}

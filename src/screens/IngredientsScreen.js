@@ -1,21 +1,21 @@
 import React, { useContext, useState } from 'react';
 import {
-  View,
-  ScrollView,
-  StyleSheet,
   Dimensions,
   Platform,
+  ScrollView,
+  StyleSheet,
+  View,
 } from 'react-native';
-import { Context } from '../contexts/Recipes/RecipesContext';
 import AndroidPicker from '../components/AndroidPicker';
-import IOSPicker from '../components/IOSPicker';
 import AppTextInput from '../components/AppTextInput';
+import IOSPicker from '../components/IOSPicker';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import StepIngredientsList from '../components/StepIngredientsList';
-import i18n from 'i18n-js';
-const { width } = Dimensions.get('window');
 import colors from '../constants/colors';
+import { Context } from '../contexts/Recipes/RecipesContext';
+import { translate } from '../translations';
+const { width } = Dimensions.get('window');
 
 const IngredientsScreen = ({ navigation }) => {
   const { state, addIngredient } = useContext(Context);
@@ -64,7 +64,7 @@ const IngredientsScreen = ({ navigation }) => {
         (Platform.OS === 'ios' ? (
           <IOSPicker
             testID="ingredientStepPicker"
-            label={i18n.t('recipe_step')}
+            label={translate('recipe_step')}
             outputValue={step}
             options={Object.keys(state.selectedRecipe.steps).map((step) => {
               return { label: step, value: step };
@@ -73,7 +73,7 @@ const IngredientsScreen = ({ navigation }) => {
           />
         ) : (
           <AndroidPicker
-            label={i18n.t('recipe_step')}
+            label={translate('recipe_step')}
             value={step}
             options={Object.keys(state.selectedRecipe.steps).map((step) => {
               return { label: step, value: step };
@@ -83,7 +83,7 @@ const IngredientsScreen = ({ navigation }) => {
         ))}
       <AppTextInput
         testID="ingredientName"
-        label={i18n.t('recipe_ingredient')}
+        label={translate('recipe_ingredient')}
         value={name}
         onChangeText={setName}
       />
@@ -91,7 +91,7 @@ const IngredientsScreen = ({ navigation }) => {
         <View style={styles.amountInput}>
           <AppTextInput
             testID="ingredientQuantity"
-            label={i18n.t('quantity')}
+            label={translate('quantity')}
             value={amount}
             keyboardType="numeric"
             onChangeText={setAmount}
@@ -100,7 +100,7 @@ const IngredientsScreen = ({ navigation }) => {
         <View style={styles.amountInput}>
           <AppTextInput
             testID="ingredientQuantityUnit"
-            label={i18n.t('unit')}
+            label={translate('unit')}
             value={amountUnit}
             onChangeText={setAmountUnit}
           />
@@ -109,7 +109,7 @@ const IngredientsScreen = ({ navigation }) => {
       <View style={styles.addButton}>
         <SecondaryButton
           testID="addIngredientButton"
-          text={i18n.t('add')}
+          text={translate('add')}
           disabled={!isValidIngredient()}
           onPress={() =>
             onAddIngredient({
@@ -145,7 +145,7 @@ const IngredientsScreen = ({ navigation }) => {
       <View style={styles.footerContainer}>
         <PrimaryButton
           testID="ingredientsScreenNavigationButton"
-          text={i18n.t('recipe_preparation_mode')}
+          text={translate('recipe_preparation_mode')}
           onPress={() => goToPreparationMode()}
         />
       </View>

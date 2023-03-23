@@ -1,10 +1,7 @@
-import React from 'react';
-import { View } from 'react-native';
-import { TextInput, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-
-import i18n from 'i18n-js';
-
+import React from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
+import { translate } from '../translations';
 const SearchBar = ({ onSearch }) => {
   let timeout = null;
 
@@ -22,7 +19,7 @@ const SearchBar = ({ onSearch }) => {
       <TextInput
         testID="searchText"
         onChangeText={setSearchValue}
-        placeholder={i18n.t('search')}
+        placeholder={translate('search')}
       />
       <FontAwesome
         style={styles.icon}

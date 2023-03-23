@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import FractionOption from '../components/FractionOption';
-import { Context } from '../contexts/Recipes/RecipesContext';
-import i18n from 'i18n-js';
 import colors from '../constants/colors';
+import { Context } from '../contexts/Recipes/RecipesContext';
+import { translate } from '../translations';
 const SettingsScreen = () => {
   const { width } = Dimensions.get('window');
 
@@ -11,7 +11,7 @@ const SettingsScreen = () => {
   return (
     <View testID="rootContainerSettingsScreeen" style={styles.rootContainer}>
       <View style={{ width: width * 0.4 }}>
-        <Text style={styles.title}>{i18n.t('settings_fractionation')}</Text>
+        <Text style={styles.title}>{translate('settings_fractionation')}</Text>
       </View>
       <View style={styles.optionsContainer}>
         <FractionOption

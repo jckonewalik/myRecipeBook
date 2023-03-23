@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import i18n from 'i18n-js';
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import colors from '../constants/colors';
-
+import { translate } from '../translations';
 const FractionOption = ({ testID, label, value, selected, onPress }) => {
   const getLabelColor = () => {
     return selected ? colors.white : colors.primaryColor;
@@ -22,7 +21,7 @@ const FractionOption = ({ testID, label, value, selected, onPress }) => {
           {label}
         </Text>
         <Text style={{ ...styles.label, color: getLabelColor() }}>
-          {i18n.t('recipe')}
+          {translate('recipe')}
         </Text>
         <View style={{ ...styles.circle, borderColor: getLabelColor() }} />
       </View>

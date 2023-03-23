@@ -1,10 +1,9 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import React from 'react';
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import i18n from 'i18n-js';
 import colors from '../constants/colors';
-
+import { translate } from '../translations';
 const { height } = Dimensions.get('window');
 const AppImagePicker = ({ image, setImage }) => {
   const pickImage = async () => {
@@ -15,8 +14,8 @@ const AppImagePicker = ({ image, setImage }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
     } else {
       setImage(null);
     }
@@ -32,7 +31,7 @@ const AppImagePicker = ({ image, setImage }) => {
         ) : (
           <View style={styles.externalContainer}>
             <View style={styles.internalContainer}>
-              <Text style={styles.text}>{i18n.t('select_image')}</Text>
+              <Text style={styles.text}>{translate('select_image')}</Text>
             </View>
           </View>
         )}

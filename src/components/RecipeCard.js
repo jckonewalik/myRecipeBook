@@ -1,19 +1,17 @@
+import { FontAwesome } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
-import i18n from 'i18n-js';
 import {
   Animated,
-  PanResponder,
-  View,
   Image,
+  StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  StyleSheet,
+  View,
 } from 'react-native';
-import colors from '../constants/colors';
-import { FontAwesome } from '@expo/vector-icons';
-import noImage from '../../assets/no-image.png';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import noImage from '../../assets/no-image.png';
+import colors from '../constants/colors';
+import { translate } from '../translations';
 const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
   const [openned, setOpenned] = useState(false);
   const image = recipe.imageUrl ? { uri: recipe.imageUrl } : noImage;
@@ -53,7 +51,7 @@ const RecipeCard = ({ recipe, onSelect, onEdit, onDelete }) => {
               </View>
               <View style={styles.descriptionContainer}>
                 <Text style={styles.title}>{recipe.title}</Text>
-                <Text style={styles.subTitle}>{`${recipe.portions} ${i18n.t(
+                <Text style={styles.subTitle}>{`${recipe.portions} ${translate(
                   recipe.portionUnit
                 )}`}</Text>
               </View>

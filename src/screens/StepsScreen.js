@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
+import AppListItem from '../components/AppListItem';
+import AppTextInput from '../components/AppTextInput';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
-import AppTextInput from '../components/AppTextInput';
-import AppListItem from '../components/AppListItem';
-import { Context } from '../contexts/Recipes/RecipesContext';
-import i18n from 'i18n-js';
 import colors from '../constants/colors';
+import { Context } from '../contexts/Recipes/RecipesContext';
+import { translate } from '../translations';
 
 const StepsScreen = ({ navigation }) => {
   const { state, addStep, removeStep } = useContext(Context);
@@ -42,7 +42,7 @@ const StepsScreen = ({ navigation }) => {
         <View style={styles.inputContainer}>
           <AppTextInput
             testID="nameStepInput"
-            label={i18n.t('name')}
+            label={translate('name')}
             value={name}
             autoCorrect={false}
             onChangeText={setName}
@@ -51,7 +51,7 @@ const StepsScreen = ({ navigation }) => {
             <SecondaryButton
               testID="addStepButton"
               disabled={!isValidStep()}
-              text={i18n.t('add')}
+              text={translate('add')}
               onPress={() => onAddStep(name)}
             />
           </View>
@@ -69,7 +69,7 @@ const StepsScreen = ({ navigation }) => {
           <PrimaryButton
             testID="stepsScreenNavigationButton"
             disabled={!isValidForm()}
-            text={i18n.t('recipe_ingredients')}
+            text={translate('recipe_ingredients')}
             onPress={() => goToIngredients()}
           />
         </View>

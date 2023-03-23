@@ -1,29 +1,28 @@
+import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import {
-  View,
+  Dimensions,
   Modal,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  Dimensions,
+  View,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import AppOutputText from '../components/AppOutputText';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import i18n from 'i18n-js';
-
+import AppOutputText from '../components/AppOutputText';
+import { translate } from '../translations';
 const { height } = Dimensions.get('window');
 
 const IOSPicker = ({ testID, label, outputValue, options, onSelect }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [pickerValue, setPickerValue] = useState(`${i18n.t('select')}`);
-  let localeOutputValue = i18n.t(outputValue);
+  const [pickerValue, setPickerValue] = useState(`${translate('select')}`);
+  let localeOutputValue = translate(outputValue);
   localeOutputValue = localeOutputValue.includes('missing')
     ? outputValue
     : localeOutputValue;
 
   const onModalSelect = () => {
-    if (pickerValue !== `${i18n.t('select')}`) {
+    if (pickerValue !== `${translate('select')}`) {
       onSelect(pickerValue);
       setModalVisible(false);
     }
@@ -53,13 +52,13 @@ const IOSPicker = ({ testID, label, outputValue, options, onSelect }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalOptions}>
             <TouchableOpacity onPress={onModalCancel}>
-              <Text style={styles.pickerOptions}>{i18n.t('cancel')}</Text>
+              <Text style={styles.pickerOptions}>{translate('cancel')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               testID={`${testID}Select`}
               onPress={onModalSelect}
             >
-              <Text style={styles.pickerOptions}>{i18n.t('select')}</Text>
+              <Text style={styles.pickerOptions}>{translate('select')}</Text>
             </TouchableOpacity>
           </View>
           <Picker
@@ -67,7 +66,10 @@ const IOSPicker = ({ testID, label, outputValue, options, onSelect }) => {
             selectedValue={pickerValue}
             onValueChange={(itemValue) => setPickerValue(itemValue)}
           >
-            <Picker.Item label={i18n.t('select')} value={i18n.t('select')} />
+            <Picker.Item
+              label={translate('select')}
+              value={translate('select')}
+            />
             {options.map((option) => (
               <Picker.Item
                 key={option.value}
