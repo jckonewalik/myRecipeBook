@@ -32,5 +32,9 @@
   "multi_steps_question": "Sua receita possui mais de um processo?",
   "multi_steps_examples": "Ex: Massa, Recheio, Cobertura",
   "option_yes": "Sim",
-  "option_no": "Não"
+  "option_no": "Não",
+  "export_recipes": "Exportar Receitas",
+  "export_confirmation": "Você tem certeza que deseja exportar suas receitas?",
+  "success": "Sucesso",
+  "export_success": "Receitas exportadas com sucesso"
 }

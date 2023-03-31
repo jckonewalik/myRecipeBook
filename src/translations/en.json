@@ -32,5 +32,9 @@
   "multi_steps_question": "Does your recipe have more than one step?",
   "multi_steps_examples": "Ex: Dough, Sauce, Topping",
   "option_yes": "Yes",
-  "option_no": "No"
+  "option_no": "No",
+  "export_recipes": "Export Recipes",
+  "export_confirmation": "Are you sure you want to export your recipes?",
+  "success": "Success",
+  "export_success": "Recipes successfully exported"
 }

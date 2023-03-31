@@ -4,7 +4,7 @@ import * as en from './en.json';
 import * as pt from './pt.json';
 
 const i18n = new I18n({
-  en,
+  'en-US': en,
   'pt-BR': pt,
 });
 

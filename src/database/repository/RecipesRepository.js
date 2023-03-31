@@ -52,6 +52,22 @@ export const findById = (id, loadRecipe, callback) => {
   });
 };
 
+export const getAllRecipes = (callback) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'select title, portions, portionUnit, calories, steps from recipes',
+      [],
+      (_, { rows: { _array } }) => {
+        const recipes = _array.map((recipe) => ({
+          ...recipe,
+          steps: JSON.parse(recipe.steps),
+        }));
+        callback && callback(recipes);
+      }
+    );
+  });
+};
+
 export const insert = ({
   imageUrl,
   title,

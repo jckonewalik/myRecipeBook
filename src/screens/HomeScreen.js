@@ -1,4 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
+import * as FileSystem from 'expo-file-system';
 import React, { useContext, useEffect } from 'react';
 import {
   ActivityIndicator,
@@ -11,12 +12,11 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import colors from '../constants/colors';
-import { translate } from '../translations';
-
 import RecipeCard from '../components/RecipeCard';
 import SearchBar from '../components/SearchBar';
+import colors from '../constants/colors';
 import { Context } from '../contexts/Recipes/RecipesContext';
+import { translate } from '../translations';
 const HomeScreen = ({ context = Context, navigation }) => {
   const {
     state,
@@ -39,6 +39,46 @@ const HomeScreen = ({ context = Context, navigation }) => {
   };
   const openSettings = () => {
     navigation.navigate('Settings');
+  };
+
+  const onExport = () =>
+    Alert.alert(
+      `${translate('export_recipes')}`,
+      `${translate('export_confirmation')}`,
+      [
+        {
+          text: `${translate('cancel')}`,
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => recipeRepository.getAllRecipes(createFile),
+        },
+      ],
+      { cancelable: false }
+    );
+
+  const createFile = async (recipes) => {
+    const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+    // Check if permission granted
+    if (permissions.granted) {
+      const directoryUri = permissions.directoryUri;
+      const fileContent = JSON.stringify(recipes);
+      try {
+        const fileUri = await FileSystem.StorageAccessFramework.createFileAsync(
+          directoryUri,
+          'my_recipes',
+          'application/json'
+        );
+        await FileSystem.writeAsStringAsync(fileUri, fileContent, {
+          encoding: FileSystem.EncodingType.UTF8,
+        });
+        Alert.alert(translate('success'), translate('export_success'));
+      } catch (error) {
+        console.log('Error creating file: ', error);
+      }
+    }
   };
 
   const onEdit = (id) => {
@@ -128,6 +168,15 @@ const HomeScreen = ({ context = Context, navigation }) => {
             <FontAwesome name="gear" size={34} color="white" />
           </View>
         </TouchableOpacity>
+        <TouchableOpacity
+          testID="exportButton"
+          style={styles.exportButton}
+          onPress={onExport}
+        >
+          <View>
+            <FontAwesome name="download" size={34} color="white" />
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -174,6 +223,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: 10,
+  },
+  exportButton: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: 10,
   },
 });
 
