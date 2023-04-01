@@ -62,7 +62,7 @@ const IOSPicker = ({ testID, label, outputValue, options, onSelect }) => {
             </TouchableOpacity>
           </View>
           <Picker
-            testID={`${testID}`}
+            testID={testID}
             selectedValue={pickerValue}
             onValueChange={(itemValue) => setPickerValue(itemValue)}
           >

@@ -22,9 +22,8 @@ import { translate } from '../translations';
 const { width } = Dimensions.get('window');
 const NewRecipeScreen = ({ route, navigation }) => {
   const { params } = route;
-  const { state, loadRecipe, setBasicInfo, recipeRepository } = useContext(
-    Context
-  );
+  const { state, loadRecipe, setBasicInfo, recipeRepository } =
+    useContext(Context);
   const portionUnitOptions = [
     { label: `${translate('units')}`, value: 'units' },
     { label: `${translate('pieces')}`, value: 'pieces' },

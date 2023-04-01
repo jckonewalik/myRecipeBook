@@ -1,10 +1,8 @@
-import { act, render, fireEvent } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { Alert } from 'react-native';
 import Routes from '../../routes';
 import { Provider } from '../../src/contexts/Recipes/RecipesContext';
-import { Alert } from 'react-native';
-
-jest.useFakeTimers();
 
 test('delete an existing recipe', async () => {
   jest.spyOn(Alert, 'alert');
@@ -24,7 +22,7 @@ test('delete an existing recipe', async () => {
   });
   await act(async () => {
     expect(screen.getByTestId('welcomeMessage')).toHaveTextContent(
-      '[missing "en.welcome_message" translation]'
+      '[missing "mock.welcome_message" translation]'
     );
   });
 });

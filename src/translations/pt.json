@@ -36,5 +36,10 @@
   "export_recipes": "Exportar Receitas",
   "export_confirmation": "Você tem certeza que deseja exportar suas receitas?",
   "success": "Sucesso",
-  "export_success": "Receitas exportadas com sucesso"
+  "export_success": "Receitas exportadas com sucesso",
+  "import_recipes": "Importar Receitas",
+  "import_no_recipes_found": "Nenhuma receita encontrada",
+  "error_message": "Algo de errado aconteceu",
+  "import_confirmation_1": "Voce importara um total de",
+  "import_confirmation_2": "receitas. Deseja continuar?"
 }

@@ -13,6 +13,7 @@ import RecipeDetailsScreen from './src/screens/RecipeDetailsScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import StepsScreen from './src/screens/StepsScreen';
 import { translate } from './src/translations';
+import SettingsButton from './src/components/SettingsButton';
 const Stack = createStackNavigator();
 
 const Routes = () => {
@@ -38,7 +39,12 @@ const Routes = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerTitle: `${translate('my_recipes')}` }}
+          options={({ navigation }) => ({
+            headerTitle: `${translate('my_recipes')}`,
+            headerRight: () => (
+              <SettingsButton onPress={() => navigation.navigate('Settings')} />
+            ),
+          })}
         />
         <Stack.Screen
           name="NewRecipe"
@@ -87,7 +93,9 @@ const Routes = () => {
             headerTitle: ``,
             ...backButton,
             // eslint-disable-next-line react/display-name
-            headerRight: () => <SettingsButton navigation={navigation} />,
+            headerRight: () => (
+              <SettingsButton onPress={() => navigation.navigate('Settings')} />
+            ),
           })}
         />
         <Stack.Screen
@@ -117,25 +125,6 @@ const backButton = {
     </View>
   ),
 };
-
-const SettingsButton = ({ navigation }) => (
-  <TouchableOpacity
-    style={[
-      styles.touchButton,
-      {
-        position: 'absolute',
-        zIndex: 1,
-        right: 10,
-        marginTop: 30,
-      },
-    ]}
-    onPress={() => navigation.navigate('Settings')}
-  >
-    <View>
-      <FontAwesome name="gear" size={34} color={colors.primaryColor} />
-    </View>
-  </TouchableOpacity>
-);
 
 const styles = StyleSheet.create({
   touchButton: {

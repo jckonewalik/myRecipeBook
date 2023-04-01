@@ -55,7 +55,7 @@ export const findById = (id, loadRecipe, callback) => {
 export const getAllRecipes = (callback) => {
   db.transaction((tx) => {
     tx.executeSql(
-      'select title, portions, portionUnit, calories, steps from recipes',
+      'select title, portions, portionUnit, calories, multiSteps, steps from recipes',
       [],
       (_, { rows: { _array } }) => {
         const recipes = _array.map((recipe) => ({

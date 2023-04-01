@@ -20,9 +20,8 @@ import { translate } from '../translations';
 const { width } = Dimensions.get('window');
 
 const PreparationModeScreen = ({ navigation }) => {
-  const { state, addInstruction, loadRecipes, startLoadRecipes } = useContext(
-    Context
-  );
+  const { state, addInstruction, loadRecipes, startLoadRecipes } =
+    useContext(Context);
   const [description, setDescription] = useState('');
   const [step, setStep] = useState('select');
 

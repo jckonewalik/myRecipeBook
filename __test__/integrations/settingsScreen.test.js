@@ -1,11 +1,9 @@
-import { act, render, fireEvent } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import Routes from '../../routes';
 import colors from '../../src/constants/colors';
 
 import { Provider } from '../../src/contexts/Recipes/RecipesContext';
-
-jest.useFakeTimers();
 
 test('open setting screen and change fraction option', async () => {
   const component = (

@@ -1,11 +1,8 @@
-import { act, render, fireEvent } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import Routes from '../../routes';
-import { clearDatabase } from '../../src/database/repository/__mocks__/RecipesRepository';
 import { Provider } from '../../src/contexts/Recipes/RecipesContext';
-
-jest.useFakeTimers();
-
+import { clearDatabase } from '../../src/database/repository/__mocks__/RecipesRepository';
 test('create a new recipe with multi steps and save it', async () => {
   clearDatabase();
 
@@ -24,6 +21,7 @@ test('create a new recipe with multi steps and save it', async () => {
   // New Recipe Screen -> setting values
   fireEvent.changeText(screen.getByTestId('recipeTitleInput'), 'Test');
   fireEvent.changeText(screen.getByTestId('recipePortionsInput'), '1');
+  fireEvent.press(screen.getByTestId('portionUnitPickerModalPress'));
   fireEvent(screen.getByTestId('portionUnitPicker'), 'onValueChange', 'units');
   fireEvent.press(screen.getByTestId('portionUnitPickerSelect'));
   fireEvent.changeText(screen.getByTestId('recipeCaloriesInput'), '200');
@@ -40,6 +38,7 @@ test('create a new recipe with multi steps and save it', async () => {
   fireEvent.press(screen.getByTestId('stepsScreenNavigationButton'));
 
   // Ingredients Screen -> setting values
+  fireEvent.press(screen.getByTestId('ingredientStepPickerModalPress'));
   fireEvent(
     screen.getByTestId('ingredientStepPicker'),
     'onValueChange',
@@ -54,6 +53,7 @@ test('create a new recipe with multi steps and save it', async () => {
   fireEvent.press(screen.getByTestId('ingredientsScreenNavigationButton'));
 
   // Preparation Mode Screen -> setting values
+  fireEvent.press(screen.getByTestId('preparationModeStepPickerModalPress'));
   fireEvent(
     screen.getByTestId('preparationModeStepPicker'),
     'onValueChange',
@@ -90,6 +90,7 @@ test('create a new recipe with single step and save it', async () => {
   // New Recipe Screen -> setting values
   fireEvent.changeText(screen.getByTestId('recipeTitleInput'), 'Test');
   fireEvent.changeText(screen.getByTestId('recipePortionsInput'), '1');
+  fireEvent.press(screen.getByTestId('portionUnitPickerModalPress'));
   fireEvent(screen.getByTestId('portionUnitPicker'), 'onValueChange', 'units');
   fireEvent.press(screen.getByTestId('portionUnitPickerSelect'));
   fireEvent.changeText(screen.getByTestId('recipeCaloriesInput'), '200');
@@ -129,7 +130,7 @@ test('update a recipe and save it', async () => {
 
   await act(async () => {
     expect(screen.getByTestId('recipeCard')).toHaveTextContent(
-      'Test 01 [missing "en.unit" translation]'
+      'Test 01 [missing "mock.unit" translation]'
     );
   });
 
@@ -147,7 +148,7 @@ test('update a recipe and save it', async () => {
 
   await act(async () => {
     expect(screen.getByTestId('recipeCard')).toHaveTextContent(
-      'Test Edited1 [missing "en.unit" translation]'
+      'Test Edited1 [missing "mock.unit" translation]'
     );
   });
 });

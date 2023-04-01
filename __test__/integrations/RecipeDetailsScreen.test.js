@@ -1,9 +1,7 @@
-import { act, render, fireEvent } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import Routes from '../../routes';
 import { Provider } from '../../src/contexts/Recipes/RecipesContext';
-
-jest.useFakeTimers();
 
 test('open recipe details screen, increase and decrease quantities', async () => {
   const component = (

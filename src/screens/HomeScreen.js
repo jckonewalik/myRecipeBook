@@ -1,4 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
+import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import React, { useContext, useEffect } from 'react';
 import {
@@ -6,12 +7,14 @@ import {
   Alert,
   FlatList,
   Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+
 import RecipeCard from '../components/RecipeCard';
 import SearchBar from '../components/SearchBar';
 import colors from '../constants/colors';
@@ -37,9 +40,6 @@ const HomeScreen = ({ context = Context, navigation }) => {
   const createNewRecipe = () => {
     newRecipe(() => navigation.navigate('NewRecipe'));
   };
-  const openSettings = () => {
-    navigation.navigate('Settings');
-  };
 
   const onExport = () =>
     Alert.alert(
@@ -60,7 +60,8 @@ const HomeScreen = ({ context = Context, navigation }) => {
     );
 
   const createFile = async (recipes) => {
-    const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+    const permissions =
+      await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
     // Check if permission granted
     if (permissions.granted) {
       const directoryUri = permissions.directoryUri;
@@ -68,17 +69,156 @@ const HomeScreen = ({ context = Context, navigation }) => {
       try {
         const fileUri = await FileSystem.StorageAccessFramework.createFileAsync(
           directoryUri,
-          'my_recipes',
+          `my_recipes_${new Date().toISOString()}`,
           'application/json'
         );
         await FileSystem.writeAsStringAsync(fileUri, fileContent, {
           encoding: FileSystem.EncodingType.UTF8,
         });
-        Alert.alert(translate('success'), translate('export_success'));
+        Alert.alert(translate('export_recipes'), translate('export_success'));
       } catch (error) {
-        console.log('Error creating file: ', error);
+        Alert.alert(translate('export_recipes'), translate('error_message'));
+        console.log(error);
       }
     }
+  };
+
+  const onImport = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/json',
+        copyToCacheDirectory: false,
+      });
+
+      if (result.type !== 'success') {
+        return;
+      }
+
+      const content = await FileSystem.readAsStringAsync(result.uri);
+      const newRecipes = JSON.parse(content);
+      const validRecipes = newRecipes.filter((recipe) => isRecipeValid(recipe));
+
+      if (validRecipes.length === 0) {
+        Alert.alert(
+          translate('import_recipes'),
+          translate('import_no_recipes_found'),
+          [
+            {
+              text: 'OK',
+              onPress: () => {},
+            },
+          ],
+          { cancelable: false }
+        );
+      } else {
+        Alert.alert(
+          translate('import_recipes'),
+          `${translate('import_confirmation_1')} ${
+            validRecipes.length
+          } ${translate('import_confirmation_2')}`,
+          [
+            {
+              text: `${translate('cancel')}`,
+              onPress: () => {},
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => saveRecipes(validRecipes),
+            },
+          ],
+          { cancelable: false }
+        );
+      }
+    } catch (error) {
+      Alert.alert(translate('import_recipes'), translate('error_message'));
+      console.log(error);
+    }
+  };
+
+  const isRecipeValid = (recipe) => {
+    const recipeKeys = Object.keys(recipe);
+    if (recipeKeys.indexOf('title') === -1) {
+      return false;
+    }
+    if (recipeKeys.indexOf('portions') === -1) {
+      return false;
+    }
+    if (recipeKeys.indexOf('portionUnit') === -1) {
+      return false;
+    }
+    if (recipeKeys.indexOf('calories') === -1) {
+      return false;
+    }
+    if (recipeKeys.indexOf('multiSteps') === -1) {
+      return false;
+    }
+    if (recipeKeys.indexOf('steps') === -1) {
+      return false;
+    }
+
+    return areStepsValid(recipe);
+  };
+
+  const areStepsValid = (recipe) => {
+    if (recipe.multiSteps) {
+      const steps = Object.keys(recipe.steps);
+      for (const step of steps) {
+        if (!isStepValid(recipe.steps[step])) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return isStepValid(recipe.steps);
+  };
+
+  const isStepValid = (step) => {
+    const stepKeys = Object.keys(step);
+    if (stepKeys.indexOf('instructions') !== -1) {
+      if (!Array.isArray(step.instructions)) {
+        return false;
+      }
+    }
+    if (stepKeys.indexOf('ingredients') === -1) {
+      return false;
+    }
+    if (!Array.isArray(step.ingredients)) {
+      return false;
+    }
+    const validIngredients = step.ingredients.filter((ingredient) =>
+      isValidIngredient(ingredient)
+    );
+
+    return validIngredients.length === step.ingredients.length;
+  };
+
+  const isValidIngredient = (ingredient) => {
+    const ingredientKeys = Object.keys(ingredient);
+    if (ingredientKeys.indexOf('ingredient') === -1) {
+      return false;
+    }
+    if (ingredientKeys.indexOf('amount') === -1) {
+      return false;
+    }
+    if (ingredientKeys.indexOf('unit') === -1) {
+      return false;
+    }
+    return true;
+  };
+
+  const saveRecipes = async (recipes) => {
+    for (let recipe of recipes) {
+      await recipeService.saveOrUpdate({
+        title: recipe.title,
+        portions: recipe.portions,
+        portionUnit: recipe.portionUnit,
+        calories: recipe.calories,
+        multiSteps: !!recipe.multiSteps,
+        steps: recipe.steps,
+      });
+    }
+    recipeRepository.listAll(loadRecipes);
   };
 
   const onEdit = (id) => {
@@ -153,30 +293,36 @@ const HomeScreen = ({ context = Context, navigation }) => {
           )}
         </TouchableWithoutFeedback>
       )}
+
       <View style={styles.footer}>
         <TouchableOpacity testID="createRecipeButton" onPress={createNewRecipe}>
           <View style={styles.addButton}>
             <FontAwesome name="plus" size={24} color={colors.primaryColor} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          testID="settingsButton"
-          style={styles.settingsButton}
-          onPress={openSettings}
-        >
-          <View>
-            <FontAwesome name="gear" size={34} color="white" />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          testID="exportButton"
-          style={styles.exportButton}
-          onPress={onExport}
-        >
-          <View>
-            <FontAwesome name="download" size={34} color="white" />
-          </View>
-        </TouchableOpacity>
+
+        {Platform.OS === 'android' && (
+          <TouchableOpacity
+            testID="exportButton"
+            style={styles.exportButton}
+            onPress={onExport}
+          >
+            <View>
+              <FontAwesome name="download" size={34} color="white" />
+            </View>
+          </TouchableOpacity>
+        )}
+        {Platform.OS === 'android' && (
+          <TouchableOpacity
+            testID="importButton"
+            style={styles.importButton}
+            onPress={onImport}
+          >
+            <View>
+              <FontAwesome name="upload" size={34} color="white" />
+            </View>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -231,6 +377,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     left: 10,
+  },
+  importButton: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 10,
   },
 });
 
