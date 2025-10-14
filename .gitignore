@@ -13,3 +13,5 @@ eas.json
 
 # macOS
 .DS_Store
+
+.expo
