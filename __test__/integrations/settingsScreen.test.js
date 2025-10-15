@@ -15,7 +15,9 @@ test('open setting screen and change fraction option', async () => {
   const { getByTestId } = render(component);
   // find settings button and press it
   const settingsButton = getByTestId('settingsButton');
-  fireEvent.press(settingsButton);
+  await act(async () => {
+    fireEvent.press(settingsButton);
+  });
   // find one portion option
   const fractionOptionOnePortion = getByTestId('fractionOptionOnePortion');
 
@@ -27,7 +29,9 @@ test('open setting screen and change fraction option', async () => {
   });
 
   // click on one portion option
-  fireEvent.press(fractionOptionOnePortion);
+  await act(async () => {
+    fireEvent.press(fractionOptionOnePortion);
+  });
 
   // expect one portion option be selected
   await act(async () => {

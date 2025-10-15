@@ -1,4 +1,4 @@
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import Routes from '../../routes';
 import { Provider } from '../../src/contexts/Recipes/RecipesContext';
@@ -65,11 +65,11 @@ test('create a new recipe with multi steps and save it', async () => {
     'Description 1'
   );
   fireEvent.press(screen.getByTestId('addPreparationDescription'));
-  fireEvent.press(screen.getByTestId('saveRecipeButton'));
-
   await act(async () => {
-    expect(screen.getAllByTestId('recipeCard').length).toEqual(1);
+    fireEvent.press(screen.getByTestId('saveRecipeButton'));
   });
+
+  expect(screen.getAllByTestId('recipeCard').length).toEqual(1);
 });
 
 test('create a new recipe with single step and save it', async () => {
@@ -112,11 +112,11 @@ test('create a new recipe with single step and save it', async () => {
     'Description 1'
   );
   fireEvent.press(screen.getByTestId('addPreparationDescription'));
-  fireEvent.press(screen.getByTestId('saveRecipeButton'));
-
   await act(async () => {
-    expect(screen.getAllByTestId('recipeCard').length).toEqual(1);
+    fireEvent.press(screen.getByTestId('saveRecipeButton'));
   });
+
+  expect(screen.getAllByTestId('recipeCard').length).toEqual(1);
 });
 
 test('update a recipe and save it', async () => {
@@ -127,21 +127,29 @@ test('update a recipe and save it', async () => {
   );
   // render home screen
   const screen = render(component);
+  await waitFor(() => screen.getByTestId('recipeCard'));
 
-  await act(async () => {
-    expect(screen.getByTestId('recipeCard')).toHaveTextContent(
-      'Test 01 [missing "mock.unit" translation]'
-    );
-  });
+  expect(screen.getByTestId('recipeCard')).toHaveTextContent(
+    'Test 01 [missing "mock.unit" translation]'
+  );
 
   const editRecipeButton = screen.getByTestId('editRecipeButton');
-  fireEvent.press(editRecipeButton);
+  await act(async () => {
+    fireEvent.press(editRecipeButton);
+  });
+
+  await waitFor(() => screen.getByTestId('recipeTitleInput'));
 
   // New Recipe Screen -> setting values
-  fireEvent.changeText(screen.getByTestId('recipeTitleInput'), 'Test Edited');
-  fireEvent.press(screen.getByTestId('navigateToCheckStepsButton'));
-
-  fireEvent.press(screen.getByTestId('ingredientsScreenNavigationButton'));
+  await act(async () => {
+    fireEvent.changeText(screen.getByTestId('recipeTitleInput'), 'Test Edited');
+  });
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('navigateToCheckStepsButton'));
+  });
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('ingredientsScreenNavigationButton'));
+  });
   await act(async () => {
     fireEvent.press(screen.getByTestId('saveRecipeButton'));
   });

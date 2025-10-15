@@ -20,8 +20,9 @@ const { height } = Dimensions.get('window');
 const RecipeDetailsScreen = ({ route }) => {
   const { recipeId } = route.params;
 
-  const position = useRef(new Animated.ValueXY({ x: 0, y: -(height * 0.04) }))
-    .current;
+  const position = useRef(
+    new Animated.ValueXY({ x: 0, y: -(height * 0.04) })
+  ).current;
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (event, gestureHandler) => {
@@ -68,7 +69,11 @@ const RecipeDetailsScreen = ({ route }) => {
   } = useContext(Context);
 
   useEffect(() => {
-    recipeRepository.findById(recipeId, loadRecipe);
+    const getRecipe = async () => {
+      const recipe = await recipeRepository.findById(recipeId);
+      loadRecipe({ recipe });
+    };
+    getRecipe();
   }, []);
 
   return (

@@ -4,10 +4,16 @@ import {
   update,
   remove,
 } from '../database/repository/RecipesRepository';
-export const saveOrUpdate = async (
-  { id, imageUrl, title, portions, portionUnit, calories, multiSteps, steps },
-  callback
-) => {
+export const saveOrUpdate = async ({
+  id,
+  imageUrl,
+  title,
+  portions,
+  portionUnit,
+  calories,
+  multiSteps,
+  steps,
+}) => {
   try {
     let newFileUri;
     if (imageUrl) {
@@ -43,13 +49,12 @@ export const saveOrUpdate = async (
         steps,
       });
     }
-    callback && callback();
   } catch (err) {
     console.error('Error trying to save the recipe.', err);
   }
 };
 
-export const deleteRecipe = async ({ id, imageUrl }, callback) => {
+export const deleteRecipe = async ({ id, imageUrl }) => {
   try {
     if (imageUrl) {
       try {
@@ -57,10 +62,9 @@ export const deleteRecipe = async ({ id, imageUrl }, callback) => {
       } catch (e) {}
     }
 
-    remove({
+    await remove({
       id,
     });
-    callback && callback();
   } catch (err) {
     console.error('Error trying to delete the recipe.', err);
   }

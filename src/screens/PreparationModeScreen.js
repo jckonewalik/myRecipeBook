@@ -25,13 +25,12 @@ const PreparationModeScreen = ({ navigation }) => {
   const [description, setDescription] = useState('');
   const [step, setStep] = useState('select');
 
-  const onSave = () => {
-    saveOrUpdate(state.selectedRecipe, () => {
-      startLoadRecipes();
-      listAll(loadRecipes, () => {
-        navigation.navigate('Home');
-      });
-    });
+  const onSave = async () => {
+    await saveOrUpdate(state.selectedRecipe);
+    startLoadRecipes();
+    const allRecipes = await listAll();
+    loadRecipes(allRecipes);
+    navigation.navigate('Home');
   };
 
   const clearForm = () => {

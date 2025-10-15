@@ -33,8 +33,12 @@ const HomeScreen = ({ context = Context, navigation }) => {
   } = useContext(context);
 
   useEffect(() => {
-    startLoadRecipes();
-    recipeRepository.listAll(loadRecipes);
+    const getRecipes = async () => {
+      startLoadRecipes();
+      const recipes = await recipeRepository.listAll();
+      loadRecipes(recipes);
+    };
+    getRecipes();
   }, []);
 
   const createNewRecipe = () => {
@@ -53,7 +57,10 @@ const HomeScreen = ({ context = Context, navigation }) => {
         },
         {
           text: 'OK',
-          onPress: () => recipeRepository.getAllRecipes(createFile),
+          onPress: async () => {
+            const recipes = await recipeRepository.getAllRecipes();
+            createFile(recipes);
+          },
         },
       ],
       { cancelable: false }
@@ -90,11 +97,11 @@ const HomeScreen = ({ context = Context, navigation }) => {
         copyToCacheDirectory: false,
       });
 
-      if (result.type !== 'success') {
+      if (!result.assets.length) {
         return;
       }
 
-      const content = await FileSystem.readAsStringAsync(result.uri);
+      const content = await FileSystem.readAsStringAsync(result.assets[0].uri);
       const newRecipes = JSON.parse(content);
       const validRecipes = newRecipes.filter((recipe) => isRecipeValid(recipe));
 
@@ -218,7 +225,8 @@ const HomeScreen = ({ context = Context, navigation }) => {
         steps: recipe.steps,
       });
     }
-    recipeRepository.listAll(loadRecipes);
+    const allRecipes = await recipeRepository.listAll();
+    loadRecipes(allRecipes);
   };
 
   const onEdit = (id) => {
@@ -241,11 +249,12 @@ const HomeScreen = ({ context = Context, navigation }) => {
         },
         {
           text: 'OK',
-          onPress: () =>
-            recipeService.deleteRecipe({ id, imageUrl }, () => {
-              startLoadRecipes();
-              recipeRepository.listAll(loadRecipes);
-            }),
+          onPress: async () => {
+            await recipeService.deleteRecipe({ id, imageUrl });
+            startLoadRecipes();
+            const recipes = await recipeRepository.listAll();
+            loadRecipes(recipes);
+          },
         },
       ],
       { cancelable: false }

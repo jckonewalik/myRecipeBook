@@ -1,4 +1,4 @@
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import Routes from '../../routes';
 import { Provider } from '../../src/contexts/Recipes/RecipesContext';
@@ -11,9 +11,12 @@ test('open recipe details screen, increase and decrease quantities', async () =>
   );
   // render home screen
   const screen = render(component);
+  await waitFor(() => screen.getByTestId('selectRecipeButton'));
 
   // find new recipe card and press it
-  fireEvent.press(screen.getByTestId('selectRecipeButton'));
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('selectRecipeButton'));
+  });
   await act(async () => {
     expect(screen.getByTestId('ingredientListItem0')).toHaveTextContent(
       '1 un - Ingredient 0'

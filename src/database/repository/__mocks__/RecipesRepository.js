@@ -33,22 +33,18 @@ export const clearDatabase = () => {
   recipes.length = 0;
 };
 
-export const listAll = jest.fn().mockImplementation((setList, callback) => {
-  setList(recipes);
-  callback && callback();
+export const listAll = jest.fn().mockImplementation(() => {
+  return Promise.resolve(recipes);
 });
 
-export const findById = jest
-  .fn()
-  .mockImplementation((id, loadRecipe, callback) => {
-    const recipe = recipes.find((r) => r.id == id);
-    loadRecipe({ recipe }, callback);
-  });
+export const findById = jest.fn().mockImplementation((id) => {
+  return Promise.resolve(recipes.find((r) => r.id == id));
+});
 
 export const insert = jest
   .fn()
   .mockImplementation(
-    ({
+    async ({
       imageUrl,
       title,
       portions,
@@ -73,7 +69,7 @@ export const insert = jest
 export const update = jest
   .fn()
   .mockImplementation(
-    ({ id, imageUrl, title, portions, portionUnit, calories, steps }) => {
+    async ({ id, imageUrl, title, portions, portionUnit, calories, steps }) => {
       const recipe = recipes.find((r) => r.id == id);
       recipe.title = title;
       recipe.imageUrl = imageUrl;
@@ -84,7 +80,7 @@ export const update = jest
     }
   );
 
-export const remove = jest.fn().mockImplementation(({ id }) => {
+export const remove = jest.fn().mockImplementation(async ({ id }) => {
   const filtered = recipes.filter((recipe) => recipe.id != id);
   recipes.length = 0;
   for (var i = 0; i < filtered.length; i++) {

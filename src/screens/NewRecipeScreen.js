@@ -37,11 +37,15 @@ const NewRecipeScreen = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    if (state.loadingRecipe) {
-      if (params) {
-        recipeRepository.findById(params.recipeId, loadRecipe);
+    const findRecipe = async () => {
+      if (state.loadingRecipe) {
+        if (params) {
+          recipe = await recipeRepository.findById(params.recipeId);
+          loadRecipe({ recipe });
+        }
       }
-    }
+    };
+    findRecipe();
   }, []);
 
   useEffect(() => {

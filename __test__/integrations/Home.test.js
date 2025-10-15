@@ -1,4 +1,4 @@
-import { act, fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { Alert } from 'react-native';
 import Routes from '../../routes';
@@ -13,6 +13,8 @@ test('delete an existing recipe', async () => {
   );
   // render home screen
   const screen = render(component);
+  await waitFor(() => screen.getByTestId('recipeCard'));
+
   await act(async () => {
     expect(screen.getAllByTestId('recipeCard').length).toEqual(1);
   });
