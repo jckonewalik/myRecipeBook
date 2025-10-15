@@ -28,8 +28,9 @@ test('create a new recipe with multi steps and save it', async () => {
   fireEvent.press(screen.getByTestId('navigateToCheckStepsButton'));
 
   // Check Steps Screen -> multi steps
-  fireEvent.press(screen.getByTestId('multiStepOption'));
-  fireEvent.press(screen.getByTestId('navigateToCheckStepsButton'));
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('multiStepOption'));
+  });
   fireEvent.press(screen.getByTestId('checkStepsNavigationButton'));
 
   // Steps Screen -> setting values
@@ -129,9 +130,7 @@ test('update a recipe and save it', async () => {
   const screen = render(component);
   await waitFor(() => screen.getByTestId('recipeCard'));
 
-  expect(screen.getByTestId('recipeCard')).toHaveTextContent(
-    'Test 01 [missing "mock.unit" translation]'
-  );
+  expect(screen.getByTestId('recipeCard')).toHaveTextContent('Test 01 Unit');
 
   const editRecipeButton = screen.getByTestId('editRecipeButton');
   await act(async () => {
@@ -156,7 +155,7 @@ test('update a recipe and save it', async () => {
 
   await act(async () => {
     expect(screen.getByTestId('recipeCard')).toHaveTextContent(
-      'Test Edited1 [missing "mock.unit" translation]'
+      'Test Edited1 Unit'
     );
   });
 });

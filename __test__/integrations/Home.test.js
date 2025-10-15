@@ -24,7 +24,7 @@ test('delete an existing recipe', async () => {
   });
   await act(async () => {
     expect(screen.getByTestId('welcomeMessage')).toHaveTextContent(
-      '[missing "mock.welcome_message" translation]'
+      "Welcome to your recipe book. You haven't included any recipes yet"
     );
   });
 });
