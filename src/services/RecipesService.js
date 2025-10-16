@@ -1,4 +1,4 @@
-import * as FileSystem from 'expo-file-system';
+import { File, Directory, Paths } from 'expo-file-system';
 import {
   insert,
   update,
@@ -15,23 +15,21 @@ export const saveOrUpdate = async ({
   steps,
 }) => {
   try {
-    let newFileUri;
+    let newFile;
     if (imageUrl) {
       const filePath = imageUrl.split('/');
       const fileName = filePath[filePath.length - 1];
-      newFileUri = `${FileSystem.documentDirectory}${fileName}`;
-      if (imageUrl !== newFileUri) {
-        await FileSystem.copyAsync({
-          from: imageUrl,
-          to: newFileUri,
-        });
+      const originalFile = new File(imageUrl);
+      newFile = new File(`${Paths.document.uri}${fileName}`);
+      if (imageUrl !== newFile.uri) {
+        originalFile.copy(newFile);
       }
     }
 
     if (id) {
       update({
         id,
-        imageUrl: newFileUri,
+        imageUrl: newFile?.uri,
         title,
         portions,
         portionUnit,
@@ -40,7 +38,7 @@ export const saveOrUpdate = async ({
       });
     } else {
       insert({
-        imageUrl: newFileUri,
+        imageUrl: newFile?.uri,
         title,
         portions,
         portionUnit,
@@ -58,7 +56,8 @@ export const deleteRecipe = async ({ id, imageUrl }) => {
   try {
     if (imageUrl) {
       try {
-        await FileSystem.deleteAsync(imageUrl);
+        const file = new File(imageUrl);
+        file.delete();
       } catch (e) {}
     }
 

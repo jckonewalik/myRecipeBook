@@ -5,7 +5,6 @@ import {
   Dimensions,
   Image,
   PanResponder,
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
@@ -15,6 +14,7 @@ import ResizePortionContainer from '../components/ResizePortionContainer';
 import colors from '../constants/colors';
 import { Context } from '../contexts/Recipes/RecipesContext';
 import { translate } from '../translations';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const { height } = Dimensions.get('window');
 
 const RecipeDetailsScreen = ({ route }) => {

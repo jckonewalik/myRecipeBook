@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import { File, Directory, Paths } from 'expo-file-system';
 import React, { useContext, useEffect } from 'react';
 import {
   ActivityIndicator,
@@ -67,26 +67,21 @@ const HomeScreen = ({ context = Context, navigation }) => {
     );
 
   const createFile = async (recipes) => {
-    const permissions =
-      await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-    // Check if permission granted
-    if (permissions.granted) {
-      const directoryUri = permissions.directoryUri;
-      const fileContent = JSON.stringify(recipes);
-      try {
-        const fileUri = await FileSystem.StorageAccessFramework.createFileAsync(
-          directoryUri,
-          `my_recipes_${new Date().toISOString()}`,
-          'application/json'
-        );
-        await FileSystem.writeAsStringAsync(fileUri, fileContent, {
-          encoding: FileSystem.EncodingType.UTF8,
-        });
-        Alert.alert(translate('export_recipes'), translate('export_success'));
-      } catch (error) {
-        Alert.alert(translate('export_recipes'), translate('error_message'));
-        console.log(error);
-      }
+    const dir = await Directory.pickDirectoryAsync();
+    if (!dir) {
+      new Error('no directory selected');
+    }
+    const fileContent = JSON.stringify(recipes);
+    try {
+      const file = dir.createFile(
+        `my_recipes_${new Date().toISOString()}.json`,
+        'application/json'
+      );
+      file.write(fileContent);
+      Alert.alert(translate('export_recipes'), translate('export_success'));
+    } catch (error) {
+      Alert.alert(translate('export_recipes'), translate('error_message'));
+      console.log(error);
     }
   };
 
@@ -101,8 +96,8 @@ const HomeScreen = ({ context = Context, navigation }) => {
         return;
       }
 
-      const content = await FileSystem.readAsStringAsync(result.assets[0].uri);
-      const newRecipes = JSON.parse(content);
+      const file = new File(result.assets[0]);
+      const newRecipes = JSON.parse(file.textSync());
       const validRecipes = newRecipes.filter((recipe) => isRecipeValid(recipe));
 
       if (validRecipes.length === 0) {
