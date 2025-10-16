@@ -40,7 +40,7 @@ const NewRecipeScreen = ({ route, navigation }) => {
     const findRecipe = async () => {
       if (state.loadingRecipe) {
         if (params) {
-          recipe = await recipeRepository.findById(params.recipeId);
+          const recipe = await recipeRepository.findById(params.recipeId);
           loadRecipe({ recipe });
         }
       }

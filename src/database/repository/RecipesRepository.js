@@ -4,7 +4,7 @@ export const createTable = () => {
   db.execSync(
     'create table if not exists recipes (id integer primary key not null, imageUrl text, title text, portions numeric, portionUnit text, calories numeric, multiSteps bit, steps text);'
   );
-  recipes = db.getAllSync('PRAGMA table_info(recipes)');
+  const recipes = db.getAllSync('PRAGMA table_info(recipes)');
   const hasMultiSteps = !!recipes.find((f) => f.name === 'multiSteps');
   if (!hasMultiSteps) {
     db.execSync('alter table recipes add column multiSteps bit');

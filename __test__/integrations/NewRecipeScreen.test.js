@@ -130,7 +130,7 @@ test('update a recipe and save it', async () => {
   const screen = render(component);
   await waitFor(() => screen.getByTestId('recipeCard'));
 
-  expect(screen.getByTestId('recipeCard')).toHaveTextContent('Test 01 Unit');
+  expect(screen.getByTestId('recipeCard')).toHaveTextContent('Test 01 Unit');
 
   const editRecipeButton = screen.getByTestId('editRecipeButton');
   await act(async () => {
@@ -155,7 +155,7 @@ test('update a recipe and save it', async () => {
 
   await act(async () => {
     expect(screen.getByTestId('recipeCard')).toHaveTextContent(
-      'Test Edited1 Unit'
+      'Test Edited1 Unit'
     );
   });
 });

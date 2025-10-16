@@ -2,7 +2,7 @@
   "expo": {
     "name": "My Recipe Book",
     "slug": "myRecipeBook",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "newArchEnabled": true,
@@ -19,11 +19,11 @@
     ],
     "ios": {
       "bundleIdentifier": "com.jcstecnologia.myrecipebook",
-      "buildNumber": "1.4.0"
+      "buildNumber": "1.5.0"
     },
     "android": {
       "package": "com.jcstecnologia.myrecipebook",
-      "versionCode": 5,
+      "versionCode": 6,
       "permissions": [
         "READ_EXTERNAL_STORAGE"
       ],
